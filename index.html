@@ -2,1993 +2,388 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>SafeYield AI — আপনার স্বয়ংক্রিয় AI ইনভেস্টমেন্ট পার্টনার</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SafeYield AI v4 — স্বয়ংক্রিয় AI ইনভেস্টমেন্ট ও মার্কেট অ্যানালাইসিস</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     :root {
       --bg: #f1f5f9;
-      --surface: #ffffff;
-      --surface-soft: #f8fafc;
-      --border: #e2e8f0;
+      --card: #ffffff;
       --text: #0f172a;
-      --text-muted: #64748b;
-      --primary: #0d9488;
-      --primary-dark: #0f766e;
-      --primary-soft: #f0fdfa;
-      --accent: #4f46e5;
-      --green: #059669;
-      --green-bg: #ecfdf5;
-      --red: #dc2626;
-      --red-bg: #fef2f2;
-      --amber: #d97706;
-      --amber-bg: #fffbeb;
-      --radius: 18px;
-      --shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --primary: #0f766e;
+      --primary-dark: #064e3b;
+      --accent: #10b981;
+      --danger: #ef4444;
+      --warn: #f59e0b;
+      --blue: #2563eb;
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-    html, body {
-      background-color: var(--bg);
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Hind Siliguri', system-ui, sans-serif;
+      background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Bengali", sans-serif;
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
       padding-bottom: 84px;
+      line-height: 1.5;
     }
-
-    @media (min-width: 768px) {
-      html, body { padding-bottom: 24px; }
-    }
-
-    button, input, select { font-family: inherit; }
-
-    .container { max-width: 980px; margin: 0 auto; padding: 12px 14px; }
-
-    /* Top Header */
-    .header-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow);
-    }
-    .header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .brand { display: flex; align-items: center; gap: 10px; }
-    .brand-icon {
-      width: 42px; height: 42px; border-radius: 13px;
-      background: linear-gradient(135deg, #0d9488, #4f46e5);
-      color: #ffffff; display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; box-shadow: 0 4px 10px rgba(13, 148, 136, 0.25);
-    }
-    .brand-title {
-      font-size: 19px; font-weight: 800; color: var(--text);
-      display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
-    }
-    .badge-v3 {
-      background: linear-gradient(135deg, #0d9488, #4f46e5);
-      color: #ffffff; font-size: 10.5px; font-weight: 700;
-      padding: 2px 8px; border-radius: 999px; letter-spacing: 0.2px;
-    }
-    .brand-sub { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
-
-    .header-actions { display: flex; align-items: center; gap: 6px; }
-    .curr-toggle {
-      display: inline-flex; background: #f1f5f9; padding: 3px;
-      border-radius: 10px; border: 1px solid var(--border);
-    }
-    .curr-btn {
-      border: none; background: transparent; padding: 5px 10px; border-radius: 7px;
-      font-size: 12.5px; font-weight: 700; color: #475569; cursor: pointer;
-      transition: all 0.15s;
-    }
-    .curr-btn.active { background: var(--primary); color: #ffffff; }
-
-    .icon-btn {
-      background: var(--surface); border: 1px solid #cbd5e1; color: var(--text);
-      padding: 7px 11px; border-radius: 10px; font-size: 12.5px; font-weight: 700;
-      cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
-      transition: background 0.15s;
-    }
-    .icon-btn:hover { background: #f8fafc; }
-
-    .status-bar {
-      margin-top: 11px; padding-top: 11px; border-top: 1px solid #f1f5f9;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 8px;
-    }
-    .pill-group { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-    .status-pill {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: var(--green-bg); color: #065f46; border: 1px solid #a7f3d0;
-      padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 700;
-    }
-    .sync-pill {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1;
-      padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 700;
-    }
-    .sync-pill.synced { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
-    .dot-pulse {
-      width: 7px; height: 7px; border-radius: 50%; background: #10b981;
-      display: inline-block; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
-    }
-
-    /* Desktop Top Navigation */
-    .desktop-nav {
-      display: none;
-      grid-template-columns: repeat(5, 1fr); gap: 6px;
-      background: var(--surface); padding: 6px; border-radius: 14px;
-      border: 1px solid var(--border); margin-bottom: 14px;
-      box-shadow: var(--shadow);
-    }
-    @media (min-width: 768px) { .desktop-nav { display: grid; } }
-    .nav-btn {
-      border: none; background: transparent; padding: 10px 8px; border-radius: 10px;
-      font-size: 13.5px; font-weight: 700; color: #475569; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-      transition: all 0.15s;
-    }
-    .nav-btn:hover { background: #f8fafc; color: var(--text); }
-    .nav-btn.active { background: var(--primary-dark); color: #ffffff; }
-
-    /* Mobile Sticky Bottom Navigation */
-    .mobile-bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(12px);
-      border-top: 1px solid var(--border);
-      display: grid; grid-template-columns: repeat(5, 1fr);
-      padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
-      box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.06);
-    }
-    @media (min-width: 768px) { .mobile-bottom-nav { display: none; } }
-    .m-nav-btn {
-      border: none; background: transparent; padding: 5px 2px; border-radius: 10px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 2px; cursor: pointer; color: #64748b; font-size: 10.5px; font-weight: 700;
-      transition: all 0.15s;
-    }
-    .m-nav-btn .m-ico { font-size: 18px; line-height: 1.1; }
-    .m-nav-btn.active { color: var(--primary-dark); background: var(--primary-soft); }
-
-    /* Cards & Layout */
+    .container { max-width: 780px; margin: 0 auto; padding: 14px; }
     .card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 16px; margin-bottom: 14px;
-      box-shadow: var(--shadow);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
     }
-    .card-head-row {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      gap: 10px; flex-wrap: wrap; margin-bottom: 10px;
+    .header-card { display: flex; flex-direction: column; gap: 10px; }
+    .brand-row { display: flex; align-items: center; gap: 12px; }
+    .logo {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: linear-gradient(135deg, #0d9488, #0284c7);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 22px; font-weight: 700; flex-shrink: 0;
     }
-    .card-title {
-      font-size: 16px; font-weight: 800; color: var(--text);
-      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    .title-wrap h1 { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .badge-v { background: #1e1b4b; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 99px; }
+    .title-wrap p { font-size: 13px; color: var(--muted); }
+    .controls-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .pill {
+      padding: 6px 12px; border-radius: 99px; border: 1px solid var(--border);
+      background: #f8fafc; font-size: 13px; font-weight: 600; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 5px; font-family: inherit;
     }
-    .card-sub { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 14px; }
-    @media (min-width: 740px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+    .pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .status-strip { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: 12px; }
+    .chip-live { background: #dcfce7; color: #166534; padding: 3px 10px; border-radius: 99px; font-weight: 600; }
+    .chip-sync { background: #eff6ff; color: #1d4ed8; padding: 3px 10px; border-radius: 99px; font-weight: 600; }
 
-    /* Autopilot Hero Card */
-    .hero-card {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #115e59 100%);
-      color: #ffffff; border-radius: 20px; padding: 18px; margin-bottom: 14px;
-      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16);
-      position: relative; overflow: hidden;
+    /* Hero Portfolio Card */
+    .hero {
+      background: linear-gradient(145deg, #064e3b 0%, #0f292e 65%, #0f172a 100%);
+      color: #fff; border-radius: 20px; padding: 18px; margin-bottom: 14px;
     }
-    .hero-top {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      gap: 10px; flex-wrap: wrap;
+    .hero-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .hero-label { font-size: 13px; color: #a7f3d0; }
+    .brain-pill {
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+      padding: 4px 10px; border-radius: 99px; font-size: 12px; font-weight: 600;
     }
-    .brain-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: rgba(255, 255, 255, 0.13); border: 1px solid rgba(255, 255, 255, 0.22);
-      color: #e2e8f0; padding: 4px 10px; border-radius: 999px;
-      font-size: 11.5px; font-weight: 700;
+    .portfolio-val { font-size: 34px; font-weight: 700; margin: 6px 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .pnl-badge { font-size: 13px; padding: 3px 10px; border-radius: 99px; background: rgba(16,185,129,0.2); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.35); }
+    .pnl-badge.neg { background: rgba(239,68,68,0.2); color: #fca5a5; border-color: rgba(239,68,68,0.35); }
+    .prog-row { display: flex; justify-content: space-between; font-size: 13px; color: #cbd5e1; margin-top: 8px; }
+    .prog-bar { height: 7px; background: rgba(255,255,255,0.15); border-radius: 99px; overflow: hidden; margin: 6px 0 14px; }
+    .prog-fill { height: 100%; background: #10b981; border-radius: 99px; transition: width 0.4s ease; }
+    .mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+    .mini-box { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 10px; }
+    .mini-box small { display: block; font-size: 11px; color: #cbd5e1; }
+    .mini-box strong { font-size: 16px; }
+    .btn-run {
+      width: 100%; padding: 13px; border: none; border-radius: 12px;
+      background: #10b981; color: #052e16; font-size: 16px; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: 0.2s;
     }
-    .hero-main-val {
-      margin: 12px 0 6px;
-      display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+    .btn-run:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-sub {
+      margin-top: 8px; padding: 8px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit;
     }
-    .hero-big-num { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; }
-    .pnl-pill {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 4px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 800;
-    }
-    .pnl-up { background: rgba(16, 185, 129, 0.22); color: #6ee7b7; border: 1px solid rgba(110, 231, 183, 0.35); }
-    .pnl-down { background: rgba(239, 68, 68, 0.22); color: #fca5a5; border: 1px solid rgba(252, 165, 165, 0.35); }
+    .run-msg { margin-top: 10px; font-size: 13px; color: #a7f3d0; }
 
-    .hero-progress-wrap { margin: 10px 0 14px; }
-    .hero-prog-labels {
-      display: flex; justify-content: space-between; font-size: 12px; color: #cbd5e1; margin-bottom: 5px;
-    }
-    .hero-prog-track {
-      background: rgba(255, 255, 255, 0.15); height: 8px; border-radius: 999px; overflow: hidden;
-    }
-    .hero-prog-fill {
-      background: linear-gradient(90deg, #2dd4bf, #34d399); height: 100%; border-radius: 999px;
-      transition: width 0.4s ease;
-    }
+    /* Section Headings & Grids */
+    .sec-title { font-size: 17px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+    .sec-sub { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
+    .weight-item { background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; }
+    .weight-top { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+    .w-bar { height: 7px; background: #e2e8f0; border-radius: 99px; overflow: hidden; }
+    .w-fill { height: 100%; background: linear-gradient(90deg, #0d9488, #2563eb); border-radius: 99px; }
 
-    .hero-mini-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;
-    }
-    .hero-mini-box {
-      background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 12px; padding: 9px 10px;
-    }
-    .hero-mini-box small { display: block; font-size: 11px; color: #94a3b8; }
-    .hero-mini-box strong { font-size: 14.5px; color: #ffffff; display: block; margin-top: 2px; }
-
-    .hero-cta-row { display: flex; gap: 8px; flex-wrap: wrap; }
-
-    /* Interactive 30-Day P&L Chart */
-    .chart-toggle {
-      display: inline-flex; background: #f1f5f9; padding: 3px;
-      border-radius: 10px; border: 1px solid var(--border);
-    }
-    .chart-tab {
-      border: none; background: transparent; padding: 5px 11px; border-radius: 7px;
-      font-size: 12px; font-weight: 700; color: #475569; cursor: pointer;
-    }
-    .chart-tab.active { background: var(--primary); color: #ffffff; }
-
-    .chart-tooltip-bar {
-      background: var(--surface-soft); border: 1px solid var(--border);
-      border-radius: 12px; padding: 9px 12px; margin-bottom: 10px;
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 6px; font-size: 12.5px;
-    }
-    .chart-svg-wrap {
-      width: 100%; overflow: hidden; border-radius: 12px;
-      background: #ffffff;
-    }
-    .chart-svg-wrap svg { width: 100%; height: auto; display: block; }
-    .chart-dot { cursor: pointer; transition: r 0.15s ease; }
-
-    .chart-metrics {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px;
-    }
-    @media (max-width: 560px) { .chart-metrics { grid-template-columns: repeat(2, 1fr); } }
-    .metric-chip {
-      background: var(--surface-soft); border: 1px solid var(--border);
-      border-radius: 12px; padding: 8px 10px; text-align: center;
-    }
-    .metric-chip small { display: block; font-size: 11px; color: var(--text-muted); }
-    .metric-chip strong { font-size: 13.5px; color: var(--text); }
-
-    /* Today's Digest Card */
-    .digest-banner {
-      background: linear-gradient(135deg, #f0fdfa, #eff6ff);
-      border: 1px solid #99f6e4; border-radius: 14px; padding: 14px;
-    }
-    .digest-stats {
-      display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0;
-    }
-    .digest-pill {
-      background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px;
-      padding: 6px 10px; font-size: 12px; font-weight: 700; color: var(--text);
-    }
-
-    /* Donut Chart Layout */
-    .donut-layout {
-      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-    }
-    .donut-wrap { width: 126px; height: 126px; flex-shrink: 0; position: relative; }
-    .donut-center {
-      position: absolute; inset: 0; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; text-align: center; pointer-events: none;
-    }
-    .donut-center small { font-size: 10.5px; color: var(--text-muted); }
-    .donut-center strong { font-size: 13.5px; color: var(--text); }
-    .donut-legend { flex: 1; min-width: 170px; display: flex; flex-direction: column; gap: 7px; }
-    .d-leg-row {
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 12.5px; padding: 5px 8px; background: var(--surface-soft);
-      border-radius: 8px; border: 1px solid #f1f5f9;
-    }
-    .d-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 6px; }
-
-    /* Buttons */
-    .btn-primary {
-      background: #10b981; color: #052e16; border: none; padding: 11px 16px;
-      border-radius: 12px; font-size: 13.5px; font-weight: 800; cursor: pointer;
-      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-      min-height: 44px; transition: transform 0.1s, background 0.15s;
-    }
-    .btn-primary:hover { background: #34d399; }
-    .btn-primary:active { transform: scale(0.98); }
-    .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; }
-
-    .btn-teal {
-      background: var(--primary-dark); color: #ffffff; border: none; padding: 11px 16px;
-      border-radius: 12px; font-size: 13.5px; font-weight: 700; cursor: pointer;
-      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-      min-height: 44px;
-    }
-    .btn-teal:hover { background: var(--primary); }
-
-    .btn-dark-outline {
-      background: rgba(255,255,255,0.12); color: #ffffff; border: 1px solid rgba(255,255,255,0.24);
-      padding: 10px 14px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer;
-      min-height: 44px;
-    }
-    .btn-sell {
-      background: var(--red-bg); color: #b91c1c; border: 1px solid #fecaca;
-      padding: 6px 11px; border-radius: 9px; font-size: 12px; font-weight: 700; cursor: pointer;
-    }
-
-    /* Strategy Weights & Logs */
-    .weight-row { margin-bottom: 10px; }
-    .weight-head { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 700; margin-bottom: 4px; }
-    .weight-track { background: #e2e8f0; height: 8px; border-radius: 999px; overflow: hidden; }
-    .weight-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #0d9488, #4f46e5); }
-
-    .log-entry {
-      border: 1px solid var(--border); border-radius: 14px; padding: 14px;
-      margin-bottom: 10px; background: var(--surface-soft);
-    }
-    .log-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
-    .action-chip {
-      display: inline-block; font-size: 11px; font-weight: 800; padding: 2px 8px;
-      border-radius: 6px; margin-right: 5px;
-    }
-    .act-buy { background: #dcfce7; color: #166534; }
-    .act-sell { background: #fee2e2; color: #991b1b; }
-    .act-hold { background: #fef3c7; color: #92400e; }
-
-    /* Help (?) Button */
-    .help-btn {
-      width: 20px; height: 20px; border-radius: 50%; border: 1px solid #cbd5e1;
-      background: #f1f5f9; color: #334155; font-size: 11px; font-weight: 800;
-      display: inline-flex; align-items: center; justify-content: center;
-      cursor: pointer; vertical-align: middle;
-    }
-
-    /* Quiz & Allocation */
-    .quiz-group { margin-bottom: 12px; }
-    .quiz-label { font-size: 13px; font-weight: 700; color: #1e293b; margin-bottom: 6px; display: block; }
-    .pill-options { display: flex; flex-wrap: wrap; gap: 6px; }
-    .opt-pill {
-      border: 1.5px solid #cbd5e1; background: #ffffff; color: #334155;
-      padding: 7px 13px; border-radius: 999px; font-size: 12.5px; font-weight: 700;
-      cursor: pointer; transition: all 0.15s;
-    }
-    .opt-pill.selected { background: var(--primary-dark); color: #ffffff; border-color: var(--primary-dark); }
-
-    .alloc-bar { display: flex; height: 14px; border-radius: 999px; overflow: hidden; background: #e2e8f0; margin: 12px 0; }
-    .alloc-seg-safe { background: #0ea5e9; }
-    .alloc-seg-index { background: #10b981; }
-    .alloc-seg-gold { background: #f59e0b; }
-    .alloc-seg-growth { background: #8b5cf6; }
-    .alloc-legend { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 8px; }
-    .alloc-item { background: var(--surface-soft); border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; font-size: 12.5px; }
-    .warn-banner { background: var(--red-bg); border: 1px solid #fecaca; color: #991b1b; padding: 10px 12px; border-radius: 12px; font-size: 12.5px; margin-bottom: 12px; }
-    .info-banner { background: var(--primary-soft); border: 1px solid #99f6e4; color: #115e59; padding: 12px; border-radius: 12px; font-size: 13px; margin-bottom: 12px; }
-
-    /* Tables & Assets */
+    /* Indicator Table */
     .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #f1f5f9; }
-    th { background: var(--surface-soft); color: #475569; font-weight: 800; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 9px 8px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { background: #f8fafc; color: var(--muted); font-weight: 600; font-size: 12px; }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 700; }
+    .tag-buy { background: #dcfce7; color: #166534; }
+    .tag-sell { background: #fee2e2; color: #991b1b; }
+    .tag-hold { background: #fef3c7; color: #92400e; }
+    .tag-bull { background: #dcfce7; color: #15803d; }
+    .tag-bear { background: #fee2e2; color: #b91c1c; }
+    .tag-neut { background: #e0f2fe; color: #0369a1; }
 
-    .asset-item {
-      border: 1.5px solid var(--border); border-radius: 14px; padding: 14px;
-      margin-bottom: 10px; cursor: pointer; background: var(--surface); transition: all 0.15s;
+    /* Trade Log & News Cards */
+    .log-box { border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 10px; background: #f8fafc; }
+    .log-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+    .action-row { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; margin-top: 6px; font-size: 13px; }
+    .lesson-box { margin-top: 8px; background: #ecfdf5; border-left: 3px solid #10b981; padding: 7px 10px; border-radius: 6px; font-size: 12.5px; color: #065f46; }
+
+    .news-card { border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 10px; background: #fff; }
+    .news-card h4 { font-size: 14.5px; margin: 4px 0 6px; color: var(--text); }
+    .news-card p { font-size: 13px; color: var(--muted); }
+    .pred-box { background: linear-gradient(135deg, #eff6ff, #f0fdf4); border: 1px solid #bfdbfe; border-radius: 14px; padding: 13px; margin-bottom: 10px; }
+
+    /* Bottom Nav */
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #ffffff; border-top: 1px solid var(--border);
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      padding: 6px 4px; z-index: 50;
     }
-    .asset-item.selected { border-color: var(--primary); background: var(--primary-soft); }
-    .asset-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
-    .asset-name { font-size: 15px; font-weight: 800; color: var(--text); }
-    .asset-sym { font-size: 12px; color: var(--text-muted); font-weight: 600; }
-    .asset-price { font-size: 15px; font-weight: 800; color: var(--text); text-align: right; }
-    .asset-change { font-size: 12.5px; font-weight: 700; text-align: right; }
-    .up { color: var(--green); }
-    .down { color: var(--red); }
-    .muted { color: var(--text-muted); }
-
-    .tags-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 9px; }
-    .tag { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; display: inline-flex; align-items: center; gap: 4px; }
-    .tag-low { background: var(--green-bg); color: #065f46; border: 1px solid #a7f3d0; }
-    .tag-med { background: var(--amber-bg); color: #92400e; border: 1px solid #fde68a; }
-    .tag-high { background: var(--red-bg); color: #991b1b; border: 1px solid #fecaca; }
-    .tag-live { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
-    .tag-api { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
-    .tag-match { background: var(--primary-soft); color: var(--primary-dark); border: 1px solid #99f6e4; }
-
-    .signal-banner { padding: 12px 14px; border-radius: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-    .sig-buy { background: var(--green-bg); border: 1px solid #6ee7b7; color: #065f46; }
-    .sig-hold { background: var(--amber-bg); border: 1px solid #fcd34d; color: #92400e; }
-    .sig-wait { background: var(--red-bg); border: 1px solid #fca5a5; color: #991b1b; }
-
-    .list-box { background: var(--surface-soft); border-radius: 12px; padding: 12px; margin-bottom: 10px; border: 1px solid var(--border); }
-    .list-box h4 { font-size: 13.5px; font-weight: 800; margin-bottom: 6px; }
-    .list-box ul { padding-left: 18px; font-size: 13px; color: #334155; }
-    .list-box li { margin-bottom: 4px; }
-
-    input[type="range"] { width: 100%; accent-color: var(--primary); margin: 10px 0; }
-    .sim-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; margin-top: 8px; }
-    .sim-cell { background: #ffffff; border: 1px solid var(--border); padding: 8px; border-radius: 10px; }
-    .sim-cell small { display: block; font-size: 11px; color: var(--text-muted); }
-    .sim-cell strong { font-size: 13.5px; }
-
-    .guard-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px; background: var(--surface-soft); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 8px; font-size: 13px; }
-    .prog-track { background: #e2e8f0; height: 10px; border-radius: 999px; overflow: hidden; margin: 8px 0; }
-    .prog-fill { background: linear-gradient(90deg, #0d9488, #10b981); height: 100%; transition: width 0.3s; }
+    .nav-btn {
+      border: none; background: none; display: flex; flex-direction: column;
+      align-items: center; gap: 2px; font-size: 11px; font-weight: 600;
+      color: var(--muted); cursor: pointer; font-family: inherit; padding: 4px 0;
+    }
+    .nav-btn.active { color: var(--primary); }
+    .nav-btn span.ico { font-size: 18px; }
 
     /* Modal */
-    .modal-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 999; }
-    .modal-backdrop.open { display: flex; }
-    .modal-box { background: var(--surface); border-radius: 18px; max-width: 520px; width: 100%; padding: 18px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 44px rgba(0,0,0,0.22); }
-    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .close-btn { background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 15px; font-weight: 800; cursor: pointer; color: #334155; }
-    .input-field { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 11px; font-size: 13px; margin-top: 4px; margin-bottom: 10px; }
-
-    .hidden { display: none !important; }
-    .toast {
-      position: fixed; bottom: 82px; left: 50%; transform: translateX(-50%);
-      background: #0f172a; color: #ffffff; padding: 10px 18px; border-radius: 999px;
-      font-size: 13px; font-weight: 600; z-index: 1000; display: none; text-align: center;
-      max-width: 92vw; box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    .modal-bg {
+      display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.55);
+      z-index: 100; align-items: center; justify-content: center; padding: 16px;
     }
-    @media (min-width: 768px) { .toast { bottom: 22px; } }
-    .toast.show { display: block; }
+    .modal-bg.open { display: flex; }
+    .modal { background: #fff; border-radius: 18px; max-width: 440px; width: 100%; padding: 18px; }
+    .modal label { display: block; font-size: 13px; font-weight: 600; margin: 10px 0 4px; }
+    .modal input { width: 100%; padding: 9px 11px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Top Header -->
-    <div class="header-card">
-      <div class="header-top">
-        <div class="brand">
-          <div class="brand-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              <path d="m9 12 2 2 4-4"/>
-            </svg>
-          </div>
-          <div>
-            <div class="brand-title">
-              SafeYield AI <span class="badge-v3">v3 • অটো-পাইলট</span>
-            </div>
-            <div class="brand-sub">সহজ বাংলায় ৩০ দিনের স্বয়ংক্রিয় AI ইনভেস্টমেন্ট ড্যাশবোর্ড</div>
-          </div>
-        </div>
 
-        <div class="header-actions">
-          <div class="curr-toggle">
-            <button type="button" class="curr-btn active" data-action="set-currency" data-curr="INR">₹ INR</button>
-            <button type="button" class="curr-btn" data-action="set-currency" data-curr="USD">$ USD</button>
-          </div>
-          <button type="button" class="icon-btn" data-action="open-api-modal" title="সেটিংস">
-            ⚙️ সেটআপ
-          </button>
-        </div>
-      </div>
-
-      <div class="status-bar">
-        <div class="pill-group">
-          <span id="live-status-pill" class="status-pill">
-            <span class="dot-pulse"></span> লাইভ ডেটা লোড হচ্ছে
-          </span>
-          <span id="cloud-sync-pill" class="sync-pill">📱 লোকাল সেভ</span>
-          <span id="last-updated" style="font-size:11.5px; color:#64748b;"></span>
-        </div>
-        <div class="pill-group">
-          <button type="button" class="icon-btn" style="padding:5px 10px;" data-action="manual-cloud-sync">☁️ সিঙ্ক</button>
-          <button type="button" class="icon-btn" style="padding:5px 10px;" data-action="refresh-prices">🔄 দাম</button>
-        </div>
+<div class="container">
+  <!-- Top Header -->
+  <div class="card header-card">
+    <div class="brand-row">
+      <div class="logo">🛡️</div>
+      <div class="title-wrap">
+        <h1>SafeYield AI <span class="badge-v">v4 • স্বচ্ছ অটো-পাইলট</span></h1>
+        <p>সহজ বাংলায় ৩০ দিনের স্বয়ংক্রিয় AI ইনভেস্টমেন্ট ও মার্কেট ইন্টেলিজেন্স</p>
       </div>
     </div>
-
-    <!-- Desktop Navigation -->
-    <div class="desktop-nav">
-      <button type="button" class="nav-btn active" data-action="switch-tab" data-tab="autopilot">🤖 অটো-পাইলট</button>
-      <button type="button" class="nav-btn" data-action="switch-tab" data-tab="coach">🧭 AI কোচ</button>
-      <button type="button" class="nav-btn" data-action="switch-tab" data-tab="home">💼 ওয়ালেট</button>
-      <button type="button" class="nav-btn" data-action="switch-tab" data-tab="research">🔍 রিসার্চ</button>
-      <button type="button" class="nav-btn" data-action="switch-tab" data-tab="learn">📖 শিখুন</button>
+    <div class="controls-row">
+      <button class="pill active" id="btnINR" onclick="setCurrency('INR')">₹ INR</button>
+      <button class="pill" id="btnUSD" onclick="setCurrency('USD')">$ USD</button>
+      <button class="pill" onclick="openSetup()">⚙️ সেটআপ</button>
+      <button class="pill" onclick="refreshAll()">🔄 সিঙ্ক ও দাম</button>
     </div>
-
-    <!-- TAB 0: AUTONOMOUS AI AUTOPILOT (DEFAULT) -->
-    <div id="tab-autopilot">
-      <!-- Hero Portfolio Card -->
-      <div class="hero-card">
-        <div class="hero-top">
-          <div>
-            <div style="font-size:12.5px; color:#94a3b8; font-weight:600;">৩০-দিনের AI মিশন • মোট পোর্টফোলিও মূল্য</div>
-            <div class="hero-main-val">
-              <span class="hero-big-num" id="ap-total-val">₹10,000</span>
-              <span class="pnl-pill pnl-up" id="ap-pnl-pill">+₹0 (0.00%)</span>
-            </div>
-          </div>
-          <span class="brain-badge" id="ai-brain-mode-badge">🧠 AI Brain প্রস্তুত</span>
-        </div>
-
-        <div class="hero-progress-wrap">
-          <div class="hero-prog-labels">
-            <span id="ap-day-text">দিন ১ / ৩০</span>
-            <span id="ap-day-pct">৩% সম্পন্ন</span>
-          </div>
-          <div class="hero-prog-track">
-            <div class="hero-prog-fill" id="ap-day-bar" style="width:3%;"></div>
-          </div>
-        </div>
-
-        <div class="hero-mini-grid">
-          <div class="hero-mini-box">
-            <small>ইনভেস্ট করা আছে</small>
-            <strong id="ap-invested-val">₹0</strong>
-          </div>
-          <div class="hero-mini-box">
-            <small>হাতে নগদ বাকি</small>
-            <strong id="ap-cash-val">₹10,000</strong>
-          </div>
-          <div class="hero-mini-box">
-            <small>মোট ট্রেড (লাভ/লস)</small>
-            <strong id="ap-trades-text">০ (০/০)</strong>
-          </div>
-        </div>
-
-        <div class="hero-cta-row">
-          <button type="button" class="btn-primary" id="btn-run-autopilot" style="flex:1; min-width:200px;" data-action="run-autopilot-now">
-            🚀 এখনই AI রিসার্চ ও ট্রেড চালাও
-          </button>
-          <button type="button" class="btn-dark-outline" data-action="refresh-autopilot-logs">
-            🔄 রিপোর্ট আপডেট
-          </button>
-        </div>
-        <div id="ap-status-msg" style="font-size:12px; color:#fde68a; margin-top:9px; display:none;"></div>
-      </div>
-
-      <!-- NEW: 30-Day Interactive Profit & Loss Chart -->
-      <div class="card">
-        <div class="card-head-row">
-          <div>
-            <div class="card-title">
-              📈 ৩০-দিনের লাভ-লস ও গ্রোথ চার্ট
-              <button type="button" class="help-btn" data-action="explain" data-term="pnl_chart">?</button>
-            </div>
-            <div class="card-sub">যেকোনো দিনের বিন্দুতে ট্যাপ করে সেই দিনের মোট মূল্য ও লাভ-লস দেখুন</div>
-          </div>
-          <div class="chart-toggle">
-            <button type="button" class="chart-tab active" data-action="set-chart-mode" data-mode="value">₹ মোট মূল্য</button>
-            <button type="button" class="chart-tab" data-action="set-chart-mode" data-mode="pnl">% লাভ/লস</button>
-          </div>
-        </div>
-
-        <div class="chart-tooltip-bar" id="chart-tooltip-bar"></div>
-        <div class="chart-svg-wrap" id="pnl-chart-container"></div>
-        <div class="chart-metrics" id="chart-metrics-row"></div>
-      </div>
-
-      <!-- NEW: Latest AI Run Digest ("আজ AI কী কী করল") -->
-      <div class="card">
-        <div class="card-title">⚡ সর্বশেষ AI কাজের সারসংক্ষেপ (আজ AI কী করল)</div>
-        <div class="card-sub">এক নজরে সর্বশেষ রিসার্চ, কেনা-বেচা এবং বাজার বিশ্লেষণ</div>
-        <div id="ap-today-digest"></div>
-      </div>
-
-      <!-- Allocation Donut & Holdings -->
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-title">🍩 টাকা কোথায় কতটা খাটছে</div>
-          <div class="card-sub">নগদ বনাম শেয়ার/ETF, সোনা ও ক্রিপ্টো বণ্টন</div>
-          <div id="ap-donut-box"></div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">💼 AI-এর কেনা বর্তমান অ্যাসেট</div>
-          <div class="card-sub">প্রতিটি অ্যাসেটে কত ইনভেস্ট ও কত লাভ-লস চলছে</div>
-          <div id="ap-holdings-box"></div>
-        </div>
-      </div>
-
-      <!-- Self-Learning Memory -->
-      <div class="card">
-        <div class="card-title">
-          🧠 AI সেলফ-লার্নিং মেমোরি ও স্ট্র্যাটেজি স্কোর
-          <button type="button" class="help-btn" data-action="explain" data-term="self_learning">?</button>
-        </div>
-        <div class="card-sub">অভিজ্ঞতা থেকে AI কোন স্ট্র্যাটেজিতে বেশি ভরসা করছে ও কী কী শিখেছে</div>
-        <div class="grid-2">
-          <div id="ap-weights-box"></div>
-          <div>
-            <strong style="font-size:13px; color:#0f172a; display:block; margin-bottom:7px;">📚 AI-এর শেখা শিক্ষা (Learned Lessons):</strong>
-            <div id="ap-lessons-list"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Full Daily Diary -->
-      <div class="card">
-        <div class="card-title">📓 প্রতিদিনের AI রিসার্চ ডায়েরি ও নিউজ লগ</div>
-        <div class="card-sub">সব দিনের বিস্তারিত Buy/Sell সিদ্ধান্ত ও AI যে লাইভ খবর পড়েছে</div>
-        <div id="ap-logs-container"></div>
-      </div>
-    </div>
-
-    <!-- TAB 1: AI WEALTH COACH -->
-    <div id="tab-coach" class="hidden">
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-title">
-            ১. আপনার প্রোফাইল সেট করুন
-            <button type="button" class="help-btn" data-action="explain" data-term="profile_engine">?</button>
-          </div>
-          <div class="card-sub">৪টি প্রশ্নের উত্তর দিলে AI আপনার জন্য সেরা প্ল্যান বানাবে</div>
-
-          <div class="quiz-group">
-            <span class="quiz-label">ক) মাসিক/শুরুর ইনভেস্ট বাজেট কত?</span>
-            <div class="pill-options">
-              <button type="button" class="opt-pill" data-action="set-profile" data-key="budget" data-val="1000">₹1,000</button>
-              <button type="button" class="opt-pill selected" data-action="set-profile" data-key="budget" data-val="3000">₹3,000</button>
-              <button type="button" class="opt-pill" data-action="set-profile" data-key="budget" data-val="5000">₹5,000</button>
-              <button type="button" class="opt-pill" data-action="set-profile" data-key="budget" data-val="10000">₹10,000</button>
-            </div>
-          </div>
-
-          <div class="quiz-group">
-            <span class="quiz-label">খ) টাকাটা কত দিনের জন্য রাখতে পারবেন?</span>
-            <div class="pill-options">
-              <button type="button" class="opt-pill" data-action="set-profile" data-key="horizon" data-val="short">&lt; ১ বছর</button>
-              <button type="button" class="opt-pill" data-action="set-profile" data-key="horizon" data-val="medium">১–৩ বছর</button>
-              <button type="button" class="opt-pill selected" data-action="set-profile" data-key="horizon" data-val="long">৩–৫ বছর</button>
-              <button type="button" class="opt-pill" data-action="set-profile" data-key="horizon" data-val="verylong">৫+ বছর</button>
-            </div>
-          </div>
-
-          <div class="quiz-group">
-            <span class="quiz-label">গ) আলাদা ইমার্জেন্সি ফান্ড আছে?</span>
-            <div class="pill-options">
-              <button type="button" class="opt-pill selected" data-action="set-profile" data-key="emergency" data-val="yes">হ্যাঁ, আছে</button>
-              <button type="button" class="opt-pill" data-action="set-profile" data-key="emergency" data-val="no">না, এখনো নেই</button>
-            </div>
-          </div>
-
-          <div class="quiz-group" style="margin-bottom:0;">
-            <span class="quiz-label">ঘ) ঝুঁকির পছন্দ কেমন?</span>
-            <div class="pill-options">
-              <button type="button" class="opt-pill selected" data-action="set-profile" data-key="risk" data-val="low">কম ঝুঁকি (নিরাপদ)</button>
-              <button type="button" class="opt-pill" data-action="set-profile" data-key="risk" data-val="moderate">মাঝারি (ব্যালেন্সড)</button>
-              <button type="button" class="opt-pill" data-action="set-profile" data-key="risk" data-val="growth">বেশি বৃদ্ধি চাই</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" id="coach-plan-card"></div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">
-          ৩. ভারতের সব ইনভেস্টমেন্টের জায়গা স্ক্যানার
-          <button type="button" class="help-btn" data-action="explain" data-term="diversification">?</button>
-        </div>
-        <div class="card-sub">আপনার প্রোফাইলের সাথে কোন জায়গাগুলো সবচেয়ে ভালো মানায় দেখুন</div>
-        <div class="table-wrap" id="investment-scanner-table"></div>
-      </div>
-
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-title">৪. Buy ও Sell-এর গোল্ডেন নিয়ম</div>
-          <div class="card-sub">আবেগ নয়—এই নিয়মগুলো মেনে চললে লসের ভয় কমে</div>
-          <div class="list-box" style="background:#ecfdf5; border-color:#a7f3d0;">
-            <h4 style="color:#065f46;">🟢 কখন BUY (কেনা) উচিত:</h4>
-            <ul>
-              <li><strong>Smart SIP:</strong> প্রতি মাসে অল্প করে Index ETF বা Gold ETF-এ লাগান।</li>
-              <li><strong>Buy on Dip:</strong> ভালো শেয়ার সর্বোচ্চ দাম থেকে ৫–১০% নিচে নামলে যোগ করুন।</li>
-            </ul>
-          </div>
-          <div class="list-box" style="background:#fef2f2; border-color:#fecaca; margin-bottom:0;">
-            <h4 style="color:#991b1b;">🔴 কখন SELL (লাভ লক) উচিত:</h4>
-            <ul>
-              <li><strong>Profit Lock:</strong> ১০–২০% লাভ হয়ে গেলে লাভটুকু সুরক্ষিত করে নিন।</li>
-              <li><strong>Stop-Loss:</strong> ঝুঁকিপূর্ণ অ্যাসেটে ৭% নিচে নামলে বড় লস আটকাতে বেরিয়ে আসুন।</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">📡 লাইভ হোল্ডিংস ও Buy/Sell মনিটর</div>
-          <div class="card-sub">প্রতিটি অ্যাসেটে এখন কী করা উচিত</div>
-          <div id="coach-holdings-monitor"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 2: WALLET / HOME -->
-    <div id="tab-home" class="hidden">
-      <div class="hero-card">
-        <div class="hero-top">
-          <div>
-            <div style="font-size:12.5px; color:#94a3b8;">
-              ভার্চুয়াল প্র্যাকটিস ওয়ালেট (১০০% ঝুঁকিমুক্ত)
-              <button type="button" class="help-btn" data-action="explain" data-term="virtual_wallet">?</button>
-            </div>
-            <div class="hero-main-val">
-              <span class="hero-big-num" id="wallet-total">₹10,000</span>
-            </div>
-          </div>
-          <span id="wallet-sync-badge" class="brain-badge">📱 লোকাল সেভ</span>
-        </div>
-
-        <div class="hero-mini-grid">
-          <div class="hero-mini-box">
-            <small>নগদ বাকি</small>
-            <strong id="wallet-cash">₹10,000</strong>
-          </div>
-          <div class="hero-mini-box">
-            <small>ইনভেস্ট করা</small>
-            <strong id="wallet-invested">₹0</strong>
-          </div>
-          <div class="hero-mini-box">
-            <small>প্র্যাকটিস দিন</small>
-            <strong id="practice-day">১ / ৩০ দিন</strong>
-          </div>
-        </div>
-
-        <div class="hero-cta-row">
-          <button type="button" class="btn-primary" data-action="run-coach-plan">⚡ কোচ প্ল্যান অনুযায়ী ইনভেস্ট</button>
-          <button type="button" class="btn-dark-outline" data-action="reset-wallet">↺ রিসেট (₹10,000)</button>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-title">
-            🛡️ ৪টি সেফটি গার্ডরেল (অটো-সুরক্ষা)
-            <button type="button" class="help-btn" data-action="explain" data-term="guardrails">?</button>
-          </div>
-          <div class="card-sub">AI অটো-পাইলটও কখনোই এই নিরাপত্তা সীমা ভাঙতে পারবে না</div>
-          <div class="guard-item"><span>✅</span><div><strong>সর্বোচ্চ ২৫% সীমা:</strong> একটি স্টক বা ETF-এ ₹2,500-এর বেশি নয়।</div></div>
-          <div class="guard-item"><span>✅</span><div><strong>ক্রিপ্টো সীমা (৮%):</strong> BTC বা ETH-এ ₹800-এর বেশি নয়।</div></div>
-          <div class="guard-item"><span>✅</span><div><strong>নগদ বাফার (₹500):</strong> সুযোগের জন্য অন্তত ₹500 নগদ সুরক্ষিত থাকে।</div></div>
-          <div class="guard-item" style="margin-bottom:0;"><span>🔒</span><div><strong>৩০-দিনের যাচাই:</strong> ৩০ দিনের রেজাল্ট দেখেই আসল বিনিয়োগের সিদ্ধান্ত নিন।</div></div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">💼 আপনার ভার্চুয়াল পোর্টফোলিও</div>
-          <div class="card-sub">কেনা অ্যাসেটগুলোর বর্তমান মূল্য ও বিক্রি করার অপশন</div>
-          <div id="holdings-list" style="font-size:13px; color:#64748b;"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 3: AI RESEARCH -->
-    <div id="tab-research" class="hidden">
-      <div class="card">
-        <div class="card-title">📊 লাইভ মার্কেট ও অ্যাসেট লিস্ট (৬টি)</div>
-        <div class="card-sub">যেকোনো অ্যাসেটে ট্যাপ করে AI ডিসিশন ও সিমুলেটর দেখুন</div>
-        <div id="asset-list"></div>
-      </div>
-      <div class="card" id="decision-card"></div>
-    </div>
-
-    <!-- TAB 4: LEARN -->
-    <div id="tab-learn" class="hidden">
-      <div class="card">
-        <div class="card-title">🎯 ৩০-দিনের প্রস্তুতি ট্র্যাকার</div>
-        <div class="card-sub">AI অটো-পাইলটের সাথে আপনার ৩০ দিনের শেখার অগ্রগতি</div>
-        <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700;">
-          <span>বর্তমান অগ্রগতি:</span>
-          <span id="learn-progress-text">১ / ৩০ দিন (৩%)</span>
-        </div>
-        <div class="prog-track"><div class="prog-fill" id="learn-progress-bar" style="width:3%;"></div></div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">🎓 AI অটো-পাইলট যেভাবে সিদ্ধান্ত নেয় (সহজ পাঠ)</div>
-        <div class="card-sub">মাত্র ২ মিনিটে মূল কৌশলগুলো বুঝে নিন</div>
-        <div class="list-box">
-          <h4>১. RSI ও Buy on Dip কী?</h4>
-          <p style="font-size:13px; color:#334155;">RSI ৫০-এর নিচে নামলে এবং ৩০ দিনের সর্বোচ্চ দাম থেকে ৩–৫% ডিসকাউন্টে মিললে ভালো ETF বা শেয়ার সস্তায় কেনার সুযোগ তৈরি হয়।</p>
-        </div>
-        <div class="list-box">
-          <h4>২. Gold Hedge কেন জরুরি?</h4>
-          <p style="font-size:13px; color:#334155;">শেয়ার বাজার পড়লে সাধারণত সোনার দাম বাড়ে। তাই পোর্টফোলিওতে Gold ETF রাখলে ঝুঁকি ব্যালেন্স হয়।</p>
-        </div>
-        <div class="list-box" style="margin-bottom:0;">
-          <h4>৩. Profit Lock ও Stop-Loss</h4>
-          <p style="font-size:13px; color:#334155;">১০–১২% লাভ হলে লাভটুকু তুলে নেওয়া এবং ক্রিপ্টোতে ৭% নিচে নামলেই বেরিয়ে আসা—এই দুটি নিয়ম মূলধনকে সুরক্ষিত রাখে।</p>
-        </div>
-      </div>
+    <div class="status-strip">
+      <span class="chip-live" id="liveCount">● লাইভ মার্কেট সংযুক্ত</span>
+      <span class="chip-sync" id="syncBadge">☁️ সিঙ্ক (rafikul-2026)</span>
+      <span style="color:var(--muted)" id="lastUpdated">আপডেট হচ্ছে...</span>
     </div>
   </div>
 
-  <!-- Mobile Bottom Navigation -->
-  <nav class="mobile-bottom-nav" aria-label="মোবাইল মেনু">
-    <button type="button" class="m-nav-btn active" data-action="switch-tab" data-tab="autopilot">
-      <span class="m-ico">🤖</span><span>অটো-পাইলট</span>
-    </button>
-    <button type="button" class="m-nav-btn" data-action="switch-tab" data-tab="coach">
-      <span class="m-ico">🧭</span><span>কোচ</span>
-    </button>
-    <button type="button" class="m-nav-btn" data-action="switch-tab" data-tab="home">
-      <span class="m-ico">💼</span><span>ওয়ালেট</span>
-    </button>
-    <button type="button" class="m-nav-btn" data-action="switch-tab" data-tab="research">
-      <span class="m-ico">🔍</span><span>রিসার্চ</span>
-    </button>
-    <button type="button" class="m-nav-btn" data-action="switch-tab" data-tab="learn">
-      <span class="m-ico">📖</span><span>শিখুন</span>
-    </button>
-  </nav>
-
-  <!-- Help (?) Modal -->
-  <div class="modal-backdrop" id="help-modal">
-    <div class="modal-box">
-      <div class="modal-head">
-        <h3 style="font-size:16px; font-weight:800;">সহজ বাংলা ব্যাখ্যা</h3>
-        <button type="button" class="close-btn" data-action="close-modals">✕</button>
+  <!-- TAB 1: AUTOPILOT -->
+  <div id="tab-autopilot" class="tab-pane active">
+    <div class="hero">
+      <div class="hero-top">
+        <span class="hero-label">৩০-দিনের AI মিশন • মোট পোর্টফোলিও মূল্য</span>
+        <span class="brain-pill" id="brainBadge">🧠 AI Brain প্রস্তুত</span>
       </div>
-      <p id="help-body" style="font-size:14px; color:#334155; line-height:1.65;"></p>
+      <div class="portfolio-val">
+        <span id="heroTotal">₹10,000</span>
+        <span class="pnl-badge" id="heroPnl">+₹0 (+0.00%)</span>
+      </div>
+      <div class="prog-row">
+        <span id="dayLabel">দিন 1 / ৩০</span>
+        <span id="pctLabel">3% সম্পন্ন</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:3%"></div></div>
+      <div class="mini-grid">
+        <div class="mini-box"><small>ইনভেস্ট করা আছে</small><strong id="heroInvested">₹0</strong></div>
+        <div class="mini-box"><small>হাতে নগদ বাকি</small><strong id="heroCash">₹10,000</strong></div>
+        <div class="mini-box"><small>মোট ট্রেড (লাভ/লস)</small><strong id="heroTrades">0 (0/0)</strong></div>
+      </div>
+      <button class="btn-run" id="runBtn" onclick="runAutopilot()">🚀 এখনই AI রিসার্চ ও ট্রেড চালাও</button>
+      <button class="btn-sub" onclick="refreshAll()">🔄 রিপোর্ট আপডেট</button>
+      <div class="run-msg" id="runStatus"></div>
+    </div>
+
+    <!-- Growth Chart -->
+    <div class="card">
+      <div class="sec-title">📈 ৩০-দিনের লাভ-লস ও গ্রোথ চার্ট</div>
+      <div class="sec-sub">প্রতিদিনের পোর্টফোলিও ভ্যালু ও AI স্ট্র্যাটেজির ফলাফল</div>
+      <div style="height:210px;"><canvas id="growthChart"></canvas></div>
+    </div>
+
+    <!-- Latest AI Decision Breakdown -->
+    <div class="card">
+      <div class="sec-title">⚡ সর্বশেষ AI সিদ্ধান্ত ও কারণ</div>
+      <div class="sec-sub">AI ঠিক কী দেখে, কোন স্ট্র্যাটেজিতে, কেন কিনল বা বেচল</div>
+      <div id="latestDecisionBox">লোড হচ্ছে...</div>
     </div>
   </div>
 
-  <!-- Settings Modal -->
-  <div class="modal-backdrop" id="api-modal">
-    <div class="modal-box">
-      <div class="modal-head">
-        <h3 style="font-size:16px; font-weight:800;">⚙️ API, Cloud Sync ও অটো-পাইলট সেটআপ</h3>
-        <button type="button" class="close-btn" data-action="close-modals">✕</button>
+  <!-- TAB 2: AI BRAIN & STRATEGY TRANSPARENCY -->
+  <div id="tab-brain" class="tab-pane">
+    <div class="card">
+      <div class="sec-title">🧠 AI কীভাবে সিদ্ধান্ত নেয়? (Decision Engine)</div>
+      <div class="sec-sub">SafeYield AI অন্ধভাবে ট্রেড করে না—প্রতিবার ৪টি গাণিতিক ও নিউজ ফিল্টার যাচাই করে</div>
+      <div class="grid-2">
+        <div class="weight-item">
+          <strong>১. Buy on Dip (সস্তায় কেনা)</strong>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:4px;">যখন কোনো ভালো ETF বা শেয়ার গত ১ মাসের সর্বোচ্চ দাম থেকে <b>≥ ২.৫% নিচে</b> নামে অথবা <b>RSI &lt; 48</b> হয়, তখন AI ডিসকাউন্টে কেনে।</p>
+        </div>
+        <div class="weight-item">
+          <strong>২. Smart SIP (ধাপে ধাপে বিনিয়োগ)</strong>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:4px;">সব টাকা একদিনে না লাগিয়ে প্রতি রানে সর্বোচ্চ <b>₹800–₹1,800</b> বিনিয়োগ করে, যাতে বাজার পড়লেও হাতে ক্যাশ থাকে।</p>
+        </div>
+        <div class="weight-item">
+          <strong>৩. Gold Hedge (সুরক্ষা কবচ)</strong>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:4px;">শেয়ার বাজারে অস্থিরতা বা পতন বাড়লে AI স্বয়ংক্রিয়ভাবে <b>Gold ETF</b>-এর গুরুত্ব বাড়িয়ে পোর্টফোলিও সুরক্ষিত রাখে।</p>
+        </div>
+        <div class="weight-item">
+          <strong>৪. Profit Lock & Stop-Loss</strong>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:4px;">কোনো অ্যাসেটে <b>+১০% লাভ</b> হলে মুনাফা তুলে নেয় (Profit Lock), আর ক্রিপ্টোতে <b>-৭% লস</b> হলে বড় ক্ষতি এড়াতে বিক্রি করে দেয়।</p>
+        </div>
       </div>
+    </div>
 
-      <label style="font-size:12.5px; font-weight:700;">১. লাইভ দাম URL (hyper-processor)</label>
-      <input type="url" id="api-url-input" class="input-field" placeholder="https://pjacpgpysrdnotdezxrh.supabase.co/functions/v1/hyper-processor" />
+    <!-- Self-Learning Strategy Weights -->
+    <div class="card">
+      <div class="sec-title">🎛️ লাইভ স্ট্র্যাটেজি ওয়েট (Self-Learning Memory)</div>
+      <div class="sec-sub">আগের ট্রেডের লাভ-লস দেখে AI নিজে থেকেই এই স্কোরগুলো আপডেট করে</div>
+      <div class="grid-2" id="weightsGrid"></div>
+    </div>
 
-      <label style="font-size:12.5px; font-weight:700;">২. AI অটো-পাইলট URL (ai-autopilot)</label>
-      <input type="url" id="autopilot-url-input" class="input-field" placeholder="https://pjacpgpysrdnotdezxrh.supabase.co/functions/v1/ai-autopilot" />
-
-      <label style="font-size:12.5px; font-weight:700;">৩. Supabase Anon Public Key (eyJ...)</label>
-      <input type="text" id="api-key-input" class="input-field" placeholder="Supabase View legacy API keys -> anon public key" />
-
-      <label style="font-size:12.5px; font-weight:700;">৪. আপনার Sync ID (মোবাইল ও ল্যাপটপে একই নাম)</label>
-      <input type="text" id="sync-id-input" class="input-field" placeholder="যেমন: rafikul-2026" />
-
-      <label style="font-size:12.5px; font-weight:700;">৫. Gemini API Key (ঐচ্ছিক — ফাঁকা রাখলেও চলবে)</label>
-      <input type="password" id="gemini-key-input" class="input-field" placeholder="Supabase Secret অথবা Quant AI Engine অটো চলবে" />
-
-      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:4px;">
-        <button type="button" class="btn-primary" style="flex:1;" data-action="save-api-config">💾 সংরক্ষণ ও সিঙ্ক</button>
-        <button type="button" class="icon-btn" data-action="clear-api-config">🗑️ মুছুন</button>
+    <!-- Live Technical Indicators Table -->
+    <div class="card">
+      <div class="sec-title">📊 কিসের ভিত্তিতে ইনভেস্ট করছে? (লাইভ ইন্ডিকেটর)</div>
+      <div class="sec-sub">প্রতিটি অ্যাসেটের বর্তমান দাম, RSI (14), ১৪-দিনের গড় (SMA14) ও ডিসকাউন্ট %</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>অ্যাসেট</th>
+              <th>বর্তমান দাম</th>
+              <th>১-দিন %</th>
+              <th>RSI (14)</th>
+              <th>হাই থেকে নিচে</th>
+              <th>AI সিগন্যাল</th>
+            </tr>
+          </thead>
+          <tbody id="indicatorBody">
+            <tr><td colspan="6">ডেটা লোড হচ্ছে...</td></tr>
+          </tbody>
+        </table>
       </div>
+    </div>
+
+    <!-- Full Decision History -->
+    <div class="card">
+      <div class="sec-title">📜 AI-এর অতীত সিদ্ধান্ত ও শেখা পাঠ (Audit Log)</div>
+      <div class="sec-sub">প্রতিটি দিনের ট্রেড লগ, কারণ ও অর্জিত শিক্ষা</div>
+      <div id="allLogsBox">লোড হচ্ছে...</div>
     </div>
   </div>
 
-  <div class="toast" id="toast"></div>
+  <!-- TAB 3: FINANCE NEWS, PREDICTION & ANALYSIS -->
+  <div id="tab-news" class="tab-pane">
+    <div class="card">
+      <div class="sec-title">🔮 AI মার্কেট প্রেডিকশন ও সেন্টিমেন্ট (আগামী ৭–১৪ দিন) <span class="tag tag-bull" id="sentimentTag">বিশ্লেষণ চলছে</span></div>
+      <div class="sec-sub">লাইভ দাম, RSI ইন্ডিকেটর ও ব্রেকিং ফিন্যান্স নিউজ বিশ্লেষণ করে তৈরি পূর্বাভাস</div>
+      <div id="predictionContainer">লোড হচ্ছে...</div>
+    </div>
 
-  <script>
-    const DEFAULT_EDGE_URL = "https://pjacpgpysrdnotdezxrh.supabase.co/functions/v1/hyper-processor";
-    const DEFAULT_AUTOPILOT_URL = "https://pjacpgpysrdnotdezxrh.supabase.co/functions/v1/ai-autopilot";
+    <div class="card">
+      <div class="sec-title">🔍 সেক্টর ও অ্যাসেট ভিত্তিক গভীর বিশ্লেষণ</div>
+      <div class="sec-sub">ইক্যুইটি, গোল্ড, আইটি/ব্যাংকিং এবং ক্রিপ্টো বাজারের বর্তমান অবস্থা</div>
+      <div class="grid-2" id="assetAnalysisGrid"></div>
+    </div>
 
-    const EXPLANATIONS = {
-      pnl_chart: "এই গ্রাফটি দেখাবে দিন ১ থেকে দিন ৩০ পর্যন্ত আপনার ₹১০,০০০ টাকা কীভাবে বাড়ছে বা কমছে। মাঝের ড্যাশ লাইনটি হলো ₹১০,০০০ (শুরুর মূলধন)—রেখাটি এর উপরে থাকলে লাভ (সবুজ) আর নিচে থাকলে লস (লাল)। যেকোনো দিনের বিন্দুতে ট্যাপ করে বিস্তারিত দেখতে পারবেন।",
-      self_learning: "প্রতিদিন AI নিজের আগের ট্রেড ও পোর্টফোলিওর লাভ-লস হিসাব করে দেখে কোন কৌশলটি ভালো কাজ করছে। সেই অনুযায়ী কৌশলগুলোর গুরুত্ব বাড়ায়-কমায় এবং নতুন শিক্ষা সেভ করে রাখে।",
-      profile_engine: "AI কোচ আপনার বাজেট, সময়কাল ও জরুরি ফান্ডের অবস্থা যাচাই করে সবচেয়ে কম ঝুঁকির বণ্টন সাজিয়ে দেয়।",
-      diversification: "সব টাকা এক জায়গায় না রেখে নিরাপদ ফান্ড, সোনা ও ভালো শেয়ারের মধ্যে ভাগ করে রাখলে ঝুঁকি অনেক কমে যায়।",
-      virtual_wallet: "এটি ₹১০,০০০ ভার্চুয়াল প্র্যাকটিস ওয়ালেট—আসল টাকা হারানোর কোনো ভয় ছাড়াই AI-এর ৩০ দিনের পারফরম্যান্স দেখার জন্য।",
-      guardrails: "সেফটি গার্ডরেল কোডের ভেতরে লক করা থাকে—তাই AI কখনোই একটি শেয়ারে ₹২,৫০০ বা ক্রিপ্টোতে ₹৮০০-এর বেশি লাগাতে পারবে না।"
+    <div class="card">
+      <div class="sec-title">📰 লাইভ ফিন্যান্স ও মার্কেট নিউজ ফিড</div>
+      <div class="sec-sub">SafeYield AI যে হেডলাইনগুলো পড়ে বাজারের গতিবিধি আন্দাজ করছে</div>
+      <div id="newsFeedBox">নিউজ লোড হচ্ছে...</div>
+    </div>
+  </div>
+
+  <!-- TAB 4: WALLET -->
+  <div id="tab-wallet" class="tab-pane">
+    <div class="card">
+      <div class="sec-title">💼 বর্তমান পোর্টফোলিও ও হোল্ডিংস</div>
+      <div class="sec-sub">সেফটি সীমা: প্রতি স্টক/ETF সর্বোচ্চ ₹2,500 • প্রতি ক্রিপ্টো সর্বোচ্চ ₹800 • ন্যূনতম ক্যাশ ₹500</div>
+      <div id="walletList">লোড হচ্ছে...</div>
+    </div>
+  </div>
+
+  <!-- TAB 5: LEARN -->
+  <div id="tab-learn" class="tab-pane">
+    <div class="card">
+      <div class="sec-title">📖 সহজ বাংলায় ইনভেস্টমেন্ট গাইড</div>
+      <div class="sec-sub">SafeYield AI যে ইন্ডিকেটরগুলো ব্যবহার করে তার সহজ ব্যাখ্যা</div>
+      <div class="weight-item" style="margin-bottom:10px;">
+        <strong>RSI (Relative Strength Index) কী?</strong>
+        <p style="font-size:13px;color:var(--muted);margin-top:4px;">RSI ০ থেকে ১০০-এর মধ্যে থাকে। <b>৩০–৪৫</b> মানে দাম অনেকটা কমে সস্তা হয়েছে (কেনার ভালো সুযোগ), আর <b>৭০-এর উপরে</b> মানে দাম অতিরিক্ত বেড়ে গেছে (লাভ তুলে নেওয়ার সময়)।</p>
+      </div>
+      <div class="weight-item" style="margin-bottom:10px;">
+        <strong>রিস্ক ম্যানেজমেন্ট ও ক্যাশ বাফার কেন জরুরি?</strong>
+        <p style="font-size:13px;color:var(--muted);margin-top:4px;">SafeYield AI কখনোই একটি শেয়ারে ২৫%-এর বেশি টাকা লাগায় না এবং সবসময় ₹500 নগদ রাখে, যাতে হঠাৎ বাজার পড়লে আতঙ্কিত না হয়ে সস্তায় কেনা যায়।</p>
+      </div>
+      <div class="weight-item">
+        <strong>পেপার ট্রেডিং কীভাবে আপনাকে দক্ষ করে?</strong>
+        <p style="font-size:13px;color:var(--muted);margin-top:4px;">এখানে কোনো আসল টাকা ঝুঁকিতে নেই, কিন্তু বাজারের দাম ১০০% আসল। ৩০ দিন AI-এর সিদ্ধান্ত ও যুক্তিগুলো লক্ষ্য করলে আপনি নিজেই আত্মবিশ্বাসী বিনিয়োগকারী হয়ে উঠবেন।</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="switchTab('autopilot', this)"><span class="ico">🤖</span>অটো-পাইলট</button>
+  <button class="nav-btn" onclick="switchTab('brain', this)"><span class="ico">🧠</span>সিদ্ধান্ত ও যুক্তি</button>
+  <button class="nav-btn" onclick="switchTab('news', this)"><span class="ico">📰</span>নিউজ ও প্রেডিকশন</button>
+  <button class="nav-btn" onclick="switchTab('wallet', this)"><span class="ico">💼</span>ওয়ালেট</button>
+  <button class="nav-btn" onclick="switchTab('learn', this)"><span class="ico">📖</span>শিখুন</button>
+</nav>
+
+<!-- Setup Modal -->
+<div class="modal-bg" id="setupModal">
+  <div class="modal">
+    <h3 style="margin-bottom:6px;">⚙️ ক্লাউড সিঙ্ক সেটআপ</h3>
+    <p style="font-size:12.5px;color:var(--muted);">আপনার Supabase প্রজেক্ট ও Sync ID কনফিগার করুন</p>
+    <label>Supabase URL</label>
+    <input id="cfgUrl" value="https://pjacpgpysrdnotdezxrh.supabase.co" />
+    <label>Supabase Anon / Publishable Key</label>
+    <input id="cfgKey" placeholder="sb_publishable_... বা eyJ..." />
+    <label>Sync ID</label>
+    <input id="cfgSync" value="rafikul-2026" />
+    <div style="display:flex;gap:8px;margin-top:14px;">
+      <button class="btn-run" style="padding:10px;font-size:14px;" onclick="saveSetup()">সেভ করুন</button>
+      <button class="pill" onclick="closeSetup()">বন্ধ করুন</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const DEFAULT_URL = 'https://pjacpgpysrdnotdezxrh.supabase.co';
+  const DEFAULT_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqYWNwZ3B5c3Jkbm90ZGV6eHJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4MjI5OTcsImV4cCI6MjA4OTM5ODk5N30.892rS_A0cW_w_A6-x22m5P26y3M84G_Z7-y15J4_22g';
+  const ASSETS = {
+    nifty: { name: 'Nifty 50 ETF', type: 'ইক্যুইটি সূচক', cap: 2500 },
+    gold:  { name: 'Gold ETF',     type: 'নিরাপদ হেজ',   cap: 2500 },
+    tcs:   { name: 'TCS',          type: 'আইটি লার্জ-ক্যাপ', cap: 2500 },
+    hdfc:  { name: 'HDFC Bank',    type: 'ব্যাংকিং লিডার', cap: 2500 },
+    btc:   { name: 'Bitcoin (BTC)', type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', cap: 800 },
+    eth:   { name: 'Ethereum (ETH)', type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', cap: 800 }
+  };
+
+  let currency = 'INR';
+  const USD_RATE = 92.65;
+  let stateData = null, memoryData = null, logsData = [], chartInstance = null;
+
+  function getCfg() {
+    return {
+      url: (localStorage.getItem('sy_url') || DEFAULT_URL).trim(),
+      key: (localStorage.getItem('sy_key') || DEFAULT_KEY).trim(),
+      syncId: (localStorage.getItem('sy_sync') || 'rafikul-2026').trim()
     };
+  }
 
-    const INVESTMENT_PLACES = [
-      { name: "RD / Liquid Mutual Fund", risk: "🟢 অতি কম", ret: "৬% – ৭.৫%", bestFor: "জরুরি তহবিল ও ১ বছরের কম লক্ষ্য", key: "safe" },
-      { name: "Gold ETF / Sovereign Gold", risk: "🟢 কম–মাঝারি", ret: "৯% – ১২%", bestFor: "মার্কেট পতনে সুরক্ষা ও মুদ্রাস্ফীতি রোধ", key: "gold" },
-      { name: "Nifty 50 Index ETF", risk: "🟢 দীর্ঘমেয়াদে নিরাপদ", ret: "১১% – ১৪%", bestFor: "ভারতের সেরা ৫০ কোম্পানিতে নিয়মিত বৃদ্ধি", key: "index" },
-      { name: "ব্লু-চিপ শেয়ার (TCS, HDFC)", risk: "🟡 মাঝারি", ret: "১২% – ১৬%", bestFor: "৩–৫+ বছরে বাড়তি রিটার্ন", key: "growth" },
-      { name: "মিড-ক্যাপ ফান্ড / শেয়ার", risk: "🟠 মাঝারি–উচ্চ", ret: "১৪% – ১৮%", bestFor: "অভিজ্ঞতা হওয়ার পর ছোট অংশে", key: "growth" },
-      { name: "ক্রিপ্টো (Bitcoin / Ethereum)", risk: "🔴 অত্যন্ত উচ্চ", ret: "অনিশ্চিত (৩০% ট্যাক্স)", bestFor: "সর্বোচ্চ ৫–৮% বা শুধু প্র্যাকটিসের জন্য", key: "crypto" }
-    ];
-
-    const ASSETS = [
-      {
-        id: "nifty", symbol: "NIFTYBEES.NS", apiKey: "NIFTYBEES.BSE", name: "Nifty 50 ETF",
-        type: "STOCK", risk: "LOW", riskLabel: "🟢 কম ঝুঁকি",
-        priceINR: null, refPriceINR: 289.43, changePct: null, isLive: false,
-        signal: "BUY", signalLabel: "✅ অল্প করে কেনার উপযুক্ত (Smart SIP)",
-        buyRule: "প্রতি মাসে নির্দিষ্ট তারিখে বা ৫% নিচে নামলে কিনুন",
-        sellRule: "লক্ষ্য পূরণের ৬ মাস আগে বা ১২–২০% লাভে আংশিক লাভ লক করুন",
-        intro: "ভারতের সেরা ৫০টি কোম্পানির সম্মিলিত ফান্ড। নতুনদের জন্য সবচেয়ে নিরাপদ শুরু।",
-        expectedReturn: 0.12, maxDrop: 0.05
-      },
-      {
-        id: "gold", symbol: "GOLDBEES.NS", apiKey: "GOLDBEES.BSE", name: "Gold ETF",
-        type: "STOCK", risk: "LOW", riskLabel: "🟢 কম ঝুঁকি",
-        priceINR: null, refPriceINR: 103.05, changePct: null, isLive: false,
-        signal: "BUY", signalLabel: "✅ পোর্টফোলিও সুরক্ষার জন্য ভালো",
-        buyRule: "পোর্টফোলিওতে গোল্ড ২০%-এর নিচে থাকলে অল্প করে যোগ করুন",
-        sellRule: "সোনার দাম হঠাৎ ১২–১৫% বেড়ে গেলে বাড়তি অংশ বিক্রি করে শেয়ারে দিন",
-        intro: "ডিজিটাল পদ্ধতিতে খাঁটি সোনায় বিনিয়োগ—চুরি বা গয়না বানানোর খরচ নেই।",
-        expectedReturn: 0.10, maxDrop: 0.03
-      },
-      {
-        id: "tcs", symbol: "TCS.NS", apiKey: "TCS.BSE", name: "TCS (Tata Consultancy)",
-        type: "STOCK", risk: "MEDIUM", riskLabel: "🟡 মাঝারি ঝুঁকি",
-        priceINR: null, refPriceINR: 2460, changePct: null, isLive: false,
-        signal: "HOLD", signalLabel: "⚖️ পর্যবেক্ষণ ও ধাপে ধাপে কেনা",
-        buyRule: "সাম্প্রতিক সর্বোচ্চ দাম থেকে ৭–১০% ডিসকাউন্টে এলে কিনুন",
-        sellRule: "১২–১৮% লাভ হলে আংশিক লাভ লক করুন",
-        intro: "ভারতের বৃহত্তম আইটি কোম্পানি, যা বিশ্বজুড়ে সফটওয়্যার সেবা দেয়।",
-        expectedReturn: 0.14, maxDrop: 0.08
-      },
-      {
-        id: "hdfc", symbol: "HDFCBANK.NS", apiKey: "HDFCBANK.BSE", name: "HDFC Bank",
-        type: "STOCK", risk: "MEDIUM", riskLabel: "🟡 মাঝারি ঝুঁকি",
-        priceINR: null, refPriceINR: 817.80, changePct: null, isLive: false,
-        signal: "BUY", signalLabel: "✅ দীর্ঘমেয়াদের জন্য ভালো সুযোগ",
-        buyRule: "৩+ বছরের লক্ষ্যে ধাপে ধাপে SIP পদ্ধতিতে কিনুন",
-        sellRule: "১২–২০% লাভ হলে ট্রেইলিং স্টপ-লস সেট করুন",
-        intro: "ভারতের সবচেয়ে বড় বেসরকারি ব্যাংক, যার গ্রাহক ভিত্তি অত্যন্ত মজবুত।",
-        expectedReturn: 0.14, maxDrop: 0.07
-      },
-      {
-        id: "btc", symbol: "BTC", apiKey: "BTC", coinId: "bitcoin", name: "Bitcoin (BTC)",
-        type: "CRYPTO", risk: "HIGH", riskLabel: "🔴 উচ্চ ঝুঁকি",
-        priceINR: 5516824, refPriceINR: 5516824, changePct: -4.5, isLive: false,
-        signal: "WAIT", signalLabel: "⚠️ শুধু ভার্চুয়াল প্র্যাকটিসের জন্য",
-        buyRule: "মোট পোর্টফোলিওর সর্বোচ্চ ৫–৮% এবং ১০%+ ডিপে এলে তবেই",
-        sellRule: "১২–১৫% লাভ হলেই লাভ লক বা ৭% নিচে স্টপ-লস",
-        intro: "বিশ্বের প্রথম ও সবচেয়ে বড় ডিজিটাল ক্রিপ্টোকারেন্সি।",
-        expectedReturn: 0.25, maxDrop: 0.22
-      },
-      {
-        id: "eth", symbol: "ETH", apiKey: "ETH", coinId: "ethereum", name: "Ethereum (ETH)",
-        type: "CRYPTO", risk: "HIGH", riskLabel: "🔴 উচ্চ ঝুঁকি",
-        priceINR: 154888, refPriceINR: 154888, changePct: -5.5, isLive: false,
-        signal: "WAIT", signalLabel: "⚠️ উচ্চ ওঠানামা — সতর্ক থাকুন",
-        buyRule: "নতুনদের জন্য আসল টাকা নয়—শুধু প্র্যাকটিস ওয়ালেটে পরীক্ষা করুন",
-        sellRule: "১২–১৫% লাভ হলেই লাভ লক করুন বা ৭% নিচে স্টপ-লস",
-        intro: "স্মার্ট কন্ট্র্যাক্ট ও ওয়েব৩ অ্যাপ্লিকেশনের প্রধান ব্লকচেইন নেটওয়ার্ক।",
-        expectedReturn: 0.28, maxDrop: 0.25
-      }
-    ];
-
-    function loadLocalState() {
-      let local = {};
-      try { local = JSON.parse(localStorage.getItem("safeyield_wallet_state") || "{}"); } catch (_) {}
-      let savedProfile = {};
-      try { savedProfile = JSON.parse(localStorage.getItem("safeyield_profile") || "{}"); } catch (_) {}
-      return {
-        cash: typeof local.cash === "number" ? local.cash : 10000,
-        day: typeof local.day === "number" ? local.day : 1,
-        holdings: local.holdings && typeof local.holdings === "object" ? local.holdings : {},
-        profile: {
-          budget: savedProfile.budget || 3000,
-          horizon: savedProfile.horizon || "long",
-          emergency: savedProfile.emergency || "yes",
-          risk: savedProfile.risk || "low"
-        }
-      };
-    }
-
-    const initLocal = loadLocalState();
-
-    let state = {
-      currency: "INR",
-      usdRate: 84.5,
-      selectedAssetId: "nifty",
-      simAmount: 1000,
-      chartMode: "value",
-      selectedChartIdx: -1,
-      cash: initLocal.cash,
-      day: initLocal.day,
-      holdings: initLocal.holdings,
-      profile: initLocal.profile,
-      apiUrl: localStorage.getItem("safeyield_api_url") || DEFAULT_EDGE_URL,
-      autopilotUrl: localStorage.getItem("safeyield_autopilot_url") || DEFAULT_AUTOPILOT_URL,
-      apiKey: localStorage.getItem("safeyield_api_key") || "",
-      syncId: localStorage.getItem("safeyield_sync_id") || "rafikul-2026",
-      geminiKey: localStorage.getItem("safeyield_gemini_key") || "",
-      cloudStatus: "local",
-      aiMemory: {
-        initial_capital: 10000,
-        win_count: 0,
-        loss_count: 0,
-        total_trades: 0,
-        strategy_weights: { dip_buying: 1.0, smart_sip: 1.0, gold_hedge: 1.0, profit_lock: 1.0 },
-        lessons: []
-      },
-      aiLogs: []
-    };
-
-    function saveLocalState() {
-      try {
-        localStorage.setItem("safeyield_wallet_state", JSON.stringify({
-          cash: state.cash, day: state.day, holdings: state.holdings
-        }));
-        localStorage.setItem("safeyield_profile", JSON.stringify(state.profile));
-      } catch (_) {}
-    }
-
-    function getSupabaseBaseUrl() {
-      const url = (state.apiUrl || DEFAULT_EDGE_URL).trim();
-      const idx = url.indexOf("/functions/v1");
-      if (idx > 0) return url.substring(0, idx);
-      return "https://pjacpgpysrdnotdezxrh.supabase.co";
-    }
-
-    function isCloudConfigured() {
-      return Boolean(state.apiKey && state.syncId);
-    }
-
-    function updateSyncIndicators() {
-      const pill = document.getElementById("cloud-sync-pill");
-      const badge = document.getElementById("wallet-sync-badge");
-      if (!isCloudConfigured()) {
-        pill.className = "sync-pill";
-        pill.textContent = "📱 লোকাল সেভ";
-        badge.textContent = "📱 লোকাল সেভ";
-        return;
-      }
-      if (state.cloudStatus === "syncing") {
-        pill.className = "sync-pill synced";
-        pill.textContent = "☁️ সিঙ্ক হচ্ছে...";
-        badge.textContent = "☁️ সিঙ্ক হচ্ছে...";
-      } else if (state.cloudStatus === "synced") {
-        pill.className = "sync-pill synced";
-        pill.textContent = "☁️ সিঙ্ক (" + state.syncId + ")";
-        badge.textContent = "☁️ ক্লাউড সিঙ্ক চালু";
-      } else {
-        pill.className = "sync-pill";
-        pill.textContent = "⚠️ সিঙ্ক ত্রুটি";
-        badge.textContent = "⚠️ সিঙ্ক হয়নি";
-      }
-    }
-
-    async function pushToSupabase(silent) {
-      saveLocalState();
-      if (!isCloudConfigured()) { updateSyncIndicators(); return; }
-      state.cloudStatus = "syncing";
-      updateSyncIndicators();
-      try {
-        const baseUrl = getSupabaseBaseUrl();
-        const res = await fetch(baseUrl + "/rest/v1/safeyield_state", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "apikey": state.apiKey,
-            "Authorization": "Bearer " + state.apiKey,
-            "Prefer": "resolution=merge-duplicates"
-          },
-          body: JSON.stringify({
-            sync_id: state.syncId,
-            cash: state.cash,
-            practice_day: state.day,
-            holdings: state.holdings,
-            profile: state.profile,
-            updated_at: new Date().toISOString()
-          })
-        });
-        state.cloudStatus = res.ok ? "synced" : "error";
-        if (!silent) showToast(res.ok ? "☁️ ক্লাউডে সিঙ্ক হয়েছে!" : "⚠️ সিঙ্ক হয়নি — Anon Key চেক করুন");
-      } catch (_) {
-        state.cloudStatus = "error";
-      }
-      updateSyncIndicators();
-    }
-
-    async function pullAutopilotData() {
-      if (!isCloudConfigured()) return;
-      const baseUrl = getSupabaseBaseUrl();
-      const headers = { "apikey": state.apiKey, "Authorization": "Bearer " + state.apiKey };
-      try {
-        const [memRes, logsRes] = await Promise.all([
-          fetch(`${baseUrl}/rest/v1/ai_memory?sync_id=eq.${encodeURIComponent(state.syncId)}&select=*`, { headers }),
-          fetch(`${baseUrl}/rest/v1/ai_logs?sync_id=eq.${encodeURIComponent(state.syncId)}&order=created_at.desc&limit=30`, { headers })
-        ]);
-        if (memRes.ok) {
-          const mRows = await memRes.json();
-          if (Array.isArray(mRows) && mRows.length > 0) state.aiMemory = mRows[0];
-        }
-        if (logsRes.ok) {
-          const lRows = await logsRes.json();
-          if (Array.isArray(lRows)) {
-            state.aiLogs = lRows;
-            state.selectedChartIdx = -1;
-          }
-        }
-      } catch (_) {}
-      renderAutopilot();
-    }
-
-    async function pullFromSupabase(silent) {
-      if (!isCloudConfigured()) { updateSyncIndicators(); return; }
-      state.cloudStatus = "syncing";
-      updateSyncIndicators();
-      try {
-        const baseUrl = getSupabaseBaseUrl();
-        const res = await fetch(
-          baseUrl + "/rest/v1/safeyield_state?sync_id=eq." + encodeURIComponent(state.syncId) + "&select=*",
-          { headers: { "apikey": state.apiKey, "Authorization": "Bearer " + state.apiKey } }
-        );
-        if (res.ok) {
-          const rows = await res.json();
-          if (Array.isArray(rows) && rows.length > 0) {
-            const row = rows[0];
-            state.cash = Number(row.cash);
-            state.day = Number(row.practice_day) || 1;
-            state.holdings = row.holdings && typeof row.holdings === "object" ? row.holdings : {};
-            if (row.profile && typeof row.profile === "object") {
-              state.profile = {
-                budget: row.profile.budget || 3000,
-                horizon: row.profile.horizon || "long",
-                emergency: row.profile.emergency || "yes",
-                risk: row.profile.risk || "low"
-              };
-            }
-            saveLocalState();
-            state.cloudStatus = "synced";
-            await pullAutopilotData();
-            renderAll();
-            if (!silent) showToast("☁️ সর্বশেষ হিসাব ও গ্রাফ আপডেট হয়েছে!");
-          } else {
-            await pushToSupabase(silent);
-            await pullAutopilotData();
-            return;
-          }
-        } else {
-          state.cloudStatus = "error";
-        }
-      } catch (_) {
-        state.cloudStatus = "error";
-      }
-      updateSyncIndicators();
-    }
-
-    async function triggerAutonomousAI() {
-      const btn = document.getElementById("btn-run-autopilot");
-      const msgEl = document.getElementById("ap-status-msg");
-      if (!state.syncId) {
-        showToast("আগে '⚙️ সেটআপ'-এ Sync ID দিন");
-        return;
-      }
-      btn.disabled = true;
-      btn.textContent = "🧠 AI নিউজ ও চার্ট রিসার্চ করছে...";
-      msgEl.style.display = "block";
-      msgEl.style.color = "#fde68a";
-      msgEl.textContent = "⏳ Yahoo Finance (৩০ দিনের ডেটা) ও লাইভ নিউজ বিশ্লেষণ করে AI সিদ্ধান্ত নিচ্ছে...";
-
-      try {
-        const res = await fetch(state.autopilotUrl || DEFAULT_AUTOPILOT_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            sync_id: state.syncId,
-            gemini_key: state.geminiKey || undefined
-          })
-        });
-        const data = await res.json();
-        if (res.ok && data.ok) {
-          msgEl.style.color = "#86efac";
-          msgEl.textContent = `✅ দিন ${data.day_completed} সম্পন্ন (${data.brain_mode === 'GEMINI_AI' ? 'Gemini AI Brain' : 'Quant AI Engine'}) — ${data.strategy_used}`;
-          showToast("🤖 AI রিসার্চ ও অটো-ট্রেড সফলভাবে সম্পন্ন!");
-          await pullFromSupabase(true);
-          await fetchLiveMarketData();
-        } else {
-          msgEl.style.color = "#fca5a5";
-          msgEl.textContent = `⚠️ এরর: ${data.error || "Supabase-এ ai-autopilot ও SQL চেক করুন।"}`;
-          showToast("⚠️ অটো-পাইলট চালু হয়নি");
-        }
-      } catch (_) {
-        msgEl.style.color = "#fca5a5";
-        msgEl.textContent = "⚠️ `ai-autopilot` ফাংশনে সংযোগ হয়নি। Supabase-এ JWT OFF করা আছে কি না চেক করুন।";
-        showToast("⚠️ ai-autopilot সংযোগ হয়নি");
-      } finally {
-        btn.disabled = false;
-        btn.textContent = "🚀 এখনই AI রিসার্চ ও ট্রেড চালাও";
-      }
-    }
-
-    function showToast(msg) {
-      const el = document.getElementById("toast");
-      el.textContent = msg;
-      el.classList.add("show");
-      setTimeout(() => el.classList.remove("show"), 3000);
-    }
-
-    function formatMoney(inrVal) {
-      if (inrVal === null || inrVal === undefined || isNaN(inrVal)) return "—";
-      if (state.currency === "USD") {
-        const usd = inrVal / state.usdRate;
-        return "$" + usd.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      }
-      return "₹" + inrVal.toLocaleString("en-IN", { minimumFractionDigits: Math.abs(inrVal) < 1000 && inrVal !== 0 ? 2 : 0, maximumFractionDigits: 2 });
-    }
-
-    function getEffectivePrice(asset) {
-      return asset.priceINR !== null ? asset.priceINR : asset.refPriceINR;
-    }
-
-    function getPortfolioTotals() {
-      let investedValue = 0;
-      let totalCost = 0;
-      let stocksVal = 0, goldVal = 0, cryptoVal = 0;
-      Object.keys(state.holdings).forEach(id => {
-        const h = state.holdings[id];
-        const a = ASSETS.find(x => x.id === id);
-        if (!a || !h) return;
-        const val = Number(h.qty || 0) * getEffectivePrice(a);
-        totalCost += Number(h.investedINR || 0);
-        investedValue += val;
-        if (id === "gold") goldVal += val;
-        else if (a.type === "CRYPTO") cryptoVal += val;
-        else stocksVal += val;
-      });
-      return { investedValue, totalCost, totalVal: state.cash + investedValue, stocksVal, goldVal, cryptoVal };
-    }
-
-    function computeCoachAllocation() {
-      const p = state.profile;
-      let safe = 20, index = 45, gold = 25, growth = 10, reason = "";
-      if (p.emergency === "no") {
-        safe = 60; index = 20; gold = 20; growth = 0;
-        reason = "জরুরি তহবিল না থাকায় আগে ৬০% টাকা সম্পূর্ণ নিরাপদ Liquid/RD ফান্ডে রেখে সুরক্ষা তৈরি করা সবচেয়ে জরুরি।";
-      } else if (p.horizon === "short") {
-        safe = 70; index = 10; gold = 20; growth = 0;
-        reason = "১ বছরের কম সময়ের জন্য ৭০% নিরাপদ ফান্ড ও ২০% গোল্ডে রাখা উচিত।";
-      } else if (p.risk === "low") {
-        safe = 30; index = 45; gold = 25; growth = 0;
-        reason = "কম ঝুঁকিতে স্থিতিশীল বৃদ্ধির জন্য Nifty 50 ETF (৪৫%), Gold ETF (২৫%) এবং নিরাপদ ফান্ড (৩০%)-এর সমন্বয় সবচেয়ে নিরাপদ।";
-      } else if (p.risk === "moderate") {
-        safe = 15; index = 45; gold = 20; growth = 20;
-        reason = "মাঝারি ঝুঁকিতে Nifty 50 ETF-এর পাশাপাশি TCS ও HDFC Bank-এ ২০% রাখলে বাড়তি রিটার্ন মিলবে।";
-      } else {
-        safe = 10; index = 40; gold = 15; growth = 35;
-        reason = "দীর্ঘমেয়াদে দ্রুত বৃদ্ধির জন্য Index ETF ও ব্লু-চিপ শেয়ারে বেশি গুরুত্ব দেওয়া হয়েছে।";
-      }
-      return { safe, index, gold, growth, reason };
-    }
-
-    function buildChartSeries() {
-      const initCap = Number(state.aiMemory?.initial_capital || 10000);
-      const { totalVal } = getPortfolioTotals();
-      const sortedLogs = [...(state.aiLogs || [])].reverse();
-
-      const pts = [{
-        label: "শুরু",
-        dayLabel: "শুরু (দিন ০)",
-        value: initCap,
-        pnlPct: 0,
-        strategy: "প্রারম্ভিক মূলধন",
-        dateStr: "মিশন শুরু"
-      }];
-
-      sortedLogs.forEach((log, idx) => {
-        const v = Number(log.portfolio_value || initCap);
-        const pct = typeof log.pnl_pct === "number" ? log.pnl_pct : (((v - initCap) / initCap) * 100);
-        const dt = log.created_at ? new Date(log.created_at).toLocaleDateString("bn-BD", { day: "numeric", month: "short" }) : "";
-        pts.push({
-          label: `দিন ${log.day_number || (idx + 1)}`,
-          dayLabel: `দিন ${log.day_number || (idx + 1)}`,
-          value: v,
-          pnlPct: Math.round(pct * 100) / 100,
-          strategy: log.strategy_used || "AI Strategy",
-          dateStr: dt
-        });
-      });
-
-      // If no logs yet but wallet changed manually, show current live point
-      if (sortedLogs.length === 0 && Math.abs(totalVal - initCap) > 0.5) {
-        pts.push({
-          label: "বর্তমান",
-          dayLabel: `দিন ${state.day} (লাইভ)`,
-          value: Math.round(totalVal * 100) / 100,
-          pnlPct: Math.round(((totalVal - initCap) / initCap) * 10000) / 100,
-          strategy: "লাইভ পোর্টফোলিও",
-          dateStr: "এখন"
-        });
-      }
-      return pts;
-    }
-
-    function renderPnLChart() {
-      const pts = buildChartSeries();
-      const initCap = Number(state.aiMemory?.initial_capital || 10000);
-      const isPnlMode = state.chartMode === "pnl";
-
-      if (state.selectedChartIdx < 0 || state.selectedChartIdx >= pts.length) {
-        state.selectedChartIdx = pts.length - 1;
-      }
-
-      const activePt = pts[state.selectedChartIdx];
-      const activeDiff = activePt.value - initCap;
-      const isUp = activeDiff >= 0;
-
-      // Tooltip bar
-      document.getElementById("chart-tooltip-bar").innerHTML = `
-        <div>
-          <strong style="color:#0f172a;">${activePt.dayLabel}</strong>
-          <span style="color:#64748b; margin-left:6px; font-size:11.5px;">${activePt.dateStr} • ${activePt.strategy}</span>
-        </div>
-        <div style="font-weight:800;" class="${isUp ? 'up' : 'down'}">
-          ${formatMoney(activePt.value)} (${activePt.pnlPct >= 0 ? '+' : ''}${activePt.pnlPct.toFixed(2)}%)
-        </div>
-      `;
-
-      const container = document.getElementById("pnl-chart-container");
-      const W = 600, H = 215, padL = 54, padR = 20, padT = 18, padB = 30;
-      const plotW = W - padL - padR;
-      const plotH = H - padT - padB;
-
-      const yVals = pts.map(p => isPnlMode ? p.pnlPct : p.value);
-      const baseline = isPnlMode ? 0 : initCap;
-      let minY = Math.min(...yVals, baseline);
-      let maxY = Math.max(...yVals, baseline);
-      const span = maxY - minY;
-      const margin = span < (isPnlMode ? 1.5 : 150) ? (isPnlMode ? 2 : 200) : span * 0.22;
-      minY -= margin;
-      maxY += margin;
-
-      const xFor = (i) => pts.length === 1 ? padL + plotW / 2 : padL + (i / (pts.length - 1)) * plotW;
-      const yFor = (v) => padT + ((maxY - v) / (maxY - minY)) * plotH;
-
-      const baseY = yFor(baseline);
-      const latestVal = yVals[yVals.length - 1];
-      const strokeColor = latestVal >= baseline ? "#059669" : "#dc2626";
-      const gradId = latestVal >= baseline ? "gradUp" : "gradDown";
-
-      const coords = pts.map((p, i) => ({
-        x: xFor(i),
-        y: yFor(isPnlMode ? p.pnlPct : p.value),
-        p,
-        i
-      }));
-
-      const linePath = coords.map((c, idx) => `${idx === 0 ? "M" : "L"} ${c.x.toFixed(1)} ${c.y.toFixed(1)}`).join(" ");
-      const areaPath = coords.length > 1
-        ? `${linePath} L ${coords[coords.length - 1].x.toFixed(1)} ${(padT + plotH).toFixed(1)} L ${coords[0].x.toFixed(1)} ${(padT + plotH).toFixed(1)} Z`
-        : "";
-
-      // Horizontal grid lines (4 steps)
-      let gridHtml = "";
-      for (let g = 0; g <= 3; g++) {
-        const val = minY + ((maxY - minY) * g) / 3;
-        const gy = yFor(val);
-        const lbl = isPnlMode
-          ? `${val >= 0 ? '+' : ''}${val.toFixed(1)}%`
-          : (state.currency === "USD" ? `$${(val / state.usdRate).toFixed(0)}` : `₹${Math.round(val).toLocaleString("en-IN")}`);
-        gridHtml += `<line x1="${padL}" y1="${gy.toFixed(1)}" x2="${W - padR}" y2="${gy.toFixed(1)}" stroke="#e2e8f0" stroke-width="1" />`;
-        gridHtml += `<text x="${padL - 8}" y="${(gy + 4).toFixed(1)}" text-anchor="end" font-size="10.5" fill="#64748b" font-weight="600">${lbl}</text>`;
-      }
-
-      // X-axis labels (show max 6 evenly spaced)
-      let xLabelsHtml = "";
-      const step = Math.max(1, Math.ceil(pts.length / 6));
-      coords.forEach((c, i) => {
-        if (i === 0 || i === coords.length - 1 || i % step === 0) {
-          xLabelsHtml += `<text x="${c.x.toFixed(1)}" y="${H - 8}" text-anchor="middle" font-size="10.5" fill="#64748b" font-weight="600">${c.p.label}</text>`;
-        }
-      });
-
-      const dotsHtml = coords.map(c => {
-        const isSel = c.i === state.selectedChartIdx;
-        const r = isSel ? 7 : 4.5;
-        const fill = isSel ? strokeColor : "#ffffff";
-        return `
-          <circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="14" fill="transparent" class="chart-dot" data-action="select-chart-pt" data-idx="${c.i}" />
-          <circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="${r}" fill="${fill}" stroke="${strokeColor}" stroke-width="2.5" pointer-events="none" />
-        `;
-      }).join("");
-
-      container.innerHTML = `
-        <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
-          <defs>
-            <linearGradient id="gradUp" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#10b981" stop-opacity="0.28" />
-              <stop offset="100%" stop-color="#10b981" stop-opacity="0.01" />
-            </linearGradient>
-            <linearGradient id="gradDown" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#ef4444" stop-opacity="0.25" />
-              <stop offset="100%" stop-color="#ef4444" stop-opacity="0.01" />
-            </linearGradient>
-          </defs>
-          ${gridHtml}
-          <line x1="${padL}" y1="${baseY.toFixed(1)}" x2="${W - padR}" y2="${baseY.toFixed(1)}" stroke="#94a3b8" stroke-width="1.4" stroke-dasharray="5 4" />
-          ${areaPath ? `<path d="${areaPath}" fill="url(#${gradId})" />` : ""}
-          ${coords.length > 1 ? `<path d="${linePath}" fill="none" stroke="${strokeColor}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />` : ""}
-          ${dotsHtml}
-          ${xLabelsHtml}
-        </svg>
-      `;
-
-      // Bottom metrics
-      const allVals = pts.map(p => p.value);
-      const peakVal = Math.max(...allVals);
-      const lowVal = Math.min(...allVals);
-      const lastPt = pts[pts.length - 1];
-      const netDiff = lastPt.value - initCap;
-
-      document.getElementById("chart-metrics-row").innerHTML = `
-        <div class="metric-chip"><small>শুরুর মূলধন</small><strong>${formatMoney(initCap)}</strong></div>
-        <div class="metric-chip"><small>সর্বোচ্চ (Peak)</small><strong class="up">${formatMoney(peakVal)}</strong></div>
-        <div class="metric-chip"><small>সর্বনিম্ন (Low)</small><strong>${formatMoney(lowVal)}</strong></div>
-        <div class="metric-chip"><small>মোট লাভ/লস</small><strong class="${netDiff >= 0 ? 'up' : 'down'}">${netDiff >= 0 ? '+' : ''}${formatMoney(netDiff)}</strong></div>
-      `;
-    }
-
-    function renderAllocationDonut() {
-      const { totalVal, stocksVal, goldVal, cryptoVal } = getPortfolioTotals();
-      const total = Math.max(1, totalVal);
-      const segments = [
-        { label: "নগদ (Cash)", val: state.cash, color: "#0ea5e9" },
-        { label: "শেয়ার ও ETF", val: stocksVal, color: "#10b981" },
-        { label: "Gold ETF", val: goldVal, color: "#f59e0b" },
-        { label: "ক্রিপ্টো", val: cryptoVal, color: "#8b5cf6" }
-      ];
-
-      const r = 46, circ = 2 * Math.PI * r;
-      let offset = 0;
-      const circles = segments.map(s => {
-        const frac = s.val / total;
-        const dash = frac * circ;
-        const el = frac > 0.002
-          ? `<circle cx="63" cy="63" r="${r}" fill="none" stroke="${s.color}" stroke-width="15" stroke-dasharray="${dash.toFixed(1)} ${circ.toFixed(1)}" stroke-dashoffset="${(-offset).toFixed(1)}" transform="rotate(-90 63 63)" />`
-          : "";
-        offset += dash;
-        return el;
-      }).join("");
-
-      const investedPct = Math.round(((total - state.cash) / total) * 100);
-
-      document.getElementById("ap-donut-box").innerHTML = `
-        <div class="donut-layout">
-          <div class="donut-wrap">
-            <svg viewBox="0 0 126 126">
-              <circle cx="63" cy="63" r="${r}" fill="none" stroke="#e2e8f0" stroke-width="15" />
-              ${circles}
-            </svg>
-            <div class="donut-center">
-              <small>ইনভেস্টেড</small>
-              <strong>${investedPct}%</strong>
-            </div>
-          </div>
-          <div class="donut-legend">
-            ${segments.map(s => {
-              const pct = Math.round((s.val / total) * 100);
-              return `<div class="d-leg-row">
-                <span><span class="d-dot" style="background:${s.color}"></span>${s.label}</span>
-                <strong>${formatMoney(s.val)} <span style="color:#64748b; font-weight:600;">(${pct}%)</span></strong>
-              </div>`;
-            }).join("")}
-          </div>
-        </div>
-      `;
-    }
-
-    function renderTodayDigest() {
-      const el = document.getElementById("ap-today-digest");
-      const latest = state.aiLogs?.[0];
-      if (!latest) {
-        el.innerHTML = `<div class="digest-banner">
-          <p style="font-size:13px; color:#115e59;">এখনো কোনো স্বয়ংক্রিয় AI ট্রেড চলেনি। উপরের সবুজ <strong>"🚀 এখনই AI রিসার্চ ও ট্রেড চালাও"</strong> বাটনে ট্যাপ করলে AI এই মুহূর্তের মার্কেট ও নিউজ রিসার্চ করে প্রথম রিপোর্ট এখানে দেখাবে।</p>
-        </div>`;
-        return;
-      }
-
-      const acts = Array.isArray(latest.actions_taken) ? latest.actions_taken : [];
-      const boughtTotal = acts.filter(a => a.action === "BUY").reduce((s, a) => s + Number(a.amount_inr || 0), 0);
-      const soldTotal = acts.filter(a => a.action === "SELL").reduce((s, a) => s + Number(a.amount_inr || 0), 0);
-      const dt = latest.created_at ? new Date(latest.created_at).toLocaleString("bn-BD", { dateStyle: "medium", timeStyle: "short" }) : "";
-
-      el.innerHTML = `
-        <div class="digest-banner">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:6px;">
-            <span class="tag tag-match">দিন ${latest.day_number} • ${latest.strategy_used || "AI Strategy"}</span>
-            <span style="font-size:11.5px; color:#475569;">${dt}</span>
-          </div>
-          <p style="font-size:13px; color:#0f172a; margin-bottom:8px;">${latest.summary_bn || ""}</p>
-          <div class="digest-stats">
-            <span class="digest-pill">🛒 কেনা হয়েছে: <span class="up">${formatMoney(boughtTotal)}</span></span>
-            <span class="digest-pill">💰 বিক্রি হয়েছে: <span class="down">${formatMoney(soldTotal)}</span></span>
-            <span class="digest-pill">📊 ফলাফল: <strong>${Number(latest.pnl_pct || 0) >= 0 ? '+' : ''}${Number(latest.pnl_pct || 0).toFixed(2)}%</strong></span>
-          </div>
-          <div>
-            ${acts.map(ac => {
-              const cls = ac.action === "BUY" ? "act-buy" : (ac.action === "SELL" ? "act-sell" : "act-hold");
-              const amtStr = ac.amount_inr > 0 ? ` (${formatMoney(ac.amount_inr)})` : "";
-              return `<div style="font-size:12.5px; margin-top:5px;">
-                <span class="action-chip ${cls}">${ac.action}</span>
-                <strong>${ac.asset_name || ac.asset_id}${amtStr}:</strong> ${ac.reason_bn || ""}
-              </div>`;
-            }).join("")}
-          </div>
-        </div>
-      `;
-    }
-
-    function renderAutopilot() {
-      const { totalVal, investedValue } = getPortfolioTotals();
-      const initCap = Number(state.aiMemory?.initial_capital || 10000);
-      const pnlINR = totalVal - initCap;
-      const pnlPct = (pnlINR / initCap) * 100;
-
-      document.getElementById("ap-total-val").textContent = formatMoney(totalVal);
-      const pill = document.getElementById("ap-pnl-pill");
-      pill.className = "pnl-pill " + (pnlINR >= 0 ? "pnl-up" : "pnl-down");
-      pill.textContent = `${pnlINR >= 0 ? "+" : ""}${formatMoney(pnlINR)} (${pnlPct >= 0 ? "+" : ""}${pnlPct.toFixed(2)}%)`;
-
-      const pctDay = Math.min(100, Math.round((state.day / 30) * 100));
-      document.getElementById("ap-day-text").textContent = `দিন ${state.day} / ৩০`;
-      document.getElementById("ap-day-pct").textContent = `${pctDay}% সম্পন্ন`;
-      document.getElementById("ap-day-bar").style.width = pctDay + "%";
-
-      document.getElementById("ap-invested-val").textContent = formatMoney(investedValue);
-      document.getElementById("ap-cash-val").textContent = formatMoney(state.cash);
-
-      const mem = state.aiMemory || {};
-      document.getElementById("ap-trades-text").textContent = `${mem.total_trades || 0} (${mem.win_count || 0}/${mem.loss_count || 0})`;
-
-      const latestLog = state.aiLogs?.[0];
-      const badgeEl = document.getElementById("ai-brain-mode-badge");
-      if (latestLog?.brain_mode === "GEMINI_AI") badgeEl.textContent = "🧠 Gemini AI সক্রিয়";
-      else if (latestLog?.brain_mode === "QUANT_ENGINE") badgeEl.textContent = "⚙️ Quant AI সক্রিয়";
-      else badgeEl.textContent = "🧠 AI Brain প্রস্তুত";
-
-      renderPnLChart();
-      renderTodayDigest();
-      renderAllocationDonut();
-
-      // Weights
-      const w = mem.strategy_weights || { dip_buying: 1.0, smart_sip: 1.0, gold_hedge: 1.0, profit_lock: 1.0 };
-      const weightItems = [
-        { label: "🛒 Buy on Dip (সস্তায় কেনা)", val: Number(w.dip_buying || 1) },
-        { label: "📈 Smart SIP ও মোমেন্টাম", val: Number(w.smart_sip || 1) },
-        { label: "🛡️ Gold Safe Hedge (সুরক্ষা)", val: Number(w.gold_hedge || 1) },
-        { label: "💰 Profit Lock ও স্টপ-লস", val: Number(w.profit_lock || 1) }
-      ];
-      document.getElementById("ap-weights-box").innerHTML = weightItems.map(item => {
-        const pct = Math.min(100, Math.round((item.val / 1.8) * 100));
-        return `<div class="weight-row">
-          <div class="weight-head"><span>${item.label}</span><span>${item.val.toFixed(2)}x</span></div>
-          <div class="weight-track"><div class="weight-fill" style="width:${pct}%"></div></div>
-        </div>`;
-      }).join("");
-
-      // Lessons
-      const lessons = Array.isArray(mem.lessons) ? mem.lessons : [];
-      const lessonsEl = document.getElementById("ap-lessons-list");
-      if (lessons.length === 0) {
-        lessonsEl.innerHTML = `<div class="list-box" style="margin-bottom:0; font-size:12.5px; color:#64748b;">প্রথম AI ট্রেডের পর এখানে AI-এর শেখা শিক্ষা জমা হবে।</div>`;
-      } else {
-        lessonsEl.innerHTML = lessons.slice(-4).reverse().map(l => `
-          <div class="list-box" style="margin-bottom:6px; padding:9px 11px; font-size:12.5px;">
-            <strong style="color:#0f766e;">দিন ${l.day || 1}:</strong> ${l.note}
-          </div>
-        `).join("");
-      }
-
-      // Holdings
-      const holdBox = document.getElementById("ap-holdings-box");
-      const hKeys = Object.keys(state.holdings);
-      if (hKeys.length === 0) {
-        holdBox.innerHTML = `<div class="list-box" style="margin-bottom:0; font-size:13px; color:#475569;">এখন পুরো ${formatMoney(state.cash)} নগদ আছে। AI অটো-পাইলট চালালে এখানে কেনা শেয়ারগুলো দেখাবে।</div>`;
-      } else {
-        holdBox.innerHTML = hKeys.map(id => {
-          const h = state.holdings[id];
-          const a = ASSETS.find(x => x.id === id);
-          if (!a) return "";
-          const currVal = h.qty * getEffectivePrice(a);
-          const diff = currVal - h.investedINR;
-          const pct = h.investedINR ? (diff / h.investedINR) * 100 : 0;
-          return `<div class="list-box" style="margin-bottom:8px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-              <div>
-                <strong>${a.name}</strong>
-                <div style="font-size:11.5px; color:#64748b;">ইনভেস্ট: ${formatMoney(h.investedINR)}</div>
-              </div>
-              <div style="text-align:right;">
-                <div><strong>${formatMoney(currVal)}</strong></div>
-                <div style="font-size:12px; font-weight:700;" class="${diff >= 0 ? 'up' : 'down'}">${diff >= 0 ? '+' : ''}${formatMoney(diff)} (${diff >= 0 ? '+' : ''}${pct.toFixed(2)}%)</div>
-              </div>
-            </div>
-          </div>`;
-        }).join("");
-      }
-
-      // Logs
-      const logsEl = document.getElementById("ap-logs-container");
-      if (!state.aiLogs || state.aiLogs.length === 0) {
-        logsEl.innerHTML = `<div class="list-box" style="margin-bottom:0; font-size:13px; color:#475569;">এখনো কোনো লগ জমা হয়নি। AI অটো-পাইলট চালালেই এখানে প্রতিদিনের ডায়েরি ও নিউজ তালিকা তৈরি হবে।</div>`;
-      } else {
-        logsEl.innerHTML = state.aiLogs.map(log => {
-          const dt = log.created_at ? new Date(log.created_at).toLocaleString("bn-BD", { dateStyle: "medium", timeStyle: "short" }) : "";
-          const acts = Array.isArray(log.actions_taken) ? log.actions_taken : [];
-          const news = Array.isArray(log.news_headlines) ? log.news_headlines : [];
-          const modeLabel = log.brain_mode === "GEMINI_AI" ? "🧠 Gemini AI" : "⚙️ Quant AI";
-          const logPnl = Number(log.pnl_pct || 0);
-
-          return `<div class="log-entry">
-            <div class="log-head">
-              <div>
-                <span class="tag tag-match">দিন ${log.day_number}</span>
-                <span class="tag tag-api">${modeLabel}</span>
-                <strong style="font-size:13px; margin-left:4px;">${log.strategy_used || ""}</strong>
-              </div>
-              <span style="font-size:11.5px; color:#64748b;">${dt} • <strong class="${logPnl >= 0 ? 'up' : 'down'}">${formatMoney(Number(log.portfolio_value || 10000))} (${logPnl >= 0 ? '+' : ''}${logPnl.toFixed(2)}%)</strong></span>
-            </div>
-            <p style="font-size:13px; color:#1e293b; margin-bottom:8px;">${log.summary_bn || ""}</p>
-            <div style="margin-bottom:8px;">
-              ${acts.map(ac => {
-                const cls = ac.action === "BUY" ? "act-buy" : (ac.action === "SELL" ? "act-sell" : "act-hold");
-                const amtStr = ac.amount_inr > 0 ? ` (${formatMoney(ac.amount_inr)})` : "";
-                return `<div style="font-size:12.5px; margin-bottom:4px;">
-                  <span class="action-chip ${cls}">${ac.action}</span>
-                  <strong>${ac.asset_name || ac.asset_id}${amtStr}:</strong> ${ac.reason_bn || ""}
-                </div>`;
-              }).join("")}
-            </div>
-            ${log.lesson_bn ? `<div style="font-size:12px; color:#0f766e; background:#f0fdfa; padding:7px 10px; border-radius:8px; margin-bottom:8px;">💡 <strong>শেখা শিক্ষা:</strong> ${log.lesson_bn}</div>` : ""}
-            ${news.length ? `<details style="font-size:12px; color:#475569;"><summary style="cursor:pointer; font-weight:700;">📰 AI যে ${news.length}টি লাইভ খবর পড়েছে (দেখুন)</summary><ul style="padding-left:18px; margin-top:6px;">${news.map(n => `<li>${n}</li>`).join("")}</ul></details>` : ""}
-          </div>`;
-        }).join("");
-      }
-    }
-
-    function renderCoach() {
-      const alloc = computeCoachAllocation();
-      const b = state.profile.budget;
-      const safeINR = Math.round((b * alloc.safe) / 100);
-      const indexINR = Math.round((b * alloc.index) / 100);
-      const goldINR = Math.round((b * alloc.gold) / 100);
-      const growthINR = b - safeINR - indexINR - goldINR;
-      const warnHtml = state.profile.emergency === "no" ? `<div class="warn-banner">⚠️ জরুরি তহবিল না থাকায় আগে নিরাপদ তহবিল গড়ুন।</div>` : "";
-
-      document.getElementById("coach-plan-card").innerHTML = `
-        <div class="card-title">২. আপনার পার্সোনাল AI প্ল্যান</div>
-        <div class="card-sub">আপনার ${formatMoney(b)} বাজেটের নিরাপদ বণ্টন</div>
-        ${warnHtml}
-        <div class="alloc-bar">
-          <div class="alloc-seg-safe" style="width:${alloc.safe}%"></div>
-          <div class="alloc-seg-index" style="width:${alloc.index}%"></div>
-          <div class="alloc-seg-gold" style="width:${alloc.gold}%"></div>
-          <div class="alloc-seg-growth" style="width:${alloc.growth}%"></div>
-        </div>
-        <div class="alloc-legend">
-          <div class="alloc-item"><span style="color:#0284c7; font-weight:800;">● নিরাপদ Liquid/RD (${alloc.safe}%)</span><div><strong>${formatMoney(safeINR)}</strong></div></div>
-          <div class="alloc-item"><span style="color:#059669; font-weight:800;">● Nifty 50 ETF (${alloc.index}%)</span><div><strong>${formatMoney(indexINR)}</strong></div></div>
-          <div class="alloc-item"><span style="color:#d97706; font-weight:800;">● Gold ETF (${alloc.gold}%)</span><div><strong>${formatMoney(goldINR)}</strong></div></div>
-          <div class="alloc-item"><span style="color:#7c3aed; font-weight:800;">● ব্লু-চিপ শেয়ার (${alloc.growth}%)</span><div><strong>${formatMoney(growthINR)}</strong></div></div>
-        </div>
-        <div class="info-banner" style="margin-top:12px;">💡 <strong>কেন এই সিদ্ধান্ত?</strong> ${alloc.reason}</div>
-        <button type="button" class="btn-teal" style="width:100%;" data-action="run-coach-plan">⚡ এই গাইড অনুযায়ী ভার্চুয়াল ইনভেস্ট করুন</button>
-      `;
-
-      document.getElementById("investment-scanner-table").innerHTML = `<table>
-        <thead><tr><th>ইনভেস্টমেন্টের জায়গা</th><th>ঝুঁকি</th><th>সম্ভাব্য রিটার্ন</th><th>উপযুক্ততা</th></tr></thead>
-        <tbody>${INVESTMENT_PLACES.map(item => {
-          let badge = '<span class="tag tag-match">✅ উপযুক্ত</span>';
-          if (item.key === "crypto") badge = '<span class="tag tag-high">⚠️ প্র্যাকটিস</span>';
-          else if (item.key === "growth" && state.profile.risk === "low") badge = '<span class="tag tag-med">⚖️ পরে</span>';
-          else if (item.key === "safe" && state.profile.emergency === "no") badge = '<span class="tag tag-live">⭐ জরুরি</span>';
-          return `<tr><td><strong>${item.name}</strong><div style="font-size:11.5px; color:#64748b;">${item.bestFor}</div></td><td>${item.risk}</td><td><strong>${item.ret}</strong></td><td>${badge}</td></tr>`;
-        }).join("")}</tbody></table>`;
-
-      const monitorEl = document.getElementById("coach-holdings-monitor");
-      const keys = Object.keys(state.holdings);
-      if (keys.length === 0) {
-        monitorEl.innerHTML = `<div class="list-box" style="margin-bottom:0; font-size:13px; color:#475569;">এখনো কোনো হোল্ডিং নেই।</div>`;
-      } else {
-        monitorEl.innerHTML = keys.map(id => {
-          const h = state.holdings[id]; const a = ASSETS.find(x => x.id === id);
-          if (!a) return "";
-          const currVal = h.qty * getEffectivePrice(a);
-          const pnlPct = ((currVal - h.investedINR) / h.investedINR) * 100;
-          let advice = "🟢 HOLD — নিয়মিত SIP চালিয়ে যান";
-          if (pnlPct >= 10) advice = "💰 PROFIT LOCK — লাভ তুলে নেওয়ার সময়";
-          else if (pnlPct <= -5) advice = "🛒 BUY ON DIP — সস্তায় অল্প যোগ করুন";
-          return `<div class="list-box" style="margin-bottom:8px;"><div style="display:flex; justify-content:space-between; align-items:center; gap:8px;"><div><strong>${a.name}</strong><div style="font-size:12px; color:#0f766e; font-weight:700;">${advice}</div></div><div style="text-align:right;"><div><strong>${formatMoney(currVal)}</strong></div><button type="button" class="btn-sell" style="margin-top:4px;" data-action="sell-holding" data-id="${id}">💰 Sell</button></div></div></div>`;
-        }).join("");
-      }
-    }
-
-    function renderWallet() {
-      const { totalVal, totalCost } = getPortfolioTotals();
-      document.getElementById("wallet-total").textContent = formatMoney(totalVal);
-      document.getElementById("wallet-cash").textContent = formatMoney(state.cash);
-      document.getElementById("wallet-invested").textContent = formatMoney(totalCost);
-      document.getElementById("practice-day").textContent = `${state.day} / ৩০ দিন`;
-      const pct = Math.min(100, Math.round((state.day / 30) * 100));
-      document.getElementById("learn-progress-text").textContent = `${state.day} / ৩০ দিন (${pct}%)`;
-      document.getElementById("learn-progress-bar").style.width = pct + "%";
-
-      const listEl = document.getElementById("holdings-list");
-      const keys = Object.keys(state.holdings);
-      if (keys.length === 0) {
-        listEl.innerHTML = 'এখনো কোনো অ্যাসেট কেনা হয়নি। <strong>🤖 অটো-পাইলট</strong> ট্যাব থেকে AI চালু করুন।';
-        return;
-      }
-      listEl.innerHTML = keys.map(id => {
-        const h = state.holdings[id]; const a = ASSETS.find(x => x.id === id);
-        if (!a) return "";
-        const currVal = h.qty * getEffectivePrice(a);
-        const diff = currVal - h.investedINR;
-        return `<div style="display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid #f1f5f9;">
-          <div><strong>${a.name}</strong><div style="font-size:11.5px; color:#64748b;">ইনভেস্ট: ${formatMoney(h.investedINR)}</div></div>
-          <div style="display:flex; align-items:center; gap:10px;">
-            <div style="text-align:right;">
-              <strong>${formatMoney(currVal)}</strong>
-              <div style="font-size:11.5px; font-weight:700;" class="${diff >= 0 ? 'up' : 'down'}">${diff >= 0 ? '+' : ''}${formatMoney(diff)}</div>
-            </div>
-            <button type="button" class="btn-sell" data-action="sell-holding" data-id="${id}">Sell</button>
-          </div>
-        </div>`;
-      }).join("");
-    }
-
-    function renderAssetList() {
-      document.getElementById("asset-list").innerHTML = ASSETS.map(a => {
-        const selected = a.id === state.selectedAssetId ? "selected" : "";
-        const riskClass = a.risk === "LOW" ? "tag-low" : (a.risk === "MEDIUM" ? "tag-med" : "tag-high");
-        const statusBadge = a.isLive ? '<span class="tag tag-live">🟢 LIVE</span>' : '<span class="tag tag-api">🔌 রেফারেন্স</span>';
-        const changeHtml = a.changePct !== null
-          ? `<div class="asset-change ${a.changePct >= 0 ? 'up' : 'down'}">${a.changePct >= 0 ? '+' : ''}${a.changePct.toFixed(2)}%</div>`
-          : `<div class="asset-change muted">রেফারেন্স: ${formatMoney(a.refPriceINR)}</div>`;
-        return `<div class="asset-item ${selected}" data-action="select-asset" data-id="${a.id}">
-          <div class="asset-row"><div><div class="asset-name">${a.name}</div><div class="asset-sym">${a.symbol}</div></div><div><div class="asset-price">${formatMoney(a.priceINR)}</div>${changeHtml}</div></div>
-          <div class="tags-row"><span class="tag ${riskClass}">${a.riskLabel}</span>${statusBadge}</div>
-        </div>`;
-      }).join("");
-    }
-
-    function renderDecisionCard() {
-      const a = ASSETS.find(x => x.id === state.selectedAssetId) || ASSETS[0];
-      const sigClass = a.signal === "BUY" ? "sig-buy" : (a.signal === "HOLD" ? "sig-hold" : "sig-wait");
-      const estProfit = Math.round(state.simAmount * a.expectedReturn);
-      const estRisk = Math.round(state.simAmount * a.maxDrop);
-      const displayPrice = a.priceINR !== null ? formatMoney(a.priceINR) : `${formatMoney(a.refPriceINR)} (রেফারেন্স)`;
-      document.getElementById("decision-card").innerHTML = `
-        <div class="card-title">🤖 AI ডিসিশন কার্ড: ${a.name}</div>
-        <div class="card-sub">${a.intro}</div>
-        <div class="signal-banner ${sigClass}"><strong>${a.signalLabel}</strong><span>দাম: <strong>${displayPrice}</strong></span></div>
-        <div class="list-box" style="background:#f0fdfa; border-color:#99f6e4;"><h4>🧭 Buy/Sell নিয়ম</h4><ul><li><strong>BUY:</strong> ${a.buyRule}</li><li><strong>SELL:</strong> ${a.sellRule}</li></ul></div>
-        <div class="list-box" style="margin-bottom:0;">
-          <h4>🎛️ হোয়াট-ইফ সিমুলেটর</h4>
-          <div style="display:flex; justify-content:space-between; font-size:13px; margin-top:6px;"><span>বিনিয়োগের পরিমাণ:</span><strong>${formatMoney(state.simAmount)}</strong></div>
-          <input type="range" id="sim-slider" min="500" max="5000" step="500" value="${state.simAmount}" />
-          <div class="sim-grid">
-            <div class="sim-cell"><small>বিনিয়োগ</small><strong>${formatMoney(state.simAmount)}</strong></div>
-            <div class="sim-cell"><small>সম্ভাব্য লাভ (১ বছর)</small><strong class="up">+${formatMoney(estProfit)}</strong></div>
-            <div class="sim-cell"><small>সর্বোচ্চ ঝুঁকি</small><strong class="down">-${formatMoney(estRisk)}</strong></div>
-          </div>
-          <button type="button" class="btn-primary" style="width:100%; margin-top:10px;" data-action="practice-buy" data-id="${a.id}">🧪 প্র্যাকটিস কিনুন</button>
-        </div>`;
-    }
-
-    function renderAll() {
-      syncProfilePills();
-      updateSyncIndicators();
-      renderAutopilot();
-      renderCoach();
-      renderWallet();
-      renderAssetList();
-      renderDecisionCard();
-    }
-
-    function switchTab(tab) {
-      document.querySelectorAll(".nav-btn, .m-nav-btn").forEach(b => {
-        b.classList.toggle("active", b.getAttribute("data-tab") === tab);
-      });
-      ["autopilot", "coach", "home", "research", "learn"].forEach(t => {
-        document.getElementById("tab-" + t).classList.toggle("hidden", t !== tab);
-      });
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function executePracticeBuy(assetId, amountINR, silent) {
-      const asset = ASSETS.find(a => a.id === assetId);
-      if (!asset || amountINR <= 0) return false;
-      if (amountINR > state.cash) { if (!silent) showToast("পর্যাপ্ত ব্যালেন্স নেই"); return false; }
-      const limit = asset.type === "CRYPTO" ? 800 : 2500;
-      const currentInAsset = (state.holdings[assetId]?.investedINR || 0) + amountINR;
-      if (currentInAsset > limit) { if (!silent) showToast(`🛡️ সেফটি গার্ডরেল: ${asset.name}-এ সর্বোচ্চ ₹${limit}!`); return false; }
-      const px = getEffectivePrice(asset);
-      state.cash -= amountINR;
-      if (!state.holdings[assetId]) state.holdings[assetId] = { qty: 0, investedINR: 0 };
-      state.holdings[assetId].qty += amountINR / px;
-      state.holdings[assetId].investedINR += amountINR;
-      if (!silent) { renderAll(); pushToSupabase(true); showToast(`✅ ${asset.name}-এ ${formatMoney(amountINR)} ইনভেস্ট সম্পন্ন!`); }
-      return true;
-    }
-
-    function executePracticeSell(assetId) {
-      const h = state.holdings[assetId];
-      const asset = ASSETS.find(a => a.id === assetId);
-      if (!h || !asset) return;
-      const saleValue = h.qty * getEffectivePrice(asset);
-      state.cash += saleValue;
-      delete state.holdings[assetId];
-      renderAll(); pushToSupabase(true);
-      showToast(`💰 ${asset.name} বিক্রি করে ${formatMoney(saleValue)} ওয়ালেটে জমা হয়েছে!`);
-    }
-
-    function executeCoachGuidedInvest() {
-      const alloc = computeCoachAllocation();
-      const stepBudget = Math.min(1000, state.cash);
-      if (stepBudget < 200) { showToast("পর্যাপ্ত ব্যালেন্স নেই—রিসেট করুন"); return; }
-      const niftyAmt = Math.round((stepBudget * (alloc.index + alloc.safe)) / 100);
-      const goldAmt = Math.round((stepBudget * alloc.gold) / 100);
-      const growthAmt = stepBudget - niftyAmt - goldAmt;
-      let ok = false;
-      if (niftyAmt > 0 && executePracticeBuy("nifty", niftyAmt, true)) ok = true;
-      if (goldAmt > 0 && executePracticeBuy("gold", goldAmt, true)) ok = true;
-      if (growthAmt > 0 && executePracticeBuy("hdfc", growthAmt, true)) ok = true;
-      state.day = Math.min(30, state.day + 1);
-      renderAll(); pushToSupabase(true);
-      showToast(ok ? `🧭 কোচ প্ল্যান অনুযায়ী ${formatMoney(stepBudget)} ইনভেস্ট সম্পন্ন!` : "🛡️ সেফটি সীমা পূর্ণ হয়েছে");
-    }
-
-    function closeModals() {
-      document.getElementById("help-modal").classList.remove("open");
-      document.getElementById("api-modal").classList.remove("open");
-    }
-
-    function syncProfilePills() {
-      document.querySelectorAll("[data-action='set-profile']").forEach(btn => {
-        btn.classList.toggle("selected", String(state.profile[btn.getAttribute("data-key")]) === String(btn.getAttribute("data-val")));
-      });
-    }
-
-    document.addEventListener("click", function(e) {
-      const btn = e.target.closest("[data-action]");
-      if (!btn) {
-        if (e.target.classList.contains("modal-backdrop")) closeModals();
-        return;
-      }
-      const action = btn.getAttribute("data-action");
-
-      if (action === "switch-tab") { switchTab(btn.getAttribute("data-tab")); }
-      if (action === "set-currency") {
-        state.currency = btn.getAttribute("data-curr");
-        document.querySelectorAll(".curr-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        renderAll();
-      }
-      if (action === "set-chart-mode") {
-        state.chartMode = btn.getAttribute("data-mode");
-        document.querySelectorAll(".chart-tab").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        renderPnLChart();
-      }
-      if (action === "select-chart-pt") {
-        state.selectedChartIdx = parseInt(btn.getAttribute("data-idx"), 10);
-        renderPnLChart();
-      }
-      if (action === "run-autopilot-now") { triggerAutonomousAI(); }
-      if (action === "refresh-autopilot-logs") { pullFromSupabase(false); }
-      if (action === "set-profile") {
-        const key = btn.getAttribute("data-key");
-        let val = btn.getAttribute("data-val");
-        if (key === "budget") val = parseInt(val, 10);
-        state.profile[key] = val;
-        syncProfilePills();
-        renderCoach();
-        pushToSupabase(true);
-        showToast("প্রোফাইল আপডেট হয়েছে!");
-      }
-      if (action === "run-coach-plan") { executeCoachGuidedInvest(); }
-      if (action === "sell-holding") { executePracticeSell(btn.getAttribute("data-id")); }
-      if (action === "select-asset") {
-        state.selectedAssetId = btn.getAttribute("data-id");
-        renderAssetList();
-        renderDecisionCard();
-      }
-      if (action === "explain") {
-        document.getElementById("help-body").textContent = EXPLANATIONS[btn.getAttribute("data-term")] || "";
-        document.getElementById("help-modal").classList.add("open");
-      }
-      if (action === "open-api-modal") {
-        document.getElementById("api-url-input").value = state.apiUrl;
-        document.getElementById("autopilot-url-input").value = state.autopilotUrl;
-        document.getElementById("api-key-input").value = state.apiKey;
-        document.getElementById("sync-id-input").value = state.syncId;
-        document.getElementById("gemini-key-input").value = state.geminiKey;
-        document.getElementById("api-modal").classList.add("open");
-      }
-      if (action === "close-modals") { closeModals(); }
-      if (action === "save-api-config") {
-        state.apiUrl = document.getElementById("api-url-input").value.trim() || DEFAULT_EDGE_URL;
-        state.autopilotUrl = document.getElementById("autopilot-url-input").value.trim() || DEFAULT_AUTOPILOT_URL;
-        state.apiKey = document.getElementById("api-key-input").value.trim();
-        state.syncId = document.getElementById("sync-id-input").value.trim();
-        state.geminiKey = document.getElementById("gemini-key-input").value.trim();
-        localStorage.setItem("safeyield_api_url", state.apiUrl);
-        localStorage.setItem("safeyield_autopilot_url", state.autopilotUrl);
-        localStorage.setItem("safeyield_api_key", state.apiKey);
-        localStorage.setItem("safeyield_sync_id", state.syncId);
-        localStorage.setItem("safeyield_gemini_key", state.geminiKey);
-        closeModals();
-        showToast("সেটিংস সেভ হয়েছে! সিঙ্ক হচ্ছে...");
-        fetchLiveMarketData();
-        pullFromSupabase(false);
-      }
-      if (action === "clear-api-config") {
-        state.apiKey = ""; state.syncId = ""; state.geminiKey = "";
-        localStorage.removeItem("safeyield_api_key");
-        localStorage.removeItem("safeyield_sync_id");
-        localStorage.removeItem("safeyield_gemini_key");
-        document.getElementById("api-key-input").value = "";
-        document.getElementById("sync-id-input").value = "";
-        document.getElementById("gemini-key-input").value = "";
-        state.cloudStatus = "local";
-        updateSyncIndicators();
-        showToast("Cloud Sync মুছে ফেলা হয়েছে");
-      }
-      if (action === "manual-cloud-sync") {
-        if (!isCloudConfigured()) { showToast("আগে '⚙️ সেটআপ'-এ Anon Key ও Sync ID দিন"); return; }
-        pullFromSupabase(false);
-      }
-      if (action === "refresh-prices") { showToast("লাইভ দাম আপডেট হচ্ছে..."); fetchLiveMarketData(); }
-      if (action === "practice-buy") { executePracticeBuy(btn.getAttribute("data-id"), state.simAmount); }
-      if (action === "reset-wallet") {
-        state.cash = 10000; state.day = 1; state.holdings = {};
-        renderAll(); pushToSupabase(true);
-        showToast("ভার্চুয়াল ওয়ালেট ₹10,000-এ রিসেট হয়েছে");
-      }
-    });
-
-    document.addEventListener("input", function(e) {
-      if (e.target && e.target.id === "sim-slider") {
-        state.simAmount = parseInt(e.target.value, 10) || 1000;
-        renderDecisionCard();
-      }
-    });
-
-    async function fetchLiveMarketData() {
-      const pill = document.getElementById("live-status-pill");
-      const updatedEl = document.getElementById("last-updated");
-      let liveCount = 0;
-
-      if (state.apiUrl) {
-        try {
-          const headers = { "Content-Type": "application/json" };
-          if (state.apiKey) headers["Authorization"] = "Bearer " + state.apiKey;
-          const sRes = await fetch(state.apiUrl, { headers });
-          if (sRes.ok) {
-            const payload = await sRes.json();
-            const map = payload.data || payload;
-            ASSETS.forEach(a => {
-              if (a.apiKey && map[a.apiKey] && map[a.apiKey].price) {
-                a.priceINR = map[a.apiKey].price;
-                a.changePct = map[a.apiKey].changePct || 0;
-                a.isLive = true;
-                liveCount++;
-              }
-            });
-          }
-        } catch (_) {}
-      }
-
-      const btc = ASSETS.find(a => a.id === "btc");
-      const eth = ASSETS.find(a => a.id === "eth");
-      if (!btc.isLive || !eth.isLive) {
-        try {
-          const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=inr,usd&include_24hr_change=true");
-          if (res.ok) {
-            const data = await res.json();
-            if (data.bitcoin && !btc.isLive) { btc.priceINR = data.bitcoin.inr; btc.changePct = data.bitcoin.inr_24h_change; btc.isLive = true; liveCount++; }
-            if (data.ethereum && !eth.isLive) { eth.priceINR = data.ethereum.inr; eth.changePct = data.ethereum.inr_24h_change; eth.isLive = true; liveCount++; }
-          }
-        } catch (_) {}
-      }
-
-      const now = new Date().toLocaleTimeString("bn-BD", { hour: "2-digit", minute: "2-digit" });
-      updatedEl.textContent = "আপডেট: " + now;
-      pill.innerHTML = liveCount >= 6
-        ? '<span class="dot-pulse"></span> সব ৬টি লাইভ'
-        : `<span class="dot-pulse"></span> ${liveCount}/৬টি লাইভ`;
-      renderAll();
-    }
-
-    renderAll();
-    fetchLiveMarketData();
-    pullFromSupabase(true);
-    setInterval(fetchLiveMarketData, 60000);
-  </script>
-</body>
-</html>
+  function fmt(inr) {
+    const val = Number(in
