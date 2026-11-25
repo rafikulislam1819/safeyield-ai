@@ -1,0 +1,20 @@
+name: SafeYield AI 30-Day Autopilot
+
+on:
+  schedule:
+    # 04:30 UTC = 10:00 AM IST (Indian Market Open)
+    - cron: '30 4 * * *'
+    # 09:00 UTC = 2:30 PM IST (Pre-Close Review)
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-ai-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger SafeYield AI Autonomous Research & Trading
+        run: |
+          curl -s -X POST "https://pjacpgpysrdnotdezxrh.supabase.co/functions/v1/ai-autopilot" \
+            -H "Content-Type: application/json" \
+            -d '{"sync_id": "rafikul-2026"}'
+            
