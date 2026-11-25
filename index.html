@@ -6,7 +6,7 @@
   <title>SafeYield AI v4 — স্বয়ংক্রিয় AI ইনভেস্টমেন্ট ও মার্কেট অ্যানালাইসিস</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
   <style>
     :root {
       --bg: #f1f5f9;
@@ -21,12 +21,12 @@
       --warn: #f59e0b;
       --blue: #2563eb;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     body {
-      font-family: 'Hind Siliguri', system-ui, sans-serif;
+      font-family: 'Hind Siliguri', system-ui, -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
-      padding-bottom: 84px;
+      padding-bottom: 86px;
       line-height: 1.5;
     }
     .container { max-width: 780px; margin: 0 auto; padding: 14px; }
@@ -51,9 +51,9 @@
     .title-wrap p { font-size: 13px; color: var(--muted); }
     .controls-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
     .pill {
-      padding: 6px 12px; border-radius: 99px; border: 1px solid var(--border);
-      background: #f8fafc; font-size: 13px; font-weight: 600; cursor: pointer;
-      display: inline-flex; align-items: center; gap: 5px; font-family: inherit;
+      padding: 7px 13px; border-radius: 99px; border: 1px solid var(--border);
+      background: #f8fafc; color: var(--text); font-size: 13px; font-weight: 600;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 5px; font-family: inherit;
     }
     .pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
     .status-strip { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: 12px; }
@@ -84,7 +84,7 @@
     .btn-run {
       width: 100%; padding: 13px; border: none; border-radius: 12px;
       background: #10b981; color: #052e16; font-size: 16px; font-weight: 700;
-      cursor: pointer; font-family: inherit; transition: 0.2s;
+      cursor: pointer; font-family: inherit;
     }
     .btn-run:disabled { opacity: 0.6; cursor: not-allowed; }
     .btn-sub {
@@ -96,7 +96,7 @@
     /* Section Headings & Grids */
     .sec-title { font-size: 17px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
     .sec-sub { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; }
     .weight-item { background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; }
     .weight-top { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
     .w-bar { height: 7px; background: #e2e8f0; border-radius: 99px; overflow: hidden; }
@@ -138,17 +138,17 @@
     .nav-btn {
       border: none; background: none; display: flex; flex-direction: column;
       align-items: center; gap: 2px; font-size: 11px; font-weight: 600;
-      color: var(--muted); cursor: pointer; font-family: inherit; padding: 4px 0;
+      color: var(--muted); cursor: pointer; font-family: inherit; padding: 5px 0;
     }
     .nav-btn.active { color: var(--primary); }
     .nav-btn span.ico { font-size: 18px; }
 
     /* Modal */
     .modal-bg {
-      display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.55);
-      z-index: 100; align-items: center; justify-content: center; padding: 16px;
+      display: none; pointer-events: none; position: fixed; inset: 0;
+      background: rgba(15,23,42,0.55); z-index: 100; align-items: center; justify-content: center; padding: 16px;
     }
-    .modal-bg.open { display: flex; }
+    .modal-bg.open { display: flex; pointer-events: auto; }
     .modal { background: #fff; border-radius: 18px; max-width: 440px; width: 100%; padding: 18px; }
     .modal label { display: block; font-size: 13px; font-weight: 600; margin: 10px 0 4px; }
     .modal input { width: 100%; padding: 9px 11px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; }
@@ -162,20 +162,20 @@
     <div class="brand-row">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1>SafeYield AI <span class="badge-v">v4 • স্বচ্ছ অটো-পাইলট</span></h1>
+        <h1>SafeYield AI <span class="badge-v">v4.1 • স্বচ্ছ অটো-পাইলট</span></h1>
         <p>সহজ বাংলায় ৩০ দিনের স্বয়ংক্রিয় AI ইনভেস্টমেন্ট ও মার্কেট ইন্টেলিজেন্স</p>
       </div>
     </div>
     <div class="controls-row">
-      <button class="pill active" id="btnINR" onclick="setCurrency('INR')">₹ INR</button>
-      <button class="pill" id="btnUSD" onclick="setCurrency('USD')">$ USD</button>
-      <button class="pill" onclick="openSetup()">⚙️ সেটআপ</button>
-      <button class="pill" onclick="refreshAll()">🔄 সিঙ্ক ও দাম</button>
+      <button type="button" class="pill active" id="btnINR" onclick="setCurrency('INR')">₹ INR</button>
+      <button type="button" class="pill" id="btnUSD" onclick="setCurrency('USD')">$ USD</button>
+      <button type="button" class="pill" onclick="openSetup()">⚙️ সেটআপ</button>
+      <button type="button" class="pill" onclick="refreshAll()">🔄 সিঙ্ক ও দাম</button>
     </div>
     <div class="status-strip">
       <span class="chip-live" id="liveCount">● লাইভ মার্কেট সংযুক্ত</span>
       <span class="chip-sync" id="syncBadge">☁️ সিঙ্ক (rafikul-2026)</span>
-      <span style="color:var(--muted)" id="lastUpdated">আপডেট হচ্ছে...</span>
+      <span style="color:var(--muted)" id="lastUpdated">প্রস্তুত</span>
     </div>
   </div>
 
@@ -200,8 +200,8 @@
         <div class="mini-box"><small>হাতে নগদ বাকি</small><strong id="heroCash">₹10,000</strong></div>
         <div class="mini-box"><small>মোট ট্রেড (লাভ/লস)</small><strong id="heroTrades">0 (0/0)</strong></div>
       </div>
-      <button class="btn-run" id="runBtn" onclick="runAutopilot()">🚀 এখনই AI রিসার্চ ও ট্রেড চালাও</button>
-      <button class="btn-sub" onclick="refreshAll()">🔄 রিপোর্ট আপডেট</button>
+      <button type="button" class="btn-run" id="runBtn" onclick="runAutopilot()">🚀 এখনই AI রিসার্চ ও ট্রেড চালাও</button>
+      <button type="button" class="btn-sub" onclick="refreshAll()">🔄 রিপোর্ট আপডেট</button>
       <div class="run-msg" id="runStatus"></div>
     </div>
 
@@ -216,7 +216,7 @@
     <div class="card">
       <div class="sec-title">⚡ সর্বশেষ AI সিদ্ধান্ত ও কারণ</div>
       <div class="sec-sub">AI ঠিক কী দেখে, কোন স্ট্র্যাটেজিতে, কেন কিনল বা বেচল</div>
-      <div id="latestDecisionBox">লোড হচ্ছে...</div>
+      <div id="latestDecisionBox">ডেটা লোড হচ্ছে...</div>
     </div>
   </div>
 
@@ -239,20 +239,18 @@
           <p style="font-size:12.5px;color:var(--muted);margin-top:4px;">শেয়ার বাজারে অস্থিরতা বা পতন বাড়লে AI স্বয়ংক্রিয়ভাবে <b>Gold ETF</b>-এর গুরুত্ব বাড়িয়ে পোর্টফোলিও সুরক্ষিত রাখে।</p>
         </div>
         <div class="weight-item">
-          <strong>৪. Profit Lock & Stop-Loss</strong>
+          <strong>৪. Profit Lock &amp; Stop-Loss</strong>
           <p style="font-size:12.5px;color:var(--muted);margin-top:4px;">কোনো অ্যাসেটে <b>+১০% লাভ</b> হলে মুনাফা তুলে নেয় (Profit Lock), আর ক্রিপ্টোতে <b>-৭% লস</b> হলে বড় ক্ষতি এড়াতে বিক্রি করে দেয়।</p>
         </div>
       </div>
     </div>
 
-    <!-- Self-Learning Strategy Weights -->
     <div class="card">
       <div class="sec-title">🎛️ লাইভ স্ট্র্যাটেজি ওয়েট (Self-Learning Memory)</div>
       <div class="sec-sub">আগের ট্রেডের লাভ-লস দেখে AI নিজে থেকেই এই স্কোরগুলো আপডেট করে</div>
       <div class="grid-2" id="weightsGrid"></div>
     </div>
 
-    <!-- Live Technical Indicators Table -->
     <div class="card">
       <div class="sec-title">📊 কিসের ভিত্তিতে ইনভেস্ট করছে? (লাইভ ইন্ডিকেটর)</div>
       <div class="sec-sub">প্রতিটি অ্যাসেটের বর্তমান দাম, RSI (14), ১৪-দিনের গড় (SMA14) ও ডিসকাউন্ট %</div>
@@ -275,11 +273,10 @@
       </div>
     </div>
 
-    <!-- Full Decision History -->
     <div class="card">
       <div class="sec-title">📜 AI-এর অতীত সিদ্ধান্ত ও শেখা পাঠ (Audit Log)</div>
       <div class="sec-sub">প্রতিটি দিনের ট্রেড লগ, কারণ ও অর্জিত শিক্ষা</div>
-      <div id="allLogsBox">লোড হচ্ছে...</div>
+      <div id="allLogsBox">ডেটা লোড হচ্ছে...</div>
     </div>
   </div>
 
@@ -336,11 +333,11 @@
 
 <!-- Bottom Navigation -->
 <nav class="bottom-nav">
-  <button class="nav-btn active" onclick="switchTab('autopilot', this)"><span class="ico">🤖</span>অটো-পাইলট</button>
-  <button class="nav-btn" onclick="switchTab('brain', this)"><span class="ico">🧠</span>সিদ্ধান্ত ও যুক্তি</button>
-  <button class="nav-btn" onclick="switchTab('news', this)"><span class="ico">📰</span>নিউজ ও প্রেডিকশন</button>
-  <button class="nav-btn" onclick="switchTab('wallet', this)"><span class="ico">💼</span>ওয়ালেট</button>
-  <button class="nav-btn" onclick="switchTab('learn', this)"><span class="ico">📖</span>শিখুন</button>
+  <button type="button" class="nav-btn active" onclick="switchTab('autopilot', this)"><span class="ico">🤖</span>অটো-পাইলট</button>
+  <button type="button" class="nav-btn" onclick="switchTab('brain', this)"><span class="ico">🧠</span>সিদ্ধান্ত ও যুক্তি</button>
+  <button type="button" class="nav-btn" onclick="switchTab('news', this)"><span class="ico">📰</span>নিউজ ও প্রেডিকশন</button>
+  <button type="button" class="nav-btn" onclick="switchTab('wallet', this)"><span class="ico">💼</span>ওয়ালেট</button>
+  <button type="button" class="nav-btn" onclick="switchTab('learn', this)"><span class="ico">📖</span>শিখুন</button>
 </nav>
 
 <!-- Setup Modal -->
@@ -355,15 +352,14 @@
     <label>Sync ID</label>
     <input id="cfgSync" value="rafikul-2026" />
     <div style="display:flex;gap:8px;margin-top:14px;">
-      <button class="btn-run" style="padding:10px;font-size:14px;" onclick="saveSetup()">সেভ করুন</button>
-      <button class="pill" onclick="closeSetup()">বন্ধ করুন</button>
+      <button type="button" class="btn-run" style="padding:10px;font-size:14px;" onclick="saveSetup()">সেভ করুন</button>
+      <button type="button" class="pill" onclick="closeSetup()">বন্ধ করুন</button>
     </div>
   </div>
 </div>
 
 <script>
   const DEFAULT_URL = 'https://pjacpgpysrdnotdezxrh.supabase.co';
-  const DEFAULT_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqYWNwZ3B5c3Jkbm90ZGV6eHJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4MjI5OTcsImV4cCI6MjA4OTM5ODk5N30.892rS_A0cW_w_A6-x22m5P26y3M84G_Z7-y15J4_22g';
   const ASSETS = {
     nifty: { name: 'Nifty 50 ETF', type: 'ইক্যুইটি সূচক', cap: 2500 },
     gold:  { name: 'Gold ETF',     type: 'নিরাপদ হেজ',   cap: 2500 },
@@ -375,15 +371,387 @@
 
   let currency = 'INR';
   const USD_RATE = 92.65;
-  let stateData = null, memoryData = null, logsData = [], chartInstance = null;
+  let stateData = { cash: 10000, practice_day: 1, holdings: {} };
+  let memoryData = { initial_capital: 10000, win_count: 0, loss_count: 0, total_trades: 0, strategy_weights: { dip_buying: 1, smart_sip: 1, gold_hedge: 1, profit_lock: 1 }, lessons: [] };
+  let logsData = [];
+  let chartInstance = null;
 
   function getCfg() {
-    return {
-      url: (localStorage.getItem('sy_url') || DEFAULT_URL).trim(),
-      key: (localStorage.getItem('sy_key') || DEFAULT_KEY).trim(),
-      syncId: (localStorage.getItem('sy_sync') || 'rafikul-2026').trim()
-    };
+    const savedKey = localStorage.getItem('sy_key') || localStorage.getItem('sb_key') || localStorage.getItem('supabase_key') || '';
+    const savedUrl = localStorage.getItem('sy_url') || localStorage.getItem('sb_url') || DEFAULT_URL;
+    const savedSync = localStorage.getItem('sy_sync') || localStorage.getItem('sync_id') || 'rafikul-2026';
+    return { url: savedUrl.trim(), key: savedKey.trim(), syncId: savedSync.trim() };
   }
 
   function fmt(inr) {
-    const val = Number(in
+    const val = Number(inr || 0);
+    if (currency === 'USD') return '$' + (val / USD_RATE).toFixed(2);
+    return '₹' + val.toLocaleString('en-IN', { maximumFractionDigits: 2 });
+  }
+
+  function setCurrency(c) {
+    currency = c;
+    document.getElementById('btnINR').classList.toggle('active', c === 'INR');
+    document.getElementById('btnUSD').classList.toggle('active', c === 'USD');
+    renderAll();
+  }
+
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const target = document.getElementById('tab-' + id);
+    if (target) target.classList.add('active');
+    if (btn) btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function openSetup() {
+    const c = getCfg();
+    document.getElementById('cfgUrl').value = c.url;
+    document.getElementById('cfgKey').value = c.key;
+    document.getElementById('cfgSync').value = c.syncId;
+    document.getElementById('setupModal').classList.add('open');
+  }
+  function closeSetup() {
+    document.getElementById('setupModal').classList.remove('open');
+  }
+  function saveSetup() {
+    localStorage.setItem('sy_url', document.getElementById('cfgUrl').value.trim() || DEFAULT_URL);
+    localStorage.setItem('sy_key', document.getElementById('cfgKey').value.trim());
+    localStorage.setItem('sy_sync', document.getElementById('cfgSync').value.trim() || 'rafikul-2026');
+    closeSetup();
+    refreshAll();
+  }
+
+  async function fetchWithTimeout(url, options, ms = 8000) {
+    const ctrl = new AbortController();
+    const id = setTimeout(() => ctrl.abort(), ms);
+    try {
+      const res = await fetch(url, { ...options, signal: ctrl.signal });
+      clearTimeout(id);
+      return res;
+    } catch (e) {
+      clearTimeout(id);
+      throw e;
+    }
+  }
+
+  async function sbGet(path) {
+    const c = getCfg();
+    if (!c.key) return { ok: false, status: 401, data: [] };
+    const headers = { 'apikey': c.key, 'Content-Type': 'application/json' };
+    if (c.key.startsWith('eyJ')) headers['Authorization'] = 'Bearer ' + c.key;
+    const r = await fetchWithTimeout(c.url + path, { headers }, 8000);
+    if (!r.ok) return { ok: false, status: r.status, data: [] };
+    return { ok: true, status: r.status, data: await r.json() };
+  }
+
+  async function refreshAll() {
+    const c = getCfg();
+    document.getElementById('syncBadge').textContent = '☁️ সিঙ্ক (' + c.syncId + ')';
+    if (!c.key) {
+      document.getElementById('lastUpdated').textContent = '⚠️ ⚙️ সেটআপে Supabase Key দিন';
+      renderAll();
+      return;
+    }
+    document.getElementById('lastUpdated').textContent = 'আপডেট হচ্ছে...';
+    try {
+      const [st, mem, logs] = await Promise.all([
+        sbGet('/rest/v1/safeyield_state?sync_id=eq.' + encodeURIComponent(c.syncId) + '&select=*'),
+        sbGet('/rest/v1/ai_memory?sync_id=eq.' + encodeURIComponent(c.syncId) + '&select=*'),
+        sbGet('/rest/v1/ai_logs?sync_id=eq.' + encodeURIComponent(c.syncId) + '&order=created_at.desc&limit=30')
+      ]);
+      if (!st.ok && (st.status === 401 || st.status === 403)) {
+        document.getElementById('lastUpdated').textContent = '⚠️ API Key ভুল — ⚙️ সেটআপে ঠিক করুন';
+        renderAll();
+        return;
+      }
+      if (Array.isArray(st.data) && st.data[0]) stateData = st.data[0];
+      if (Array.isArray(mem.data) && mem.data[0]) memoryData = mem.data[0];
+      logsData = Array.isArray(logs.data) ? logs.data : [];
+      document.getElementById('lastUpdated').textContent = 'আপডেট: ' + new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+      renderAll();
+    } catch (e) {
+      document.getElementById('lastUpdated').textContent = '⚠️ নেটওয়ার্ক ধীর — আবার চেষ্টা করুন';
+      renderAll();
+    }
+  }
+
+  async function runAutopilot() {
+    const btn = document.getElementById('runBtn');
+    const msg = document.getElementById('runStatus');
+    const c = getCfg();
+    if (!c.key) {
+      msg.innerHTML = '<span style="color:#fde68a;">⚠️ আগে উপরে <b>⚙️ সেটআপ</b> বাটনে গিয়ে Supabase Key সেভ করুন।</span>';
+      openSetup();
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = '⏳ লাইভ বাজার, RSI ও নিউজ বিশ্লেষণ চলছে...';
+    msg.textContent = '';
+    try {
+      const headers = { 'Content-Type': 'application/json', 'apikey': c.key };
+      if (c.key.startsWith('eyJ')) headers['Authorization'] = 'Bearer ' + c.key;
+      const r = await fetchWithTimeout(c.url + '/functions/v1/ai-autopilot', {
+        method: 'POST', headers, body: JSON.stringify({ sync_id: c.syncId })
+      }, 25000);
+      const data = await r.json();
+      if (!r.ok || !data.ok) throw new Error(data.error || 'Server error');
+      msg.innerHTML = '✅ <b>দিন ' + data.day_completed + ' সম্পন্ন</b> (' + (data.brain_mode === 'GEMINI_AI' ? 'Gemini AI' : 'Quant AI Engine') + ') — <b>' + data.strategy_used + '</b>';
+      await refreshAll();
+    } catch (e) {
+      msg.innerHTML = '<span style="color:#fca5a5;">⚠️ এরর: ' + e.message + '</span>';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '🚀 এখনই AI রিসার্চ ও ট্রেড চালাও';
+    }
+  }
+
+  function renderAll() {
+    const latest = logsData[0] || null;
+    const snap = (latest && latest.market_snapshot) ? latest.market_snapshot : {};
+    const cash = Number(stateData.cash ?? 10000);
+    const hold = stateData.holdings || {};
+    let invVal = 0;
+    for (const [id, h] of Object.entries(hold)) {
+      const p = snap[id] && snap[id].price;
+      invVal += p ? h.qty * p : Number(h.investedINR || 0);
+    }
+    const total = cash + invVal;
+    const initCap = Number(memoryData.initial_capital || 10000);
+    const diff = total - initCap;
+    const diffPct = (diff / initCap) * 100;
+    const day = Number(stateData.practice_day || 1);
+
+    document.getElementById('heroTotal').textContent = fmt(total);
+    const pnlEl = document.getElementById('heroPnl');
+    pnlEl.textContent = (diff >= 0 ? '+' : '') + fmt(diff) + ' (' + (diffPct >= 0 ? '+' : '') + diffPct.toFixed(2) + '%)';
+    pnlEl.classList.toggle('neg', diff < 0);
+
+    document.getElementById('dayLabel').textContent = 'দিন ' + day + ' / ৩০';
+    const pct = Math.min(100, Math.round((day / 30) * 100));
+    document.getElementById('pctLabel').textContent = pct + '% সম্পন্ন';
+    document.getElementById('progFill').style.width = pct + '%';
+
+    document.getElementById('heroInvested').textContent = fmt(invVal);
+    document.getElementById('heroCash').textContent = fmt(cash);
+    document.getElementById('heroTrades').textContent = (memoryData.total_trades || 0) + ' (' + (memoryData.win_count || 0) + '/' + (memoryData.loss_count || 0) + ')';
+    document.getElementById('brainBadge').textContent = (latest && latest.brain_mode === 'GEMINI_AI') ? '🧠 Gemini AI সক্রিয়' : '⚙️ Quant AI Engine সক্রিয়';
+
+    renderLatestDecision(latest);
+    renderBrainTab(snap);
+    renderNewsAndPredictions(latest, snap);
+    renderWallet(hold, snap, cash);
+    renderChart();
+  }
+
+  function renderLatestDecision(latest) {
+    const box = document.getElementById('latestDecisionBox');
+    if (!latest) {
+      box.innerHTML = '<p style="color:var(--muted);font-size:13px;">এখনও কোনো ট্রেড ডেটা লোড হয়নি। উপরে <b>⚙️ সেটআপ</b>-এ Supabase Key দিয়ে <b>রিপোর্ট আপডেট</b> চাপুন।</p>';
+      return;
+    }
+    const actionsHtml = (latest.actions_taken || []).map(a => {
+      const cls = a.action === 'BUY' ? 'tag-buy' : (a.action === 'SELL' ? 'tag-sell' : 'tag-hold');
+      return '<div class="action-row">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+          '<span><span class="tag ' + cls + '">' + a.action + '</span> <b>' + (a.asset_name || a.asset_id) + '</b></span>' +
+          '<b>' + (a.amount_inr ? fmt(a.amount_inr) : 'হোল্ড') + '</b>' +
+        '</div>' +
+        '<div style="color:var(--muted);font-size:12.5px;margin-top:4px;">📌 <b>কারণ:</b> ' + (a.reason_bn || '') + '</div>' +
+      '</div>';
+    }).join('');
+
+    box.innerHTML = '<div class="log-box" style="margin-bottom:0;">' +
+      '<div class="log-head">' +
+        '<b>দিন ' + latest.day_number + ' • স্ট্র্যাটেজি: <span style="color:var(--primary);">' + (latest.strategy_used || 'Multi-Strategy') + '</span></b>' +
+        '<span style="font-size:12px;color:var(--muted);">' + new Date(latest.created_at).toLocaleString('bn-BD') + '</span>' +
+      '</div>' +
+      '<p style="font-size:13.5px;margin-bottom:6px;">' + (latest.summary_bn || '') + '</p>' +
+      actionsHtml +
+      (latest.lesson_bn ? '<div class="lesson-box">💡 <b>AI-এর শিক্ষা:</b> ' + latest.lesson_bn + '</div>' : '') +
+    '</div>';
+  }
+
+  function renderBrainTab(snap) {
+    const w = memoryData.strategy_weights || { dip_buying: 1, smart_sip: 1, gold_hedge: 1, profit_lock: 1 };
+    const wMap = [
+      { k: 'dip_buying', label: '📉 Buy on Dip (ডিসকাউন্টে কেনা)' },
+      { k: 'smart_sip', label: '📅 Smart SIP (ধাপে ধাপে বিনিয়োগ)' },
+      { k: 'gold_hedge', label: '🥇 Gold Hedge (সুরক্ষা ব্যালেন্স)' },
+      { k: 'profit_lock', label: '🔒 Profit Lock (মুনাফা সুরক্ষা)' }
+    ];
+    document.getElementById('weightsGrid').innerHTML = wMap.map(item => {
+      const val = Number(w[item.k] || 1);
+      const pct = Math.min(100, Math.round((val / 1.8) * 100));
+      return '<div class="weight-item">' +
+        '<div class="weight-top"><span>' + item.label + '</span><span>' + val.toFixed(2) + 'x গুরুত্ব</span></div>' +
+        '<div class="w-bar"><div class="w-fill" style="width:' + pct + '%"></div></div>' +
+      '</div>';
+    }).join('');
+
+    const tbody = document.getElementById('indicatorBody');
+    const keys = Object.keys(ASSETS);
+    if (!Object.keys(snap).length) {
+      tbody.innerHTML = '<tr><td colspan="6" style="color:var(--muted);">ডেটা সিঙ্ক হলে লাইভ RSI ও ট্রেন্ড দেখা যাবে।</td></tr>';
+    } else {
+      tbody.innerHTML = keys.map(id => {
+        const m = snap[id] || {};
+        const rsi = Number(m.rsi14 || 50);
+        const dip = Number(m.dipFromHighPct || 0);
+        let sig = '<span class="tag tag-neut">নিরপেক্ষ (Hold)</span>';
+        if (dip >= 2.5 || rsi < 48) sig = '<span class="tag tag-buy">কেনার সুযোগ (Buy)</span>';
+        else if (rsi > 68) sig = '<span class="tag tag-sell">অতিরিক্ত দাম (Profit Lock)</span>';
+        const chg = Number(m.changePct || 0);
+        return '<tr>' +
+          '<td><b>' + ASSETS[id].name + '</b><br><small style="color:var(--muted);">' + ASSETS[id].type + '</small></td>' +
+          '<td>' + (m.price ? fmt(m.price) : '—') + '</td>' +
+          '<td style="color:' + (chg >= 0 ? '#15803d' : '#b91c1c') + ';font-weight:600;">' + (chg >= 0 ? '+' : '') + chg + '%</td>' +
+          '<td><b>' + rsi + '</b></td>' +
+          '<td>' + dip + '% নিচে</td>' +
+          '<td>' + sig + '</td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    const allBox = document.getElementById('allLogsBox');
+    if (!logsData.length) {
+      allBox.innerHTML = '<p style="color:var(--muted);font-size:13px;">এখনও কোনো লগ লোড হয়নি।</p>';
+    } else {
+      allBox.innerHTML = logsData.slice(0, 10).map(l => {
+        const acts = (l.actions_taken || []).map(a => '<div style="font-size:12.5px;margin-top:4px;">• <b>' + a.action + ' ' + (a.asset_name || a.asset_id) + ':</b> ' + (a.reason_bn || '') + '</div>').join('');
+        return '<div class="log-box">' +
+          '<div class="log-head"><b>দিন ' + l.day_number + ' — ' + (l.strategy_used || '') + '</b><span class="tag tag-neut">মোট মূল্য: ' + fmt(l.portfolio_value) + '</span></div>' +
+          '<p style="font-size:13px;">' + (l.summary_bn || '') + '</p>' + acts +
+        '</div>';
+      }).join('');
+    }
+  }
+
+  function renderNewsAndPredictions(latest, snap) {
+    const niftyChg = Number((snap.nifty && snap.nifty.changePct) || 0);
+    const niftyRsi = Number((snap.nifty && snap.nifty.rsi14) || 50);
+    const goldChg = Number((snap.gold && snap.gold.changePct) || 0);
+    const btcChg = Number((snap.btc && snap.btc.changePct) || 0);
+
+    const sTag = document.getElementById('sentimentTag');
+    if (niftyChg > 0.4 && niftyRsi < 65) {
+      sTag.className = 'tag tag-bull'; sTag.textContent = 'Bullish (ইতিবাচক বাজার)';
+    } else if (niftyChg < -0.5) {
+      sTag.className = 'tag tag-bear'; sTag.textContent = 'Cautious / Bearish (সতর্ক অবস্থান)';
+    } else {
+      sTag.className = 'tag tag-neut'; sTag.textContent = 'Consolidation (স্থিতিশীল)';
+    }
+
+    document.getElementById('predictionContainer').innerHTML =
+      '<div class="pred-box">' +
+        '<div style="font-weight:700;font-size:14.5px;margin-bottom:6px;">🎯 AI স্বল্পমেয়াদী পূর্বাভাস ও কৌশলগত দিকনির্দেশনা</div>' +
+        '<ul style="padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:6px;">' +
+          '<li><b>ভারতীয় ইক্যুইটি (Nifty 50):</b> বর্তমান RSI <b>' + niftyRsi + '</b>। বিদেশি বিনিয়োগকারীদের (FII) প্রবাহ ও তেলের দামের ওপর নির্ভর করে Nifty ২৫,২৫০–২৫,৫০০ জোনে শক্তিশালী সাপোর্ট পাচ্ছে। বড় পতনে <b>Buy on Dip</b> কার্যকর থাকবে।</li>' +
+          '<li><b>সোনা (Gold ETF):</b> বৈশ্বিক সুদের হার ও ভূ-রাজনৈতিক অস্থিরতায় সোনা পোর্টফোলিওর সেরা সুরক্ষা কবচ হিসেবে কাজ করছে (পরিবর্তন: ' + (goldChg >= 0 ? '+' : '') + goldChg + '%)।</li>' +
+          '<li><b>আইটি ও ব্যাংকিং (TCS &amp; HDFC Bank):</b> লার্জ-ক্যাপ স্টকে প্রাতিষ্ঠানিক চাহিদা স্থিতিশীল; মধ্যমেয়াদে <b>Smart SIP</b> পদ্ধতিতে পজিশন গড়া নিরাপদ।</li>' +
+          '<li><b>ক্রিপ্টো মার্কেট (BTC &amp; ETH):</b> ক্রিপ্টোতে উচ্চ অস্থিরতা বজায় রয়েছে (BTC: ' + (btcChg >= 0 ? '+' : '') + btcChg + '%)। তাই AI মোট মূলধনের সর্বোচ্চ ৮% সীমা ও <b>-৭% Stop-Loss</b> কঠোরভাবে মানছে।</li>' +
+        '</ul>' +
+      '</div>';
+
+    document.getElementById('assetAnalysisGrid').innerHTML = Object.keys(ASSETS).map(id => {
+      const m = snap[id] || {};
+      const rsi = Number(m.rsi14 || 50);
+      const trendText = m.trend === 'UP' ? 'ঊর্ধ্বমুখী (Uptrend)' : (m.trend === 'DOWN' ? 'নিম্নমুখী (Downtrend)' : 'পাশাপাশি (Sideways)');
+      const outlook = rsi < 48 ? 'ভ্যালুয়েশন আকর্ষণীয় — ধাপে ধাপে কেনার উপযুক্ত।' : (rsi > 65 ? 'ওভারবট জোনের কাছাকাছি — নতুন এন্ট্রিতে সতর্কতা।' : 'স্বাভাবিক গতি — SIP চালিয়ে যাওয়ার মতো অবস্থা।');
+      return '<div class="weight-item">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;"><b>' + ASSETS[id].name + '</b><span class="tag ' + (rsi < 48 ? 'tag-bull' : 'tag-neut') + '">RSI ' + rsi + '</span></div>' +
+        '<div style="font-size:12.5px;color:var(--muted);margin-top:4px;">ট্রেন্ড: <b>' + trendText + '</b> • দাম: <b>' + (m.price ? fmt(m.price) : 'লাইভ') + '</b></div>' +
+        '<p style="font-size:12.5px;margin-top:5px;">' + outlook + '</p>' +
+      '</div>';
+    }).join('');
+
+    const rawNews = (latest && latest.news_headlines && latest.news_headlines.length) ? latest.news_headlines : [
+      'Indian equity benchmarks eye FII inflows and crude oil movement for next breakout',
+      'Gold ETFs remain preferred portfolio hedge amid global rate expectations',
+      'Large-cap IT and Private Banking stocks show resilient institutional accumulation',
+      'Bitcoin holds key psychological support as traders watch ETF flows and volatility'
+    ];
+
+    document.getElementById('newsFeedBox').innerHTML = rawNews.map(title => {
+      const low = String(title).toLowerCase();
+      const isBear = low.includes('fall') || low.includes('drop') || low.includes('crash') || low.includes('slump') || low.includes('war') || low.includes('loss');
+      const isBull = low.includes('rally') || low.includes('gain') || low.includes('surge') || low.includes('jump') || low.includes('rise') || low.includes('high');
+      const badge = isBear ? '<span class="tag tag-bear">রিস্ক / সতর্কতা</span>' : (isBull ? '<span class="tag tag-bull">ইতিবাচক সিগন্যাল</span>' : '<span class="tag tag-neut">মার্কেট আপডেট</span>');
+      const impact = isBear
+        ? 'AI ইমপ্যাক্ট: বাজারে অস্থিরতা বাড়লে AI নতুন কেনাকাটা কমিয়ে Gold Hedge ও ক্যাশ বাফারে জোর দেয়।'
+        : (isBull ? 'AI ইমপ্যাক্ট: ইতিবাচক মোমেন্টামে AI লাভজনক পজিশন ধরে রাখে এবং +১০% হলে Profit Lock করে।' : 'AI ইমপ্যাক্ট: স্বাভাবিক বাজারে নিয়মিত Smart SIP ও RSI ফিল্টার অনুযায়ী ট্রেড চলে।');
+      return '<div class="news-card">' + badge + '<h4>' + title + '</h4><p>' + impact + '</p></div>';
+    }).join('');
+  }
+
+  function renderWallet(hold, snap, cash) {
+    const entries = Object.entries(hold).filter(([, h]) => h && h.qty > 0);
+    let html = '<div class="weight-item" style="margin-bottom:10px;background:#ecfdf5;">' +
+      '<div style="display:flex;justify-content:space-between;"><b>💵 হাতে নগদ (Cash Buffer)</b><b>' + fmt(cash) + '</b></div>' +
+      '<small style="color:var(--muted);">জরুরি সুযোগের জন্য ন্যূনতম ₹500 সবসময় সংরক্ষিত থাকে</small>' +
+    '</div>';
+
+    if (!entries.length) {
+      html += '<p style="color:var(--muted);font-size:13px;">বর্তমানে কোনো অ্যাসেট কেনা নেই।</p>';
+    } else {
+      html += entries.map(([id, h]) => {
+        const info = ASSETS[id] || { name: id, cap: 2500 };
+        const curPrice = snap[id] && snap[id].price;
+        const curVal = curPrice ? h.qty * curPrice : h.investedINR;
+        const pnl = curVal - h.investedINR;
+        const pnlPct = h.investedINR ? (pnl / h.investedINR) * 100 : 0;
+        return '<div class="weight-item" style="margin-bottom:8px;">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+            '<b>' + info.name + '</b>' +
+            '<b style="color:' + (pnl >= 0 ? '#15803d' : '#b91c1c') + ';">' + fmt(curVal) + ' (' + (pnl >= 0 ? '+' : '') + pnlPct.toFixed(2) + '%)</b>' +
+          '</div>' +
+          '<div style="font-size:12.5px;color:var(--muted);margin-top:4px;">বিনিয়োগ: ' + fmt(h.investedINR) + ' / সীমা ' + fmt(info.cap) + ' • পরিমাণ: ' + Number(h.qty).toFixed(4) + ' ইউনিট</div>' +
+        '</div>';
+      }).join('');
+    }
+    document.getElementById('walletList').innerHTML = html;
+  }
+
+  function renderChart() {
+    if (typeof Chart === 'undefined') return;
+    const ctx = document.getElementById('growthChart');
+    if (!ctx) return;
+    const rev = [...logsData].reverse();
+    const labels = ['শুরু (দিন ০)', ...rev.map(l => 'দিন ' + l.day_number)];
+    const values = [Number(memoryData.initial_capital || 10000), ...rev.map(l => Number(l.portfolio_value || 10000))];
+    if (chartInstance) chartInstance.destroy();
+    chartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'মোট পোর্টফোলিও মূল্য (₹)',
+          data: values,
+          borderColor: '#0f766e',
+          backgroundColor: 'rgba(16, 185, 129, 0.14)',
+          borderWidth: 2.5,
+          fill: true,
+          tension: 0.3,
+          pointRadius: 4,
+          pointBackgroundColor: '#0f766e'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { ticks: { callback: v => '₹' + v.toLocaleString('en-IN') } }
+        }
+      }
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    renderAll();
+    refreshAll();
+  });
+</script>
+</body>
+</html>
