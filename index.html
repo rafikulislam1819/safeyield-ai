@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SafeYield AI v4.4 — অটো-কম্পাউন্ডিং ও মাসিক রিপোর্ট</title>
+  <title>SafeYield AI v4.5 — কম্পাউন্ডিং, মাসিক রিপোর্ট ও ট্যাক্স হিসাব</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
@@ -95,7 +95,7 @@
     .btn-sub.live-btn { background: rgba(14, 165, 233, 0.25); border-color: rgba(56, 189, 248, 0.45); color: #e0f2fe; }
     .run-msg { margin-top: 10px; font-size: 13px; color: #a7f3d0; }
 
-    /* Report Banner */
+    /* Report Banner & Tax Box */
     .report-hero {
       background: linear-gradient(135deg, #1e293b 0%, #0f766e 100%);
       color: #fff; border-radius: 18px; padding: 18px; margin-bottom: 14px;
@@ -109,6 +109,19 @@
     .rep-stat { background: rgba(255,255,255,0.1); border-radius: 12px; padding: 10px 12px; }
     .rep-stat small { display: block; font-size: 11.5px; color: #cbd5e1; }
     .rep-stat strong { font-size: 17px; }
+
+    .tax-summary-box {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border: 1px solid #fcd34d; border-radius: 14px; padding: 13px; margin-bottom: 12px;
+    }
+    .tax-net-row {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+      padding-top: 8px; margin-top: 8px; border-top: 1px dashed #d97706;
+    }
+    .slab-select {
+      padding: 5px 10px; border-radius: 10px; border: 1px solid var(--border);
+      background: #fff; font-family: inherit; font-size: 12.5px; font-weight: 600; color: var(--text);
+    }
 
     /* Section Headings & Grids */
     .sec-title { font-size: 17px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
@@ -200,8 +213,8 @@
     <div class="brand-row">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1>SafeYield AI <span class="badge-v">v4.4 • কম্পাউন্ডিং + মাসিক রিপোর্ট</span></h1>
-        <p>₹10,000 মূলধন → অটো-ইনভেস্ট ও লাভ পুনঃবিনিয়োগ → ৩০ দিনের পূর্ণ হিসাব</p>
+        <h1>SafeYield AI <span class="badge-v">v4.5 • ট্যাক্স ও নেট প্রফিট</span></h1>
+        <p>₹10,000 অটো-কম্পাউন্ডিং • ভারতীয় ট্যাক্স নিয়মসহ আসল নেট লাভের হিসাব</p>
       </div>
     </div>
     <div class="controls-row">
@@ -352,18 +365,54 @@
     </div>
   </div>
 
-  <!-- TAB 4: MONTHLY FINAL REPORT CARD -->
+  <!-- TAB 4: MONTHLY FINAL REPORT CARD & INDIAN TAX CALCULATOR -->
   <div id="tab-report" class="tab-pane">
     <div class="report-hero" id="reportHeroCard">
       <span class="verdict-pill" id="reportStatusPill">📊 ৩০-দিনের মাসিক রিপোর্ট কার্ড</span>
-      <h2 id="reportVerdictTitle" style="font-size:22px;margin-bottom:4px;">₹10,000-এর হিসাব তৈরি হচ্ছে...</h2>
+      <h2 id="reportVerdictTitle" style="font-size:21px;margin-bottom:4px;">₹10,000-এর হিসাব তৈরি হচ্ছে...</h2>
       <p id="reportVerdictSub" style="font-size:13.5px;color:#e2e8f0;"></p>
       <div class="rep-grid">
         <div class="rep-stat"><small>শুরুর মূলধন (Day 0)</small><strong id="repInitCap">₹10,000</strong></div>
-        <div class="rep-stat"><small>বর্তমান মোট মূল্য</small><strong id="repCurrVal">₹10,000</strong></div>
-        <div class="rep-stat"><small>বুক করা লাভ (Reinvested)</small><strong id="repRealized">₹0</strong></div>
-        <div class="rep-stat"><small>চলমান লাভ/লোকসান (Holdings)</small><strong id="repUnrealized">₹0</strong></div>
+        <div class="rep-stat"><small>মোট গ্রস মূল্য (Before Tax)</small><strong id="repCurrVal">₹10,000</strong></div>
+        <div class="rep-stat"><small>মোট আনুমানিক ট্যাক্স ও চার্জ</small><strong id="repTotalTax" style="color:#fde68a;">-₹0</strong></div>
+        <div class="rep-stat"><small>হাতে আসল মূল্য (After Tax)</small><strong id="repNetVal" style="color:#6ee7b7;">₹10,000</strong></div>
       </div>
+    </div>
+
+    <!-- Government Tax & Net Profit Card -->
+    <div class="card">
+      <div class="sec-title">
+        <span>🏛️ সরকারি ট্যাক্স ও নেট প্রফিট হিসাব (India Rules)</span>
+        <select id="taxSlabSelect" class="slab-select" onchange="changeTaxSlab(this.value)">
+          <option value="0">Gold Slab: 0%</option>
+          <option value="5">Gold Slab: 5%</option>
+          <option value="10" selected>Gold Slab: 10%</option>
+          <option value="15">Gold Slab: 15%</option>
+          <option value="20">Gold Slab: 20%</option>
+          <option value="30">Gold Slab: 30%</option>
+        </select>
+      </div>
+      <div class="sec-sub">আজ সব অ্যাসেট বিক্রি করে টাকা তুললে ভারত সরকারের ট্যাক্স ও ব্রোকারেজ বাদে হাতে কত থাকবে</div>
+
+      <div class="tax-summary-box" id="taxSummaryBox">হিসাব চলছে...</div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>খাত (Tax Head)</th>
+              <th>নিয়ম (Govt Rule)</th>
+              <th>আনুমানিক টাকা</th>
+            </tr>
+          </thead>
+          <tbody id="taxBreakdownBody">
+            <tr><td colspan="3">হিসাব হচ্ছে...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:11.5px;color:var(--muted);margin-top:8px;">
+        * নোট: Equity STCG ২০% (Sec 111A), Crypto VDA ৩০% + ১% TDS (Sec 115BBH — লস সেট-অফ হয় না), Gold ETF (&lt;১২ মাস) ইনকাম ট্যাক্স স্ল্যাব অনুযায়ী, এবং মোট ট্যাক্সের ওপর ৪% সেস (Cess) ধরা হয়েছে।
+      </p>
     </div>
 
     <div class="card">
@@ -442,16 +491,17 @@
 <script>
   const DEFAULT_URL = 'https://pjacpgpysrdnotdezxrh.supabase.co';
   const ASSETS = {
-    nifty: { name: 'Nifty 50 ETF', type: 'ইক্যুইটি সূচক', isCrypto: false },
-    gold:  { name: 'Gold ETF',     type: 'নিরাপদ হেজ',   isCrypto: false },
-    tcs:   { name: 'TCS',          type: 'আইটি লার্জ-ক্যাপ', isCrypto: false },
-    hdfc:  { name: 'HDFC Bank',    type: 'ব্যাংকিং লিডার', isCrypto: false },
-    btc:   { name: 'Bitcoin (BTC)', type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', isCrypto: true },
-    eth:   { name: 'Ethereum (ETH)', type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', isCrypto: true }
+    nifty: { name: 'Nifty 50 ETF', type: 'ইক্যুইটি সূচক', taxCat: 'EQUITY', isCrypto: false },
+    gold:  { name: 'Gold ETF',     type: 'নিরাপদ হেজ',   taxCat: 'GOLD',   isCrypto: false },
+    tcs:   { name: 'TCS',          type: 'আইটি লার্জ-ক্যাপ', taxCat: 'EQUITY', isCrypto: false },
+    hdfc:  { name: 'HDFC Bank',    type: 'ব্যাংকিং লিডার', taxCat: 'EQUITY', isCrypto: false },
+    btc:   { name: 'Bitcoin (BTC)', type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', taxCat: 'CRYPTO', isCrypto: true },
+    eth:   { name: 'Ethereum (ETH)', type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', taxCat: 'CRYPTO', isCrypto: true }
   };
 
   let currency = 'INR';
   const USD_RATE = 92.65;
+  let goldTaxSlab = Number(localStorage.getItem('sy_tax_slab') ?? 10);
   let stateData = { cash: 10000, practice_day: 1, holdings: {} };
   let memoryData = { initial_capital: 10000, win_count: 0, loss_count: 0, total_trades: 0, strategy_weights: { dip_buying: 1, smart_sip: 1, gold_hedge: 1, profit_lock: 1 }, lessons: [] };
   let logsData = [];
@@ -478,6 +528,12 @@
     currency = c;
     document.getElementById('btnINR').classList.toggle('active', c === 'INR');
     document.getElementById('btnUSD').classList.toggle('active', c === 'USD');
+    renderAll();
+  }
+
+  function changeTaxSlab(val) {
+    goldTaxSlab = Number(val || 0);
+    localStorage.setItem('sy_tax_slab', String(goldTaxSlab));
     renderAll();
   }
 
@@ -663,35 +719,101 @@
     const cash = Number(stateData.cash ?? 10000);
     const hold = stateData.holdings || {};
     let invVal = 0, invCost = 0;
+
+    // Tax accumulators (Indian Tax Rules)
+    let equityNetPnl = 0;
+    let goldNetPnl = 0;
+    let cryptoTaxableGain = 0; // No loss set-off allowed in Indian VDA tax
+    let cryptoSellTurnover = 0;
+    let stockTurnover = 0;
+    let cryptoTurnover = 0;
+    let realizedPnl = 0;
+
+    // 1. Historical BUY / SELL from logs
+    for (const l of logsData) {
+      for (const a of (l.actions_taken || [])) {
+        const id = String(a.asset_id || '').toLowerCase();
+        const info = ASSETS[id];
+        if (!info) continue;
+        const amt = Number(a.amount_inr || 0);
+        if (a.action === 'BUY' || a.action === 'SELL') {
+          if (info.isCrypto) cryptoTurnover += amt;
+          else stockTurnover += amt;
+        }
+        if (a.action === 'SELL') {
+          const pnl = Number(a.pnl_inr || 0);
+          realizedPnl += pnl;
+          if (info.taxCat === 'EQUITY') equityNetPnl += pnl;
+          else if (info.taxCat === 'GOLD') goldNetPnl += pnl;
+          else if (info.taxCat === 'CRYPTO') {
+            cryptoSellTurnover += amt;
+            if (pnl > 0) cryptoTaxableGain += pnl;
+          }
+        }
+      }
+    }
+
+    // 2. Current Holdings (Estimated if liquidated today at month-end)
     for (const [id, h] of Object.entries(hold)) {
       if (!h || !h.qty) continue;
+      const info = ASSETS[id] || { taxCat: 'EQUITY', isCrypto: false };
       const p = snap[id] && snap[id].price;
-      invCost += Number(h.investedINR || 0);
-      invVal += p ? h.qty * p : Number(h.investedINR || 0);
+      const cost = Number(h.investedINR || 0);
+      const val = p ? h.qty * p : cost;
+      const pnl = val - cost;
+      invCost += cost;
+      invVal += val;
+
+      if (info.isCrypto) {
+        cryptoTurnover += val; // est exit turnover
+        cryptoSellTurnover += val;
+        if (pnl > 0) cryptoTaxableGain += pnl;
+      } else {
+        stockTurnover += val; // est exit turnover
+        if (info.taxCat === 'EQUITY') equityNetPnl += pnl;
+        else if (info.taxCat === 'GOLD') goldNetPnl += pnl;
+      }
     }
+
     const total = cash + invVal;
     const initCap = Number(memoryData.initial_capital || 10000);
     const diff = total - initCap;
     const diffPct = (diff / initCap) * 100;
     const unrealizedPnl = invVal - invCost;
 
-    // Calculate realized profit from SELL actions in logs
-    let realizedPnl = 0;
-    for (const l of logsData) {
-      for (const a of (l.actions_taken || [])) {
-        if (a.action === 'SELL' && typeof a.pnl_inr === 'number') {
-          realizedPnl += a.pnl_inr;
-        }
-      }
-    }
+    // Calculate Indian Taxes
+    const equityTax = equityNetPnl > 0 ? equityNetPnl * 0.20 : 0;
+    const goldTax = goldNetPnl > 0 ? goldNetPnl * (goldTaxSlab / 100) : 0;
+    const cryptoTax = cryptoTaxableGain * 0.30;
+    const baseTax = equityTax + goldTax + cryptoTax;
+    const cess = baseTax * 0.04;
+    const cryptoTds = cryptoSellTurnover * 0.01;
+    const brokerageStt = (stockTurnover * 0.0015) + (cryptoTurnover * 0.002);
+
+    const totalTaxAndCharges = baseTax + cess + cryptoTds + brokerageStt;
+    const netTotalAfterTax = total - totalTaxAndCharges;
+    const netProfitAfterTax = netTotalAfterTax - initCap;
+    const netProfitPct = (netProfitAfterTax / initCap) * 100;
+
     const stockCap = Math.max(2500, Math.round(total * 0.25));
     const cryptoCap = Math.max(800, Math.round(total * 0.08));
-    return { latest, snap, cash, hold, invVal, invCost, total, initCap, diff, diffPct, unrealizedPnl, realizedPnl, stockCap, cryptoCap };
+
+    return {
+      latest, snap, cash, hold, invVal, invCost, total, initCap, diff, diffPct,
+      unrealizedPnl, realizedPnl, stockCap, cryptoCap,
+      tax: {
+        equityNetPnl, equityTax, goldNetPnl, goldTax,
+        cryptoTaxableGain, cryptoTax, cryptoTds, cess, brokerageStt,
+        totalTaxAndCharges, netTotalAfterTax, netProfitAfterTax, netProfitPct
+      }
+    };
   }
 
   function renderAll() {
     const st = computePortfolioStats();
     const day = Number(stateData.practice_day || 1);
+    const slabEl = document.getElementById('taxSlabSelect');
+    if (slabEl) slabEl.value = String(goldTaxSlab);
 
     document.getElementById('heroTotal').textContent = fmt(st.total);
     const pnlEl = document.getElementById('heroPnl');
@@ -718,22 +840,41 @@
 
   function renderMonthlyReport(st, day) {
     const hero = document.getElementById('reportHeroCard');
-    hero.classList.toggle('loss', st.diff < 0);
+    hero.classList.toggle('loss', st.tax.netProfitAfterTax < 0);
     const isDone = day >= 30;
     document.getElementById('reportStatusPill').textContent = isDone
       ? '🎉 ৩০-দিনের মিশন সম্পন্ন • চূড়ান্ত মাসিক রিপোর্ট'
       : '📊 লাইভ মাসিক রিপোর্ট • দিন ' + day + ' / ৩০ চলছে';
 
-    const dirText = st.diff >= 0 ? 'বেড়েছে (লাভ)' : 'কমেছে (লোকসান)';
+    const dirText = st.tax.netProfitAfterTax >= 0 ? 'নেট লাভ' : 'নেট লোকসান';
     document.getElementById('reportVerdictTitle').textContent =
-      'আপনার ₹10,000 এখন ' + fmt(st.total) + ' — ' + dirText;
+      'ট্যাক্স বাদে হাতে: ' + fmt(st.tax.netTotalAfterTax) + ' (' + dirText + ')';
     document.getElementById('reportVerdictSub').textContent =
-      'মোট পরিবর্তন: ' + (st.diff >= 0 ? '+' : '') + fmt(st.diff) + ' (' + (st.diffPct >= 0 ? '+' : '') + st.diffPct.toFixed(2) + '%) • মোট ট্রেড: ' + (memoryData.total_trades || 0) + 'টি';
+      'গ্রস লাভ/লস: ' + (st.diff >= 0 ? '+' : '') + fmt(st.diff) + ' • ট্যাক্স ও চার্জ বাদে: ' + (st.tax.netProfitAfterTax >= 0 ? '+' : '') + fmt(st.tax.netProfitAfterTax) + ' (' + (st.tax.netProfitPct >= 0 ? '+' : '') + st.tax.netProfitPct.toFixed(2) + '%)';
 
     document.getElementById('repInitCap').textContent = fmt(st.initCap);
     document.getElementById('repCurrVal').textContent = fmt(st.total);
-    document.getElementById('repRealized').textContent = (st.realizedPnl >= 0 ? '+' : '') + fmt(st.realizedPnl);
-    document.getElementById('repUnrealized').textContent = (st.unrealizedPnl >= 0 ? '+' : '') + fmt(st.unrealizedPnl);
+    document.getElementById('repTotalTax').textContent = '-' + fmt(st.tax.totalTaxAndCharges);
+    document.getElementById('repNetVal').textContent = fmt(st.tax.netTotalAfterTax);
+
+    // Tax Summary Box
+    document.getElementById('taxSummaryBox').innerHTML =
+      '<div style="display:flex;justify-content:space-between;font-size:13.5px;"><span>গ্রস লাভ/লোকসান (Before Tax):</span><b>' + (st.diff >= 0 ? '+' : '') + fmt(st.diff) + '</b></div>' +
+      '<div style="display:flex;justify-content:space-between;font-size:13.5px;margin-top:4px;color:#b45309;"><span>মোট আনুমানিক ট্যাক্স, TDS ও ব্রোকারেজ:</span><b>-' + fmt(st.tax.totalTaxAndCharges) + '</b></div>' +
+      '<div class="tax-net-row">' +
+        '<span style="font-weight:700;font-size:14.5px;color:#0f172a;">✅ আসল নেট লাভ (ট্যাক্স বাদে):</span>' +
+        '<strong style="font-size:17px;color:' + (st.tax.netProfitAfterTax >= 0 ? '#15803d' : '#b91c1c') + ';">' + (st.tax.netProfitAfterTax >= 0 ? '+' : '') + fmt(st.tax.netProfitAfterTax) + ' (' + (st.tax.netProfitPct >= 0 ? '+' : '') + st.tax.netProfitPct.toFixed(2) + '%)</strong>' +
+      '</div>';
+
+    // Tax Breakdown Table
+    document.getElementById('taxBreakdownBody').innerHTML =
+      '<tr><td><b>Equity STCG Tax</b><br><small style="color:var(--muted);">Nifty, TCS, HDFC লাভ: ' + fmt(st.tax.equityNetPnl) + '</small></td><td>২০% (Sec 111A)</td><td>' + fmt(st.tax.equityTax) + '</td></tr>' +
+      '<tr><td><b>Gold ETF Tax</b><br><small style="color:var(--muted);">Gold লাভ: ' + fmt(st.tax.goldNetPnl) + '</small></td><td>স্ল্যাব ' + goldTaxSlab + '%</td><td>' + fmt(st.tax.goldTax) + '</td></tr>' +
+      '<tr><td><b>Crypto VDA Tax</b><br><small style="color:var(--muted);">করযোগ্য লাভ: ' + fmt(st.tax.cryptoTaxableGain) + '</small></td><td>ফ্ল্যাট ৩০% (No Set-Off)</td><td>' + fmt(st.tax.cryptoTax) + '</td></tr>' +
+      '<tr><td><b>Crypto 1% TDS</b></td><td>বিক্রির ওপর ১%</td><td>' + fmt(st.tax.cryptoTds) + '</td></tr>' +
+      '<tr><td><b>Health &amp; Edu Cess</b></td><td>ট্যাক্সের ওপর ৪%</td><td>' + fmt(st.tax.cess) + '</td></tr>' +
+      '<tr><td><b>STT ও ব্রোকারেজ চার্জ</b></td><td>~০.১৫% স্টক / ০.২% ক্রিপ্টো</td><td>' + fmt(st.tax.brokerageStt) + '</td></tr>' +
+      '<tr style="background:#fef3c7;"><td><b>মোট আনুমানিক কাটা যাবে</b></td><td>—</td><td><b>' + fmt(st.tax.totalTaxAndCharges) + '</b></td></tr>';
 
     // Compounding Summary Grid
     const reinvestedPower = Math.max(0, st.total - st.initCap);
@@ -785,18 +926,14 @@
     const st = computePortfolioStats();
     const day = Number(stateData.practice_day || 1);
     const text = `SafeYield AI মাসিক রিপোর্ট (দিন ${day}/30)
-` +
-      `শুরুর মূলধন: ₹${st.initCap}
-` +
-      `বর্তমান মোট মূল্য: ₹${st.total.toFixed(2)}
-` +
-      `মোট লাভ/লোকসান: ${st.diff >= 0 ? '+' : ''}₹${st.diff.toFixed(2)} (${st.diffPct >= 0 ? '+' : ''}${st.diffPct.toFixed(2)}%)
-` +
-      `হাতে নগদ: ₹${st.cash.toFixed(2)} | ইনভেস্ট: ₹${st.invVal.toFixed(2)}
-` +
-      `মোট ট্রেড: ${memoryData.total_trades || 0} (লাভ: ${memoryData.win_count || 0}, লস: ${memoryData.loss_count || 0})`;
+শুরুর মূলধন: ₹${st.initCap}
+মোট গ্রস মূল্য: ₹${st.total.toFixed(2)} (${st.diff >= 0 ? '+' : ''}₹${st.diff.toFixed(2)})
+আনুমানিক সরকারি ট্যাক্স ও চার্জ: -₹${st.tax.totalTaxAndCharges.toFixed(2)}
+ট্যাক্স বাদে আসল নেট মূল্য: ₹${st.tax.netTotalAfterTax.toFixed(2)}
+আসল নেট লাভ/লস: ${st.tax.netProfitAfterTax >= 0 ? '+' : ''}₹${st.tax.netProfitAfterTax.toFixed(2)} (${st.tax.netProfitPct >= 0 ? '+' : ''}${st.tax.netProfitPct.toFixed(2)}%)
+মোট ট্রেড: ${memoryData.total_trades || 0} (লাভ: ${memoryData.win_count || 0}, লস: ${memoryData.loss_count || 0})`;
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(text).then(() => alert('মাসিক রিপোর্ট কপি হয়ে গেছে!'));
+      navigator.clipboard.writeText(text).then(() => alert('ট্যাক্সসহ মাসিক রিপোর্ট কপি হয়ে গেছে!'));
     } else {
       alert(text);
     }
