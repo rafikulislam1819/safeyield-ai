@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SafeYield AI v4.2 — স্বয়ংক্রিয় AI ইনভেস্টমেন্ট ও লাইভ মার্কেট</title>
+  <title>SafeYield AI v4.3 — স্বয়ংক্রিয় AI ইনভেস্টমেন্ট ও লাইভ ফিন্যান্স নিউজ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
@@ -116,6 +116,8 @@
     .tag-bull { background: #dcfce7; color: #15803d; }
     .tag-bear { background: #fee2e2; color: #b91c1c; }
     .tag-neut { background: #e0f2fe; color: #0369a1; }
+    .tag-high { background: #ffedd5; color: #c2410c; }
+    .tag-cat { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
 
     /* Trade Log & News Cards */
     .log-box { border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 10px; background: #f8fafc; }
@@ -123,9 +125,28 @@
     .action-row { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; margin-top: 6px; font-size: 13px; }
     .lesson-box { margin-top: 8px; background: #ecfdf5; border-left: 3px solid #10b981; padding: 7px 10px; border-radius: 6px; font-size: 12.5px; color: #065f46; }
 
-    .news-card { border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 10px; background: #fff; }
-    .news-card h4 { font-size: 14.5px; margin: 4px 0 6px; color: var(--text); }
-    .news-card p { font-size: 13px; color: var(--muted); }
+    .news-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    .nf-btn {
+      padding: 5px 11px; border-radius: 99px; border: 1px solid var(--border);
+      background: #f8fafc; color: var(--text); font-size: 12px; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+    }
+    .nf-btn.active { background: #0f766e; color: #fff; border-color: #0f766e; }
+
+    .news-card {
+      border: 1px solid var(--border); border-radius: 14px; padding: 13px;
+      margin-bottom: 10px; background: #fff; transition: border-color 0.2s;
+    }
+    .news-card.high-impact { border-left: 4px solid #f97316; }
+    .news-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 6px; }
+    .news-card h4 { font-size: 14.5px; margin: 2px 0 6px; color: var(--text); line-height: 1.4; }
+    .news-card h4 a { color: inherit; text-decoration: none; }
+    .news-card h4 a:hover { color: var(--primary); text-decoration: underline; }
+    .news-meta { font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+    .news-impact-box {
+      background: #f8fafc; border-radius: 8px; padding: 7px 10px;
+      font-size: 12.5px; color: #334155; border: 1px solid #e2e8f0;
+    }
     .pred-box { background: linear-gradient(135deg, #eff6ff, #f0fdf4); border: 1px solid #bfdbfe; border-radius: 14px; padding: 13px; margin-bottom: 10px; }
 
     /* Bottom Nav */
@@ -164,8 +185,8 @@
     <div class="brand-row">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1>SafeYield AI <span class="badge-v">v4.2 • লাইভ রেট + ডে-লক</span></h1>
-        <p>সহজ বাংলায় ৩০ দিনের স্বয়ংক্রিয় AI ইনভেস্টমেন্ট ও মার্কেট ইন্টেলিজেন্স</p>
+        <h1>SafeYield AI <span class="badge-v">v4.3 • লাইভ ফিন্যান্স নিউজ</span></h1>
+        <p>সহজ বাংলায় ৩০ দিনের স্বয়ংক্রিয় AI ইনভেস্টমেন্ট ও লাইভ মার্কেট নিউজ ফিড</p>
       </div>
     </div>
     <div class="controls-row">
@@ -288,10 +309,29 @@
     </div>
   </div>
 
-  <!-- TAB 3: FINANCE NEWS, PREDICTION & ANALYSIS -->
+  <!-- TAB 3: LIVE FINANCE NEWS FEED, PREDICTION & ANALYSIS -->
   <div id="tab-news" class="tab-pane">
     <div class="card">
-      <div class="sec-title">🔮 AI মার্কেট প্রেডিকশন ও সেন্টিমেন্ট (আগামী ৭–১৪ দিন) <span class="tag tag-bull" id="sentimentTag">বিশ্লেষণ চলছে</span></div>
+      <div class="sec-title">
+        <span>📰 লাইভ ফিন্যান্স নিউজ ফিড (Market Impact)</span>
+        <button type="button" class="pill active" id="refreshNewsBtn" style="font-size:12px;padding:5px 12px;" onclick="fetchLiveNewsOnly()">🔄 লাইভ নিউজ আনো</button>
+      </div>
+      <div class="sec-sub" id="newsUpdatedText">শেয়ার বাজার, RBI, সোনা, তেল ও গ্লোবাল ইভেন্ট যা ট্রেডে প্রভাব ফেলে (কোনো ট্রেড বা দিন বাড়বে না)</div>
+
+      <div class="news-filters" id="newsFilterBar">
+        <button type="button" class="nf-btn active" onclick="setNewsFilter('ALL', this)">সব খবর</button>
+        <button type="button" class="nf-btn" onclick="setNewsFilter('HIGH', this)">🔥 হাই ইমপ্যাক্ট</button>
+        <button type="button" class="nf-btn" onclick="setNewsFilter('MARKET', this)">📈 শেয়ার বাজার</button>
+        <button type="button" class="nf-btn" onclick="setNewsFilter('MACRO', this)">🏛️ RBI ও অর্থনীতি</button>
+        <button type="button" class="nf-btn" onclick="setNewsFilter('GLOBAL', this)">🌍 গ্লোবাল ও গোল্ড</button>
+        <button type="button" class="nf-btn" onclick="setNewsFilter('CRYPTO', this)">₿ ক্রিপ্টো</button>
+      </div>
+
+      <div id="newsFeedBox">লাইভ নিউজ লোড হচ্ছে...</div>
+    </div>
+
+    <div class="card">
+      <div class="sec-title">🔮 AI মার্কেট প্রেডিকশন ও সেন্টিমেন্ট <span class="tag tag-bull" id="sentimentTag">বিশ্লেষণ চলছে</span></div>
       <div class="sec-sub">লাইভ দাম, RSI ইন্ডিকেটর ও ব্রেকিং ফিন্যান্স নিউজ বিশ্লেষণ করে তৈরি পূর্বাভাস</div>
       <div id="predictionContainer">লোড হচ্ছে...</div>
     </div>
@@ -300,12 +340,6 @@
       <div class="sec-title">🔍 সেক্টর ও অ্যাসেট ভিত্তিক গভীর বিশ্লেষণ</div>
       <div class="sec-sub">ইক্যুইটি, গোল্ড, আইটি/ব্যাংকিং এবং ক্রিপ্টো বাজারের বর্তমান অবস্থা</div>
       <div class="grid-2" id="assetAnalysisGrid"></div>
-    </div>
-
-    <div class="card">
-      <div class="sec-title">📰 লাইভ ফিন্যান্স ও মার্কেট নিউজ ফিড</div>
-      <div class="sec-sub">SafeYield AI যে হেডলাইনগুলো পড়ে বাজারের গতিবিধি আন্দাজ করছে</div>
-      <div id="newsFeedBox">নিউজ লোড হচ্ছে...</div>
     </div>
   </div>
 
@@ -322,18 +356,18 @@
   <div id="tab-learn" class="tab-pane">
     <div class="card">
       <div class="sec-title">📖 সহজ বাংলায় ইনভেস্টমেন্ট গাইড</div>
-      <div class="sec-sub">SafeYield AI যে ইন্ডিকেটরগুলো ব্যবহার করে তার সহজ ব্যাখ্যা</div>
+      <div class="sec-sub">কোন খবরগুলো শেয়ার বাজারে সবচেয়ে বেশি প্রভাব ফেলে</div>
       <div class="weight-item" style="margin-bottom:10px;">
-        <strong>RSI (Relative Strength Index) কী?</strong>
-        <p style="font-size:13px;color:var(--muted);margin-top:4px;">RSI ০ থেকে ১০০-এর মধ্যে থাকে। <b>৩০–৪৫</b> মানে দাম অনেকটা কমে সস্তা হয়েছে (কেনার ভালো সুযোগ), আর <b>৭০-এর উপরে</b> মানে দাম অতিরিক্ত বেড়ে গেছে (লাভ তুলে নেওয়ার সময়)।</p>
+        <strong>১. RBI রেপো রেট ও মুদ্রাস্ফীতি (Inflation)</strong>
+        <p style="font-size:13px;color:var(--muted);margin-top:4px;">সুদের হার (Repo Rate) কমলে ব্যাংকিং ও শেয়ার বাজার সাধারণত বাড়ে; আর মুদ্রাস্ফীতি বাড়লে বাজারে চাপ তৈরি হয়।</p>
       </div>
       <div class="weight-item" style="margin-bottom:10px;">
-        <strong>রিস্ক ম্যানেজমেন্ট ও ক্যাশ বাফার কেন জরুরি?</strong>
-        <p style="font-size:13px;color:var(--muted);margin-top:4px;">SafeYield AI কখনোই একটি শেয়ারে ২৫%-এর বেশি টাকা লাগায় না এবং সবসময় ₹500 নগদ রাখে, যাতে হঠাৎ বাজার পড়লে আতঙ্কিত না হয়ে সস্তায় কেনা যায়।</p>
+        <strong>২. FII / DII ফ্লো ও ক্রুড অয়েল (Crude Oil)</strong>
+        <p style="font-size:13px;color:var(--muted);margin-top:4px;">বিদেশি বিনিয়োগকারীরা (FII) বিক্রি করলে Nifty-তে পতন আসে, আর অপরিশোধিত তেলের দাম বাড়লে ভারতের অর্থনীতি ও টাকার ওপর চাপ পড়ে।</p>
       </div>
       <div class="weight-item">
-        <strong>একই দিনে বারবার ক্লিক করলে কী হবে?</strong>
-        <p style="font-size:13px;color:var(--muted);margin-top:4px;">নতুন <b>ডে-লক (Day-Lock)</b> নিয়ম অনুযায়ী একই তারিখে একাধিকবার AI চালালেও ৩০-দিনের কাউন্টার আর বাড়বে না—আর শুধু দাম দেখতে চাইলে <b>📡 শুধু লাইভ রেট দেখো</b> বাটন ব্যবহার করুন।</p>
+        <strong>৩. US Fed ও গ্লোবাল পরিস্থিতি</strong>
+        <p style="font-size:13px;color:var(--muted);margin-top:4px;">আমেরিকার সুদের হার, ডলার ইনডেক্স বা যুদ্ধ/ট্যারিফ সংক্রান্ত খবরে IT স্টক (TCS), Gold ETF এবং Crypto-র দামে দ্রুত ওঠানামা হয়।</p>
       </div>
     </div>
   </div>
@@ -343,7 +377,7 @@
 <nav class="bottom-nav">
   <button type="button" class="nav-btn active" onclick="switchTab('autopilot', this)"><span class="ico">🤖</span>অটো-পাইলট</button>
   <button type="button" class="nav-btn" onclick="switchTab('brain', this)"><span class="ico">🧠</span>সিদ্ধান্ত ও যুক্তি</button>
-  <button type="button" class="nav-btn" onclick="switchTab('news', this)"><span class="ico">📰</span>নিউজ ও প্রেডিকশন</button>
+  <button type="button" class="nav-btn" onclick="switchTab('news', this)"><span class="ico">📰</span>ফিন্যান্স নিউজ</button>
   <button type="button" class="nav-btn" onclick="switchTab('wallet', this)"><span class="ico">💼</span>ওয়ালেট</button>
   <button type="button" class="nav-btn" onclick="switchTab('learn', this)"><span class="ico">📖</span>শিখুন</button>
 </nav>
@@ -383,6 +417,9 @@
   let memoryData = { initial_capital: 10000, win_count: 0, loss_count: 0, total_trades: 0, strategy_weights: { dip_buying: 1, smart_sip: 1, gold_hedge: 1, profit_lock: 1 }, lessons: [] };
   let logsData = [];
   let liveMarketOverride = null;
+  let liveNewsList = [];
+  let newsLoadedOnce = false;
+  let activeNewsFilter = 'ALL';
   let chartInstance = null;
 
   function getCfg() {
@@ -412,6 +449,16 @@
     if (target) target.classList.add('active');
     if (btn) btn.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (id === 'news' && !newsLoadedOnce) {
+      fetchLiveNewsOnly();
+    }
+  }
+
+  function setNewsFilter(cat, btn) {
+    activeNewsFilter = cat;
+    document.querySelectorAll('.nf-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderNewsList();
   }
 
   function openSetup() {
@@ -430,7 +477,7 @@
     refreshAll();
   }
 
-  async function fetchWithTimeout(url, options, ms = 10000) {
+  async function fetchWithTimeout(url, options, ms = 12000) {
     const ctrl = new AbortController();
     const id = setTimeout(() => ctrl.abort(), ms);
     try {
@@ -508,6 +555,37 @@
       if (msg) msg.innerHTML = '<span style="color:#fca5a5;">⚠️ লাইভ রেট এরর: ' + e.message + '</span>';
     } finally {
       if (liveBtn) { liveBtn.disabled = false; liveBtn.textContent = '📡 শুধু লাইভ রেট দেখো'; }
+    }
+  }
+
+  async function fetchLiveNewsOnly() {
+    const c = getCfg();
+    const btn = document.getElementById('refreshNewsBtn');
+    const sub = document.getElementById('newsUpdatedText');
+    if (!c.key) {
+      renderNewsList();
+      return;
+    }
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ নিউজ আসছে...'; }
+    if (sub) sub.textContent = 'লাইভ ফিন্যান্স ও মার্কেট নিউজ লোড হচ্ছে...';
+    try {
+      const headers = { 'Content-Type': 'application/json', 'apikey': c.key };
+      if (c.key.startsWith('eyJ')) headers['Authorization'] = 'Bearer ' + c.key;
+      const r = await fetchWithTimeout(c.url + '/functions/v1/ai-autopilot', {
+        method: 'POST', headers, body: JSON.stringify({ sync_id: c.syncId, mode: 'news_only' })
+      }, 15000);
+      const data = await r.json();
+      if (!r.ok || !data.ok || !Array.isArray(data.news)) throw new Error(data.error || 'লাইভ নিউজ পাওয়া যায়নি');
+      liveNewsList = data.news;
+      newsLoadedOnce = true;
+      const t = new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+      if (sub) sub.textContent = '✅ লাইভ ফিন্যান্স নিউজ আপডেট হয়েছে (' + t + ') — মোট ' + liveNewsList.length + 'টি খবর';
+      renderNewsList();
+    } catch (e) {
+      if (sub) sub.textContent = '⚠️ ব্যাকএন্ড আপডেট করা না থাকলে আগের সেভ করা নিউজ দেখাচ্ছে।';
+      renderNewsList();
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = '🔄 লাইভ নিউজ আনো'; }
     }
   }
 
@@ -683,7 +761,7 @@
       '<div class="pred-box">' +
         '<div style="font-weight:700;font-size:14.5px;margin-bottom:6px;">🎯 AI স্বল্পমেয়াদী পূর্বাভাস ও কৌশলগত দিকনির্দেশনা</div>' +
         '<ul style="padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:6px;">' +
-          '<li><b>ভারতীয় ইক্যুইটি (Nifty 50):</b> বর্তমান RSI <b>' + niftyRsi + '</b>। বিদেশি বিনিয়োগকারীদের (FII) প্রবাহ ও তেলের দামের ওপর নির্ভর করে Nifty শক্তিশালী সাপোর্ট পাচ্ছে। বড় পতনে <b>Buy on Dip</b> কার্যকর থাকবে।</li>' +
+          '<li><b>ভারতীয় ইক্যুইটি (Nifty 50):</b> বর্তমান RSI <b>' + niftyRsi + '</b>। বিদেশি বিনিয়োগকারীদের (FII) প্রবাহ ও তেলের দামের ওপর নির্ভর করে বাজারের গতি নির্ধারিত হচ্ছে। বড় পতনে <b>Buy on Dip</b> কার্যকর থাকবে।</li>' +
           '<li><b>সোনা (Gold ETF):</b> বৈশ্বিক সুদের হার ও ভূ-রাজনৈতিক অস্থিরতায় সোনা পোর্টফোলিওর সেরা সুরক্ষা কবচ হিসেবে কাজ করছে (পরিবর্তন: ' + (goldChg >= 0 ? '+' : '') + goldChg + '%)।</li>' +
           '<li><b>আইটি ও ব্যাংকিং (TCS &amp; HDFC Bank):</b> লার্জ-ক্যাপ স্টকে প্রাতিষ্ঠানিক চাহিদা স্থিতিশীল; মধ্যমেয়াদে <b>Smart SIP</b> পদ্ধতিতে পজিশন গড়া নিরাপদ।</li>' +
           '<li><b>ক্রিপ্টো মার্কেট (BTC &amp; ETH):</b> ক্রিপ্টোতে উচ্চ অস্থিরতা বজায় রয়েছে (BTC: ' + (btcChg >= 0 ? '+' : '') + btcChg + '%)। তাই AI মোট মূলধনের সর্বোচ্চ ৮% সীমা ও <b>-৭% Stop-Loss</b> কঠোরভাবে মানছে।</li>' +
@@ -702,22 +780,83 @@
       '</div>';
     }).join('');
 
-    const rawNews = (latest && latest.news_headlines && latest.news_headlines.length) ? latest.news_headlines : [
-      'Indian equity benchmarks eye FII inflows and crude oil movement for next breakout',
-      'Gold ETFs remain preferred portfolio hedge amid global rate expectations',
-      'Large-cap IT and Private Banking stocks show resilient institutional accumulation',
-      'Bitcoin holds key psychological support as traders watch ETF flows and volatility'
-    ];
+    renderNewsList();
+  }
 
-    document.getElementById('newsFeedBox').innerHTML = rawNews.map(title => {
-      const low = String(title).toLowerCase();
-      const isBear = low.includes('fall') || low.includes('drop') || low.includes('crash') || low.includes('slump') || low.includes('war') || low.includes('loss');
-      const isBull = low.includes('rally') || low.includes('gain') || low.includes('surge') || low.includes('jump') || low.includes('rise') || low.includes('high');
-      const badge = isBear ? '<span class="tag tag-bear">রিস্ক / সতর্কতা</span>' : (isBull ? '<span class="tag tag-bull">ইতিবাচক সিগন্যাল</span>' : '<span class="tag tag-neut">মার্কেট আপডেট</span>');
-      const impact = isBear
-        ? 'AI ইমপ্যাক্ট: বাজারে অস্থিরতা বাড়লে AI নতুন কেনাকাটা কমিয়ে Gold Hedge ও ক্যাশ বাফারে জোর দেয়।'
-        : (isBull ? 'AI ইমপ্যাক্ট: ইতিবাচক মোমেন্টামে AI লাভজনক পজিশন ধরে রাখে এবং +১০% হলে Profit Lock করে।' : 'AI ইমপ্যাক্ট: স্বাভাবিক বাজারে নিয়মিত Smart SIP ও RSI ফিল্টার অনুযায়ী ট্রেড চলে।');
-      return '<div class="news-card">' + badge + '<h4>' + title + '</h4><p>' + impact + '</p></div>';
+  function classifyFallbackTitle(title) {
+    const low = String(title).toLowerCase();
+    let cat = 'MARKET';
+    if (low.includes('rbi') || low.includes('inflation') || low.includes('gdp') || low.includes('rupee') || low.includes('repo') || low.includes('economy')) cat = 'MACRO';
+    else if (low.includes('gold') || low.includes('fed') || low.includes('oil') || low.includes('crude') || low.includes('tariff') || low.includes('war') || low.includes('us ')) cat = 'GLOBAL';
+    else if (low.includes('bitcoin') || low.includes('btc') || low.includes('eth') || low.includes('crypto')) cat = 'CRYPTO';
+
+    const isBear = /fall|drop|crash|slump|war|loss|selloff|plunge|weak|tariff|hike|fear|crisis/.test(low);
+    const isBull = /rally|gain|surge|jump|rise|high|record|cut|inflow|boost|strong|profit/.test(low);
+    const isHigh = /rbi|fed|nifty|sensex|crash|rally|oil|crude|inflation|repo|fii|tariff|war|gold|bitcoin/.test(low);
+
+    return {
+      title,
+      link: 'https://news.google.com/search?q=' + encodeURIComponent(title) + '&hl=en-IN&gl=IN',
+      source: 'Market Feed',
+      pubDate: '',
+      category: cat,
+      sentiment: isBear ? 'BEARISH' : (isBull ? 'BULLISH' : 'NEUTRAL'),
+      impact: isHigh ? 'HIGH' : 'MEDIUM'
+    };
+  }
+
+  function renderNewsList() {
+    const box = document.getElementById('newsFeedBox');
+    if (!box) return;
+    const latest = logsData[0] || null;
+    let items = [];
+    if (liveNewsList.length) {
+      items = liveNewsList;
+    } else if (latest && Array.isArray(latest.news_headlines) && latest.news_headlines.length) {
+      items = latest.news_headlines.map(t => typeof t === 'string' ? classifyFallbackTitle(t) : t);
+    } else {
+      items = [
+        'Indian equity benchmarks eye FII inflows and crude oil movement for next breakout',
+        'RBI policy outlook and inflation trend remain key triggers for banking stocks',
+        'Gold ETFs remain preferred portfolio hedge amid global rate expectations',
+        'Bitcoin holds key support as traders watch ETF flows and macro cues'
+      ].map(classifyFallbackTitle);
+    }
+
+    const filtered = items.filter(it => {
+      if (activeNewsFilter === 'ALL') return true;
+      if (activeNewsFilter === 'HIGH') return it.impact === 'HIGH';
+      return it.category === activeNewsFilter;
+    });
+
+    if (!filtered.length) {
+      box.innerHTML = '<p style="color:var(--muted);font-size:13px;">এই ক্যাটাগরিতে এখন কোনো খবর নেই। উপরে <b>সব খবর</b> বা <b>🔄 লাইভ নিউজ আনো</b> চাপুন।</p>';
+      return;
+    }
+
+    const catLabel = { MARKET: '📈 শেয়ার বাজার', MACRO: '🏛️ RBI ও অর্থনীতি', GLOBAL: '🌍 গ্লোবাল ও গোল্ড', CRYPTO: '₿ ক্রিপ্টো' };
+
+    box.innerHTML = filtered.map(it => {
+      const sentBadge = it.sentiment === 'BEARISH'
+        ? '<span class="tag tag-bear">▼ চাপ / সতর্কতা</span>'
+        : (it.sentiment === 'BULLISH' ? '<span class="tag tag-bull">▲ ইতিবাচক</span>' : '<span class="tag tag-neut">● নিরপেক্ষ</span>');
+      const impBadge = it.impact === 'HIGH' ? '<span class="tag tag-high">🔥 হাই ইমপ্যাক্ট</span>' : '';
+      const catBadge = '<span class="tag tag-cat">' + (catLabel[it.category] || '📊 ফিন্যান্স') + '</span>';
+
+      let impactNote = 'মার্কেট প্রভাব: স্বাভাবিক গতিবিধি—নিয়মিত Smart SIP ও RSI দেখে ট্রেড চলবে।';
+      if (it.sentiment === 'BEARISH') {
+        impactNote = 'মার্কেট প্রভাব: বাজারে অস্থিরতা বা বিক্রির চাপ বাড়তে পারে—নতুন কেনার আগে ডিসকাউন্ট ও Gold Hedge জরুরি।';
+      } else if (it.sentiment === 'BULLISH') {
+        impactNote = 'মার্কেট প্রভাব: শেয়ার বাজারে ইতিবাচক মোমেন্টাম তৈরি হতে পারে—আগের পজিশনে লাভ বাড়ার সম্ভাবনা।';
+      }
+
+      const timeStr = it.pubDate ? new Date(it.pubDate).toLocaleString('bn-BD', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+      return '<div class="news-card ' + (it.impact === 'HIGH' ? 'high-impact' : '') + '">' +
+        '<div class="news-badges">' + catBadge + impBadge + sentBadge + '</div>' +
+        '<h4><a href="' + (it.link || '#') + '" target="_blank" rel="noopener noreferrer">' + it.title + ' ↗</a></h4>' +
+        '<div class="news-meta"><span>📰 ' + (it.source || 'Finance News') + '</span><span>' + timeStr + '</span></div>' +
+        '<div class="news-impact-box">' + impactNote + '</div>' +
+      '</div>';
     }).join('');
   }
 
