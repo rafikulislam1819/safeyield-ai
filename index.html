@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SafeYield AI v4.6 — অটো লাইভ রেট, কম্পাউন্ডিং ও ট্যাক্স রিপোর্ট</title>
+  <title>SafeYield AI v4.7 — PIN লক, অটো লাইভ রেট ও ট্যাক্স রিপোর্ট</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
@@ -216,7 +216,7 @@
     <div class="brand-row">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1>SafeYield AI <span class="badge-v">v4.6 • অটো লাইভ টাইমার + ট্যাক্স</span></h1>
+        <h1>SafeYield AI <span class="badge-v">v4.7 • PIN লক + অটো লাইভ</span></h1>
         <p>স্বয়ংক্রিয় লাইভ রেট আপডেট • কম্পাউন্ডিং • ভারতীয় ট্যাক্সসহ নেট লাভ</p>
       </div>
     </div>
@@ -226,6 +226,7 @@
       <button type="button" class="pill" onclick="openSetup()">⚙️ সেটআপ</button>
       <button type="button" class="pill" onclick="fetchLiveRatesOnly(false)">📡 এখনই লাইভ রেট</button>
       <button type="button" class="pill auto-on" id="autoLiveBtn" onclick="toggleAutoLive()">⏱️ অটো-লাইভ: ON</button>
+      <button type="button" class="pill auto-off" id="lockBtn" onclick="toggleAdminLock()">🔒 View-Only</button>
     </div>
     <div class="status-strip">
       <span class="chip-live" id="liveCount">● অটো-কম্পাউন্ডিং সক্রিয়</span>
@@ -475,6 +476,22 @@
   <button type="button" class="nav-btn" onclick="switchTab('wallet', this)"><span class="ico">💼</span>ওয়ালেট</button>
 </nav>
 
+
+<!-- PIN Modal -->
+<div class="modal-bg" id="pinModal">
+  <div class="modal" style="max-width:360px;">
+    <h3 style="margin-bottom:6px;">🔒 অ্যাডমিন PIN দিন</h3>
+    <p style="font-size:12.5px;color:var(--muted);">সেটআপ পরিবর্তন বা ম্যানুয়াল ট্রেড চালাতে ৪-সংখ্যার PIN দিন (ডিফল্ট: 2026)</p>
+    <label>PIN নম্বর</label>
+    <input id="pinInput" type="password" inputmode="numeric" placeholder="****" onkeydown="if(event.key==='Enter') verifyPin()" />
+    <div id="pinErr" style="color:#dc2626;font-size:12px;margin-top:6px;"></div>
+    <div style="display:flex;gap:8px;margin-top:14px;">
+      <button type="button" class="btn-run" style="padding:10px;font-size:14px;" onclick="verifyPin()">আনলক করুন</button>
+      <button type="button" class="pill" onclick="closePinModal()">বাতিল</button>
+    </div>
+  </div>
+</div>
+
 <!-- Setup Modal -->
 <div class="modal-bg" id="setupModal">
   <div class="modal">
@@ -486,6 +503,8 @@
     <input id="cfgKey" placeholder="sb_publishable_... বা eyJ..." />
     <label>Sync ID</label>
     <input id="cfgSync" value="rafikul-2026" />
+    <label>অ্যাডমিন PIN (ডিফল্ট: 2026)</label>
+    <input id="cfgPin" type="password" inputmode="numeric" placeholder="যেমন: 2026" />
     <div style="display:flex;gap:8px;margin-top:14px;">
       <button type="button" class="btn-run" style="padding:10px;font-size:14px;" onclick="saveSetup()">সেভ করুন</button>
       <button type="button" class="pill" onclick="closeSetup()">বন্ধ করুন</button>
@@ -509,6 +528,8 @@
   const USD_RATE = 92.65;
   let goldTaxSlab = Number(localStorage.getItem('sy_tax_slab') ?? 10);
   let autoLiveEnabled = localStorage.getItem('sy_auto_live') !== 'off';
+  let isAdminUnlocked = false;
+  let pendingAdminAction = null;
   let countdownSec = AUTO_REFRESH_INTERVAL_SEC;
   let isFetchingRates = false;
   let timerHandle = null;
@@ -625,18 +646,82 @@
     renderNewsList();
   }
 
+  
+  function getAdminPin() {
+    return (localStorage.getItem('sy_pin') || '2026').trim();
+  }
+
+  function updateLockUI() {
+    const btn = document.getElementById('lockBtn');
+    if (!btn) return;
+    if (isAdminUnlocked) {
+      btn.textContent = '🔓 আনলকড';
+      btn.classList.remove('auto-off');
+      btn.classList.add('auto-on');
+    } else {
+      btn.textContent = '🔒 View-Only';
+      btn.classList.remove('auto-on');
+      btn.classList.add('auto-off');
+    }
+  }
+
+  function toggleAdminLock() {
+    if (isAdminUnlocked) {
+      isAdminUnlocked = false;
+      updateLockUI();
+    } else {
+      requireAdmin(() => {});
+    }
+  }
+
+  function requireAdmin(callback) {
+    if (isAdminUnlocked) {
+      callback();
+      return;
+    }
+    pendingAdminAction = callback;
+    document.getElementById('pinInput').value = '';
+    document.getElementById('pinErr').textContent = '';
+    document.getElementById('pinModal').classList.add('open');
+    setTimeout(() => document.getElementById('pinInput').focus(), 100);
+  }
+
+  function closePinModal() {
+    document.getElementById('pinModal').classList.remove('open');
+    pendingAdminAction = null;
+  }
+
+  function verifyPin() {
+    const entered = document.getElementById('pinInput').value.trim();
+    if (entered === getAdminPin()) {
+      isAdminUnlocked = true;
+      updateLockUI();
+      document.getElementById('pinModal').classList.remove('open');
+      const act = pendingAdminAction;
+      pendingAdminAction = null;
+      if (typeof act === 'function') act();
+    } else {
+      document.getElementById('pinErr').textContent = '❌ ভুল PIN! আবার চেষ্টা করুন।';
+    }
+  }
+
   function openSetup() {
-    const c = getCfg();
-    document.getElementById('cfgUrl').value = c.url;
-    document.getElementById('cfgKey').value = c.key;
-    document.getElementById('cfgSync').value = c.syncId;
-    document.getElementById('setupModal').classList.add('open');
+    requireAdmin(() => {
+      const c = getCfg();
+      document.getElementById('cfgUrl').value = c.url;
+      document.getElementById('cfgKey').value = c.key;
+      document.getElementById('cfgSync').value = c.syncId;
+      document.getElementById('cfgPin').value = getAdminPin();
+      document.getElementById('setupModal').classList.add('open');
+    });
   }
   function closeSetup() { document.getElementById('setupModal').classList.remove('open'); }
   function saveSetup() {
     localStorage.setItem('sy_url', document.getElementById('cfgUrl').value.trim() || DEFAULT_URL);
     localStorage.setItem('sy_key', document.getElementById('cfgKey').value.trim());
     localStorage.setItem('sy_sync', document.getElementById('cfgSync').value.trim() || 'rafikul-2026');
+    const newPin = document.getElementById('cfgPin').value.trim();
+    if (newPin.length >= 4) localStorage.setItem('sy_pin', newPin);
     closeSetup();
     refreshAll(true);
   }
@@ -772,6 +857,7 @@
   }
 
   async function runAutopilot() {
+    if (!isAdminUnlocked) { requireAdmin(() => runAutopilot()); return; }
     const btn = document.getElementById('runBtn');
     const msg = document.getElementById('runStatus');
     const c = getCfg();
@@ -1245,6 +1331,7 @@
     renderAll();
     refreshAll(true);
     startAutoLiveTimer();
+    updateLockUI();
   });
 </script>
 </body>
