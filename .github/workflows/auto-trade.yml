@@ -1,0 +1,18 @@
+name: SafeYield Daily Auto-Trade
+
+on:
+  schedule:
+    # Protidin sokal 10:00 AM IST (4:30 AM UTC) - Indian market khola thakar somoy
+    - cron: '30 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-autopilot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger SafeYield AI Autopilot
+        run: |
+          curl -i -X POST "https://pjacpgpysrdnotdezxrh.supabase.co/functions/v1/ai-autopilot" \
+            -H "Content-Type: application/json" \
+            -H "apikey: ${{ secrets.SUPABASE_KEY }}" \
+            -d '{"sync_id":"rafikul-2026"}'
