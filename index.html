@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SafeYield AI v4 — স্বয়ংক্রিয় AI ইনভেস্টমেন্ট ও মার্কেট অ্যানালাইসিস</title>
+  <title>SafeYield AI v4.2 — স্বয়ংক্রিয় AI ইনভেস্টমেন্ট ও লাইভ মার্কেট</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
@@ -86,11 +86,13 @@
       background: #10b981; color: #052e16; font-size: 16px; font-weight: 700;
       cursor: pointer; font-family: inherit;
     }
-    .btn-run:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-run:disabled, .btn-sub:disabled { opacity: 0.6; cursor: not-allowed; }
+    .hero-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
     .btn-sub {
-      margin-top: 8px; padding: 8px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.08); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit;
+      flex: 1; min-width: 140px; padding: 9px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.09); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit;
     }
+    .btn-sub.live-btn { background: rgba(14, 165, 233, 0.25); border-color: rgba(56, 189, 248, 0.45); color: #e0f2fe; }
     .run-msg { margin-top: 10px; font-size: 13px; color: #a7f3d0; }
 
     /* Section Headings & Grids */
@@ -162,7 +164,7 @@
     <div class="brand-row">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1>SafeYield AI <span class="badge-v">v4.1 • স্বচ্ছ অটো-পাইলট</span></h1>
+        <h1>SafeYield AI <span class="badge-v">v4.2 • লাইভ রেট + ডে-লক</span></h1>
         <p>সহজ বাংলায় ৩০ দিনের স্বয়ংক্রিয় AI ইনভেস্টমেন্ট ও মার্কেট ইন্টেলিজেন্স</p>
       </div>
     </div>
@@ -170,7 +172,7 @@
       <button type="button" class="pill active" id="btnINR" onclick="setCurrency('INR')">₹ INR</button>
       <button type="button" class="pill" id="btnUSD" onclick="setCurrency('USD')">$ USD</button>
       <button type="button" class="pill" onclick="openSetup()">⚙️ সেটআপ</button>
-      <button type="button" class="pill" onclick="refreshAll()">🔄 সিঙ্ক ও দাম</button>
+      <button type="button" class="pill" onclick="fetchLiveRatesOnly()">📡 শুধু লাইভ রেট</button>
     </div>
     <div class="status-strip">
       <span class="chip-live" id="liveCount">● লাইভ মার্কেট সংযুক্ত</span>
@@ -201,7 +203,10 @@
         <div class="mini-box"><small>মোট ট্রেড (লাভ/লস)</small><strong id="heroTrades">0 (0/0)</strong></div>
       </div>
       <button type="button" class="btn-run" id="runBtn" onclick="runAutopilot()">🚀 এখনই AI রিসার্চ ও ট্রেড চালাও</button>
-      <button type="button" class="btn-sub" onclick="refreshAll()">🔄 রিপোর্ট আপডেট</button>
+      <div class="hero-actions">
+        <button type="button" class="btn-sub live-btn" id="liveRateBtn" onclick="fetchLiveRatesOnly()">📡 শুধু লাইভ রেট দেখো</button>
+        <button type="button" class="btn-sub" onclick="refreshAll()">🔄 রিপোর্ট আপডেট</button>
+      </div>
       <div class="run-msg" id="runStatus"></div>
     </div>
 
@@ -252,7 +257,10 @@
     </div>
 
     <div class="card">
-      <div class="sec-title">📊 কিসের ভিত্তিতে ইনভেস্ট করছে? (লাইভ ইন্ডিকেটর)</div>
+      <div class="sec-title">
+        <span>📊 কিসের ভিত্তিতে ইনভেস্ট করছে? (লাইভ ইন্ডিকেটর)</span>
+        <button type="button" class="pill" style="font-size:11.5px;padding:4px 10px;" onclick="fetchLiveRatesOnly()">📡 রেট রিফ্রেশ</button>
+      </div>
       <div class="sec-sub">প্রতিটি অ্যাসেটের বর্তমান দাম, RSI (14), ১৪-দিনের গড় (SMA14) ও ডিসকাউন্ট %</div>
       <div class="table-wrap">
         <table>
@@ -324,8 +332,8 @@
         <p style="font-size:13px;color:var(--muted);margin-top:4px;">SafeYield AI কখনোই একটি শেয়ারে ২৫%-এর বেশি টাকা লাগায় না এবং সবসময় ₹500 নগদ রাখে, যাতে হঠাৎ বাজার পড়লে আতঙ্কিত না হয়ে সস্তায় কেনা যায়।</p>
       </div>
       <div class="weight-item">
-        <strong>পেপার ট্রেডিং কীভাবে আপনাকে দক্ষ করে?</strong>
-        <p style="font-size:13px;color:var(--muted);margin-top:4px;">এখানে কোনো আসল টাকা ঝুঁকিতে নেই, কিন্তু বাজারের দাম ১০০% আসল। ৩০ দিন AI-এর সিদ্ধান্ত ও যুক্তিগুলো লক্ষ্য করলে আপনি নিজেই আত্মবিশ্বাসী বিনিয়োগকারী হয়ে উঠবেন।</p>
+        <strong>একই দিনে বারবার ক্লিক করলে কী হবে?</strong>
+        <p style="font-size:13px;color:var(--muted);margin-top:4px;">নতুন <b>ডে-লক (Day-Lock)</b> নিয়ম অনুযায়ী একই তারিখে একাধিকবার AI চালালেও ৩০-দিনের কাউন্টার আর বাড়বে না—আর শুধু দাম দেখতে চাইলে <b>📡 শুধু লাইভ রেট দেখো</b> বাটন ব্যবহার করুন।</p>
       </div>
     </div>
   </div>
@@ -374,6 +382,7 @@
   let stateData = { cash: 10000, practice_day: 1, holdings: {} };
   let memoryData = { initial_capital: 10000, win_count: 0, loss_count: 0, total_trades: 0, strategy_weights: { dip_buying: 1, smart_sip: 1, gold_hedge: 1, profit_lock: 1 }, lessons: [] };
   let logsData = [];
+  let liveMarketOverride = null;
   let chartInstance = null;
 
   function getCfg() {
@@ -412,9 +421,7 @@
     document.getElementById('cfgSync').value = c.syncId;
     document.getElementById('setupModal').classList.add('open');
   }
-  function closeSetup() {
-    document.getElementById('setupModal').classList.remove('open');
-  }
+  function closeSetup() { document.getElementById('setupModal').classList.remove('open'); }
   function saveSetup() {
     localStorage.setItem('sy_url', document.getElementById('cfgUrl').value.trim() || DEFAULT_URL);
     localStorage.setItem('sy_key', document.getElementById('cfgKey').value.trim());
@@ -423,7 +430,7 @@
     refreshAll();
   }
 
-  async function fetchWithTimeout(url, options, ms = 8000) {
+  async function fetchWithTimeout(url, options, ms = 10000) {
     const ctrl = new AbortController();
     const id = setTimeout(() => ctrl.abort(), ms);
     try {
@@ -477,6 +484,33 @@
     }
   }
 
+  async function fetchLiveRatesOnly() {
+    const c = getCfg();
+    const msg = document.getElementById('runStatus');
+    const liveBtn = document.getElementById('liveRateBtn');
+    if (!c.key) { openSetup(); return; }
+    if (liveBtn) { liveBtn.disabled = true; liveBtn.textContent = '⏳ লাইভ রেট আসছে...'; }
+    document.getElementById('lastUpdated').textContent = 'লাইভ রেট লোড হচ্ছে...';
+    try {
+      const headers = { 'Content-Type': 'application/json', 'apikey': c.key };
+      if (c.key.startsWith('eyJ')) headers['Authorization'] = 'Bearer ' + c.key;
+      const r = await fetchWithTimeout(c.url + '/functions/v1/ai-autopilot', {
+        method: 'POST', headers, body: JSON.stringify({ sync_id: c.syncId, mode: 'rates_only' })
+      }, 15000);
+      const data = await r.json();
+      if (!r.ok || !data.ok || !data.market) throw new Error(data.error || 'লাইভ রেট পাওয়া যায়নি');
+      liveMarketOverride = data.market;
+      const t = new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('lastUpdated').textContent = '📡 লাইভ রেট আপডেট: ' + t;
+      if (msg) msg.innerHTML = '📡 <b>সর্বশেষ লাইভ মার্কেট রেট আপডেট হয়েছে</b> (কোনো ট্রেড বা দিন পরিবর্তন হয়নি)।';
+      renderAll();
+    } catch (e) {
+      if (msg) msg.innerHTML = '<span style="color:#fca5a5;">⚠️ লাইভ রেট এরর: ' + e.message + '</span>';
+    } finally {
+      if (liveBtn) { liveBtn.disabled = false; liveBtn.textContent = '📡 শুধু লাইভ রেট দেখো'; }
+    }
+  }
+
   async function runAutopilot() {
     const btn = document.getElementById('runBtn');
     const msg = document.getElementById('runStatus');
@@ -497,7 +531,9 @@
       }, 25000);
       const data = await r.json();
       if (!r.ok || !data.ok) throw new Error(data.error || 'Server error');
-      msg.innerHTML = '✅ <b>দিন ' + data.day_completed + ' সম্পন্ন</b> (' + (data.brain_mode === 'GEMINI_AI' ? 'Gemini AI' : 'Quant AI Engine') + ') — <b>' + data.strategy_used + '</b>';
+      liveMarketOverride = null;
+      const lockNote = data.same_day_locked ? ' (আজকের দিন আগেই সম্পন্ন — তাই দিন বাড়ানো হয়নি)' : '';
+      msg.innerHTML = '✅ <b>দিন ' + data.day_completed + ' সম্পন্ন</b> (' + (data.brain_mode === 'GEMINI_AI' ? 'Gemini AI' : 'Quant AI Engine') + ') — <b>' + data.strategy_used + '</b>' + lockNote;
       await refreshAll();
     } catch (e) {
       msg.innerHTML = '<span style="color:#fca5a5;">⚠️ এরর: ' + e.message + '</span>';
@@ -509,7 +545,7 @@
 
   function renderAll() {
     const latest = logsData[0] || null;
-    const snap = (latest && latest.market_snapshot) ? latest.market_snapshot : {};
+    const snap = liveMarketOverride || ((latest && latest.market_snapshot) ? latest.market_snapshot : {});
     const cash = Number(stateData.cash ?? 10000);
     const hold = stateData.holdings || {};
     let invVal = 0;
@@ -647,7 +683,7 @@
       '<div class="pred-box">' +
         '<div style="font-weight:700;font-size:14.5px;margin-bottom:6px;">🎯 AI স্বল্পমেয়াদী পূর্বাভাস ও কৌশলগত দিকনির্দেশনা</div>' +
         '<ul style="padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:6px;">' +
-          '<li><b>ভারতীয় ইক্যুইটি (Nifty 50):</b> বর্তমান RSI <b>' + niftyRsi + '</b>। বিদেশি বিনিয়োগকারীদের (FII) প্রবাহ ও তেলের দামের ওপর নির্ভর করে Nifty ২৫,২৫০–২৫,৫০০ জোনে শক্তিশালী সাপোর্ট পাচ্ছে। বড় পতনে <b>Buy on Dip</b> কার্যকর থাকবে।</li>' +
+          '<li><b>ভারতীয় ইক্যুইটি (Nifty 50):</b> বর্তমান RSI <b>' + niftyRsi + '</b>। বিদেশি বিনিয়োগকারীদের (FII) প্রবাহ ও তেলের দামের ওপর নির্ভর করে Nifty শক্তিশালী সাপোর্ট পাচ্ছে। বড় পতনে <b>Buy on Dip</b> কার্যকর থাকবে।</li>' +
           '<li><b>সোনা (Gold ETF):</b> বৈশ্বিক সুদের হার ও ভূ-রাজনৈতিক অস্থিরতায় সোনা পোর্টফোলিওর সেরা সুরক্ষা কবচ হিসেবে কাজ করছে (পরিবর্তন: ' + (goldChg >= 0 ? '+' : '') + goldChg + '%)।</li>' +
           '<li><b>আইটি ও ব্যাংকিং (TCS &amp; HDFC Bank):</b> লার্জ-ক্যাপ স্টকে প্রাতিষ্ঠানিক চাহিদা স্থিতিশীল; মধ্যমেয়াদে <b>Smart SIP</b> পদ্ধতিতে পজিশন গড়া নিরাপদ।</li>' +
           '<li><b>ক্রিপ্টো মার্কেট (BTC &amp; ETH):</b> ক্রিপ্টোতে উচ্চ অস্থিরতা বজায় রয়েছে (BTC: ' + (btcChg >= 0 ? '+' : '') + btcChg + '%)। তাই AI মোট মূলধনের সর্বোচ্চ ৮% সীমা ও <b>-৭% Stop-Loss</b> কঠোরভাবে মানছে।</li>' +
