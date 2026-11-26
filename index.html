@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SafeYield AI v4.8 — AI চ্যাট অ্যাডভাইজার ও রিয়েল পোর্টফোলিও সিঙ্ক</title>
+  <title>SafeYield AI v4.9 — Groww ও Binance সিঙ্ক + AI চ্যাট</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
@@ -285,8 +285,8 @@
     <div class="brand-row">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1>SafeYield AI <span class="badge-v">v4.8 • AI চ্যাট + রিয়েল সিঙ্ক</span></h1>
-        <p>AI মার্কেট রিসার্চ ও চ্যাট • Groww / CoinSwitch টু-ওয়ে সিঙ্ক • ট্যাক্স রিপোর্ট</p>
+        <h1>SafeYield AI <span class="badge-v">v4.9 • Groww + Binance</span></h1>
+        <p>AI মার্কেট রিসার্চ ও চ্যাট • Groww / Binance টু-ওয়ে সিঙ্ক • ট্যাক্স রিপোর্ট</p>
       </div>
     </div>
     <div class="controls-row">
@@ -361,7 +361,7 @@
 
       <div class="chat-quick-row">
         <button type="button" class="chat-chip" onclick="sendQuickChat('আজ আমার পোর্টফোলিওর জন্য কোনটা কিনবো ও কোনটা বেচবো? প্রতিটির পরিমাণসহ স্টেপ বলো।')">📊 আজ কী কিনবো/বেচবো?</button>
-        <button type="button" class="chat-chip" onclick="sendQuickChat('আমার বর্তমান ক্যাশ ও হোল্ডিংস দেখে Groww আর CoinSwitch-এ কীভাবে টাকা ভাগ করবো?')">💰 টাকা ভাগ করার প্ল্যান</button>
+        <button type="button" class="chat-chip" onclick="sendQuickChat('আমার বর্তমান ক্যাশ ও হোল্ডিংস দেখে Groww আর Binance-এ কীভাবে টাকা ভাগ করবো?')">💰 টাকা ভাগ করার প্ল্যান</button>
         <button type="button" class="chat-chip" onclick="sendQuickChat('এখন মার্কেট নিউজ ও RSI অনুযায়ী কোন অ্যাসেটে সবচেয়ে বেশি ঝুঁকি আছে?')">🛡️ ঝুঁকি বিশ্লেষণ</button>
         <button type="button" class="chat-chip" onclick="sendQuickChat('আমি আজ Groww-এ Nifty ETF ₹500 কিনেছি, পোর্টফোলিওতে সিঙ্ক করো')">🔄 ট্রেড সিঙ্ক উদাহরণ</button>
       </div>
@@ -369,14 +369,14 @@
       <div class="chat-box" id="chatMessages"></div>
 
       <div class="chat-input-row">
-        <input id="chatInput" class="chat-input" type="text" placeholder="বাংলা বা ইংরেজিতে লিখুন... যেমন: আজ কী কিনবো? বা Groww-এ Gold ₹600 কিনেছি" onkeydown="if(event.key==='Enter') sendChatMessage()" />
+        <input id="chatInput" class="chat-input" type="text" placeholder="বাংলা বা ইংরেজিতে লিখুন... যেমন: আজ কী কিনবো? বা Binance-এ BTC ₹500 কিনেছি" onkeydown="if(event.key==='Enter') sendChatMessage()" />
         <button type="button" class="chat-send" id="chatSendBtn" onclick="sendChatMessage()">পাঠান ➤</button>
       </div>
     </div>
 
     <!-- Real Broker Portfolio Sync Card -->
     <div class="card">
-      <div class="sec-title">🔄 Groww / CoinSwitch ↔ SafeYield পোর্টফোলিও সিঙ্ক</div>
+      <div class="sec-title">🔄 Groww / Binance ↔ SafeYield পোর্টফোলিও সিঙ্ক</div>
       <div class="sec-sub">বাস্তবে অর্ডার দেওয়ার পর এখানে তথ্য দিন—দিনের শেষে আপনার আসল পোর্টফোলিও আর SafeYield ১০০% এক থাকবে</div>
 
       <div class="sync-tabs">
@@ -391,7 +391,7 @@
             <label>ব্রোকার প্ল্যাটফর্ম</label>
             <select id="syncBroker">
               <option value="Groww">Groww (Stocks / ETF)</option>
-              <option value="CoinSwitch">CoinSwitch (Crypto)</option>
+              <option value="Binance">Binance (Crypto)</option>
             </select>
           </div>
           <div class="form-field">
@@ -436,10 +436,10 @@
       <!-- Mode B: End-of-Day Full Reconcile -->
       <div id="syncPanelRecon" style="display:none;">
         <p style="font-size:12.5px;color:var(--muted);margin-bottom:10px;">
-          দিনের শেষে আপনার Groww ও CoinSwitch-এর আসল ব্যালেন্স এখানে বসিয়ে সেভ করলে SafeYield পুরোপুরি বাস্তব পোর্টফোলিওর সাথে মিলে যাবে (ইউনিট ফাঁকা রাখলে লাইভ দাম দিয়ে অটো হিসাব হবে):
+          দিনের শেষে আপনার Groww ও Binance-এর আসল ব্যালেন্স এখানে বসিয়ে সেভ করলে SafeYield পুরোপুরি বাস্তব পোর্টফোলিওর সাথে মিলে যাবে (ইউনিট ফাঁকা রাখলে লাইভ দাম দিয়ে অটো হিসাব হবে):
         </p>
         <div class="form-field" style="margin-bottom:10px;">
-          <label>💵 Groww + CoinSwitch মিলিয়ে হাতে মোট নগদ (Cash ₹)</label>
+          <label>💵 Groww + Binance মিলিয়ে হাতে মোট নগদ (Cash ₹)</label>
           <input id="reconCash" type="number" step="0.01" placeholder="যেমন: 4825" />
         </div>
         <div class="recon-row" style="font-weight:700;color:var(--muted);font-size:11.5px;background:#f8fafc;padding:6px 4px;border-radius:8px;">
@@ -697,12 +697,12 @@
     gold:  { name: 'Gold ETF',     type: 'নিরাপদ হেজ',   taxCat: 'GOLD',   isCrypto: false, broker: 'Groww' },
     tcs:   { name: 'TCS',          type: 'আইটি লার্জ-ক্যাপ', taxCat: 'EQUITY', isCrypto: false, broker: 'Groww' },
     hdfc:  { name: 'HDFC Bank',    type: 'ব্যাংকিং লিডার', taxCat: 'EQUITY', isCrypto: false, broker: 'Groww' },
-    btc:   { name: 'Bitcoin (BTC)', type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', taxCat: 'CRYPTO', isCrypto: true, broker: 'CoinSwitch' },
-    eth:   { name: 'Ethereum (ETH)', type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', taxCat: 'CRYPTO', isCrypto: true, broker: 'CoinSwitch' }
+    btc:   { name: 'Bitcoin (BTC)', type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', taxCat: 'CRYPTO', isCrypto: true, broker: 'Binance' },
+    eth:   { name: 'Ethereum (ETH)', type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', taxCat: 'CRYPTO', isCrypto: true, broker: 'Binance' }
   };
 
   let currency = 'INR';
-  const USD_RATE = 92.65;
+  let USD_RATE = 85.0;
   let goldTaxSlab = Number(localStorage.getItem('sy_tax_slab') ?? 10);
   let autoLiveEnabled = localStorage.getItem('sy_auto_live') !== 'off';
   let isAdminUnlocked = false;
@@ -730,7 +730,7 @@
   if (!chatHistory.length) {
     chatHistory = [{
       role: 'ai',
-      text: 'নমস্কার! আমি আপনার SafeYield AI অ্যাডভাইজার। লাইভ মার্কেট রেট, RSI, নিউজ ও আপনার পোর্টফোলিও দেখে কোনটা কিনবেন বা বেচবেন—সব স্টেপ-বাই-স্টেপ বলে দেব। আপনি বাস্তবে Groww বা CoinSwitch-এ ট্রেড করে এখানে লিখলেই আমি পোর্টফোলিও সিঙ্ক করে দেব।',
+      text: 'নমস্কার! আমি আপনার SafeYield AI অ্যাডভাইজার। লাইভ মার্কেট রেট, RSI, নিউজ ও আপনার পোর্টফোলিও দেখে কোনটা কিনবেন বা বেচবেন—সব স্টেপ-বাই-স্টেপ বলে দেব। আপনি বাস্তবে Groww বা Binance-এ ট্রেড করে এখানে লিখলেই আমি পোর্টফোলিও সিঙ্ক করে দেব।',
       steps: [
         'জিজ্ঞাসা করুন: "আজ কী কিনবো ও বেচবো?"',
         'রিয়েল ট্রেড সিঙ্ক করতে লিখুন: "Groww-এ Nifty ETF ₹650 কিনেছি" বা নিচের সিঙ্ক ফর্ম ব্যবহার করুন।'
@@ -1127,7 +1127,7 @@
           syncHtml = '<div class="chat-sync-card">✅ <b>SafeYield পোর্টফোলিওতে সফলভাবে সিঙ্ক হয়েছে!</b> (' + escapeHtml(s.broker || 'Broker') + ' • ' + actBn + ' • ' + escapeHtml(aName) + ' • ' + fmt(s.amount_inr) + ')</div>';
         } else {
           syncHtml = '<div class="chat-sync-card">' +
-            '<div><b>🔄 রিয়েল ট্রেড শনাক্ত হয়েছে:</b> ' + escapeHtml(s.broker || 'Groww/CoinSwitch') + ' — <b>' + actBn + ' ' + escapeHtml(aName) + '</b> (' + fmt(s.amount_inr) + ')</div>' +
+            '<div><b>🔄 রিয়েল ট্রেড শনাক্ত হয়েছে:</b> ' + escapeHtml(s.broker || 'Groww/Binance') + ' — <b>' + actBn + ' ' + escapeHtml(aName) + '</b> (' + fmt(s.amount_inr) + ')</div>' +
             '<button type="button" class="chat-sync-btn" onclick="confirmChatSync(' + idx + ')">✅ SafeYield পোর্টফোলিওতে সিঙ্ক করুন (PIN)</button>' +
           '</div>';
         }
@@ -1188,7 +1188,7 @@
       chatHistory = chatHistory.filter(x => !x.loading);
       chatHistory.push({
         role: 'ai',
-        text: '⚠️ চ্যাট রিস্পন্স আনতে সমস্যা হয়েছে: ' + e.message + ' (নিশ্চিত করুন Supabase Edge Function v4.8 ডিপ্লয় করা হয়েছে)।',
+        text: '⚠️ চ্যাট রিস্পন্স আনতে সমস্যা হয়েছে: ' + e.message + ' (নিশ্চিত করুন Supabase Edge Function v4.9 ডিপ্লয় করা হয়েছে)।',
         steps: [],
         suggested_sync: null
       });
@@ -1320,7 +1320,7 @@
           holdings: holdingsPayload
         }, 20000);
         msgEl.style.color = '#15803d';
-        msgEl.textContent = '✅ এন্ড-অফ-ডে রিকনসাইল সম্পন্ন! SafeYield এখন আপনার Groww ও CoinSwitch-এর সাথে মিলে গেছে। মোট মূল্য: ' + fmt(data.portfolio_value);
+        msgEl.textContent = '✅ এন্ড-অফ-ডে রিকনসাইল সম্পন্ন! SafeYield এখন আপনার Groww ও Binance-এর সাথে মিলে গেছে। মোট মূল্য: ' + fmt(data.portfolio_value);
         await refreshAll(true);
       } catch (e) {
         msgEl.style.color = '#dc2626';
@@ -1336,6 +1336,7 @@
   function computePortfolioStats() {
     const latest = logsData[0] || null;
     const snap = liveMarketOverride || ((latest && latest.market_snapshot) ? latest.market_snapshot : {});
+    if (snap.btc && snap.btc.usdInr > 50) USD_RATE = Number(snap.btc.usdInr);
     const cash = Number(stateData.cash ?? 10000);
     const hold = stateData.holdings || {};
     let invVal = 0, invCost = 0;
@@ -1610,8 +1611,8 @@
         else if (rsi > 68) sig = '<span class="tag tag-sell">অতিরিক্ত দাম (Profit Lock)</span>';
         const chg = Number(m.changePct || 0);
         return '<tr>' +
-          '<td><b>' + ASSETS[id].name + '</b><br><small style="color:var(--muted);">' + ASSETS[id].type + '</small></td>' +
-          '<td>' + (m.price ? fmt(m.price) : '—') + '</td>' +
+          '<td><b>' + ASSETS[id].name + '</b><br><small style="color:var(--muted);">' + ASSETS[id].type + (m.source ? ' • ' + escapeHtml(m.source) : '') + '</small></td>' +
+          '<td>' + (m.price ? fmt(m.price) : '—') + (m.usdtPrice ? '<br><small style="color:var(--muted);">$' + Number(m.usdtPrice).toLocaleString('en-US', {maximumFractionDigits: 2}) + ' USDT</small>' : '') + '</td>' +
           '<td style="color:' + (chg >= 0 ? '#15803d' : '#b91c1c') + ';font-weight:600;">' + (chg >= 0 ? '+' : '') + chg + '%</td>' +
           '<td><b>' + rsi + '</b></td>' +
           '<td>' + dip + '% নিচে</td>' +
@@ -1714,7 +1715,7 @@
     const entries = Object.entries(st.hold).filter(([, h]) => h && h.qty > 0);
     let html = '<div class="weight-item" style="margin-bottom:10px;background:#ecfdf5;">' +
       '<div style="display:flex;justify-content:space-between;"><b>💵 হাতে নগদ (Cash Buffer)</b><b>' + fmt(st.cash) + '</b></div>' +
-      '<small style="color:var(--muted);">Groww + CoinSwitch মিলিয়ে হাতে থাকা মোট নগদ টাকা</small>' +
+      '<small style="color:var(--muted);">Groww + Binance মিলিয়ে হাতে থাকা মোট নগদ টাকা</small>' +
     '</div>';
 
     if (!entries.length) {
