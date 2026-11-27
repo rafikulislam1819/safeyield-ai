@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SafeYield AI v4.10 — ফাস্ট AI চ্যাট ও Groww/Binance সিঙ্ক</title>
+  <title>SafeYield AI v4.11 — ট্রেড পাসবুক (সময়সহ) ও Groww/Binance সিঙ্ক</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
@@ -249,6 +249,24 @@
     }
     .pred-box { background: linear-gradient(135deg, #eff6ff, #f0fdf4); border: 1px solid #bfdbfe; border-radius: 14px; padding: 13px; margin-bottom: 10px; }
 
+    
+    /* Passbook / Trade History */
+    .pb-summary {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px;
+    }
+    .pb-stat {
+      background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 9px 10px;
+    }
+    .pb-stat small { display: block; font-size: 11px; color: var(--muted); }
+    .pb-stat strong { font-size: 14px; }
+    .pb-controls {
+      display: flex; gap: 6px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 10px;
+    }
+    .pb-filter-group { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .pb-table td { vertical-align: top; font-size: 12.5px; }
+    .pb-time { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+    .pb-reason { font-size: 11px; color: var(--muted); margin-top: 2px; max-width: 210px; }
+
     /* Bottom Nav (6 Tabs) */
     .tab-pane { display: none; }
     .tab-pane.active { display: block; }
@@ -285,7 +303,7 @@
     <div class="brand-row">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1>SafeYield AI <span class="badge-v">v4.10 • ফাস্ট চ্যাট + Binance</span></h1>
+        <h1>SafeYield AI <span class="badge-v">v4.11 • ট্রেড পাসবুক</span></h1>
         <p>AI মার্কেট রিসার্চ ও চ্যাট • Groww / Binance টু-ওয়ে সিঙ্ক • ট্যাক্স রিপোর্ট</p>
       </div>
     </div>
@@ -641,6 +659,56 @@
       <div class="sec-sub" id="walletCapSub">কম্পাউন্ডিং সীমা: প্রতি স্টক/ETF ২৫% • প্রতি ক্রিপ্টো ৮% • ন্যূনতম ক্যাশ ₹500</div>
       <div id="walletList">লোড হচ্ছে...</div>
     </div>
+
+    <!-- Trade History / Passbook Card -->
+    <div class="card">
+      <div class="sec-title">
+        <span>📜 ট্রেড হিস্ট্রি / পাসবুক (তারিখ ও সময়সহ)</span>
+        <button type="button" class="pill" style="font-size:12px;padding:5px 11px;" onclick="exportTradePassbookCSV()">📥 CSV ডাউনলোড</button>
+      </div>
+      <div class="sec-sub">কখন, কোন অ্যাসেট, কত রেটে ও কত টাকায় কেনা বা বিক্রি হয়েছে তার সম্পূর্ণ হিসাব</div>
+
+      <div class="pb-summary" id="passbookSummary">
+        <div class="pb-stat"><small>মোট কেনা (BUY)</small><strong>₹0 (0টি)</strong></div>
+        <div class="pb-stat"><small>মোট বিক্রি (SELL)</small><strong>₹0 (0টি)</strong></div>
+        <div class="pb-stat"><small>বুক করা লাভ/লস</small><strong>₹0</strong></div>
+      </div>
+
+      <div class="pb-controls">
+        <div class="pb-filter-group">
+          <button type="button" class="nf-btn active" id="pbAllBtn" onclick="setPassbookFilter('ALL', this)">সব ট্রেড</button>
+          <button type="button" class="nf-btn" id="pbBuyBtn" onclick="setPassbookFilter('BUY', this)">🟢 কেনা (BUY)</button>
+          <button type="button" class="nf-btn" id="pbSellBtn" onclick="setPassbookFilter('SELL', this)">🔴 বিক্রি (SELL)</button>
+        </div>
+        <select id="pbAssetFilter" class="slab-select" onchange="setPassbookAssetFilter(this.value)">
+          <option value="ALL">সব অ্যাসেট</option>
+          <option value="nifty">Nifty 50 ETF</option>
+          <option value="gold">Gold ETF</option>
+          <option value="tcs">TCS</option>
+          <option value="hdfc">HDFC Bank</option>
+          <option value="btc">Bitcoin (BTC)</option>
+          <option value="eth">Ethereum (ETH)</option>
+        </select>
+      </div>
+
+      <div class="table-wrap">
+        <table class="pb-table">
+          <thead>
+            <tr>
+              <th>তারিখ ও সময়</th>
+              <th>ধরন</th>
+              <th>অ্যাসেট</th>
+              <th>রেট ও পরিমাণ</th>
+              <th>মোট টাকা</th>
+              <th>লাভ / লস</th>
+            </tr>
+          </thead>
+          <tbody id="tradePassbookBody">
+            <tr><td colspan="6" style="color:var(--muted);">ট্রেড হিস্ট্রি লোড হচ্ছে...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -719,6 +787,8 @@
   let liveNewsList = [];
   let newsLoadedOnce = false;
   let activeNewsFilter = 'ALL';
+  let activePassbookType = 'ALL';
+  let activePassbookAsset = 'ALL';
   let chartInstance = null;
   let chatHistory = [];
 
@@ -1003,7 +1073,7 @@
       const [st, mem, logs] = await Promise.all([
         sbGet('/rest/v1/safeyield_state?sync_id=eq.' + encodeURIComponent(c.syncId) + '&select=*'),
         sbGet('/rest/v1/ai_memory?sync_id=eq.' + encodeURIComponent(c.syncId) + '&select=*'),
-        sbGet('/rest/v1/ai_logs?sync_id=eq.' + encodeURIComponent(c.syncId) + '&order=created_at.desc&limit=40')
+        sbGet('/rest/v1/ai_logs?sync_id=eq.' + encodeURIComponent(c.syncId) + '&order=created_at.desc&limit=200')
       ]);
       if (!st.ok && (st.status === 401 || st.status === 403)) {
         document.getElementById('lastUpdated').textContent = '⚠️ API Key ভুল — ⚙️ সেটআপে ঠিক করুন';
@@ -1643,10 +1713,15 @@
     if (!logsData.length) {
       allBox.innerHTML = '<p style="color:var(--muted);font-size:13px;">এখনও কোনো লগ লোড হয়নি।</p>';
     } else {
-      allBox.innerHTML = logsData.slice(0, 12).map(l => {
-        const acts = (l.actions_taken || []).map(a => '<div style="font-size:12.5px;margin-top:4px;">• <b>' + escapeHtml(a.action) + ' ' + escapeHtml(a.asset_name || a.asset_id) + ':</b> ' + escapeHtml(a.reason_bn || '') + '</div>').join('');
+      allBox.innerHTML = logsData.slice(0, 15).map(l => {
+        const dtStr = l.created_at ? new Date(l.created_at).toLocaleString('bn-BD', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+        const acts = (l.actions_taken || []).map(a => {
+          const amtTxt = a.amount_inr ? ' (' + fmt(a.amount_inr) + (a.price ? ' @ ' + fmt(a.price) : '') + ')' : '';
+          const pnlTxt = (a.action === 'SELL' && typeof a.pnl_inr === 'number') ? ' • লাভ/লস: ' + (a.pnl_inr >= 0 ? '+' : '') + fmt(a.pnl_inr) : '';
+          return '<div style="font-size:12.5px;margin-top:4px;">• <b>' + escapeHtml(a.action) + ' ' + escapeHtml(a.asset_name || a.asset_id) + amtTxt + pnlTxt + ':</b> ' + escapeHtml(a.reason_bn || '') + '</div>';
+        }).join('');
         return '<div class="log-box">' +
-          '<div class="log-head"><b>দিন ' + l.day_number + ' — ' + escapeHtml(l.strategy_used || '') + '</b><span class="tag tag-neut">মোট মূল্য: ' + fmt(l.portfolio_value) + '</span></div>' +
+          '<div class="log-head"><span><b>দিন ' + l.day_number + ' — ' + escapeHtml(l.strategy_used || '') + '</b> <small style="color:var(--muted);">(' + dtStr + ')</small></span><span class="tag tag-neut">মোট মূল্য: ' + fmt(l.portfolio_value) + '</span></div>' +
           '<p style="font-size:13px;">' + escapeHtml(l.summary_bn || '') + '</p>' + acts +
         '</div>';
       }).join('');
@@ -1756,7 +1831,142 @@
       }).join('');
     }
     document.getElementById('walletList').innerHTML = html;
+    renderTradePassbook();
   }
+
+  function buildTradeHistoryList() {
+    const rows = [];
+    for (const l of logsData) {
+      const ts = l.created_at || '';
+      const dayNum = l.day_number || 1;
+      const isReal = l.brain_mode === 'REAL_SYNC';
+      const sourceLabel = isReal ? 'রিয়েল সিঙ্ক' : (l.brain_mode === 'GEMINI_AI' ? 'Gemini AI' : 'Quant AI');
+      for (const a of (l.actions_taken || [])) {
+        const act = String(a.action || '').toUpperCase();
+        if (act !== 'BUY' && act !== 'SELL') continue;
+        const id = String(a.asset_id || '').toLowerCase();
+        const info = ASSETS[id] || { name: a.asset_name || id, broker: 'Broker' };
+        const amt = Number(a.amount_inr || 0);
+        const price = Number(a.price || 0);
+        const qty = (amt > 0 && price > 0) ? (amt / price) : 0;
+        const pnl = (act === 'SELL' && typeof a.pnl_inr === 'number') ? Number(a.pnl_inr) : null;
+        rows.push({
+          created_at: ts,
+          day_number: dayNum,
+          action: act,
+          asset_id: id,
+          asset_name: a.asset_name || info.name,
+          broker: info.broker,
+          source: sourceLabel,
+          isReal,
+          amount_inr: amt,
+          price,
+          qty,
+          pnl_inr: pnl,
+          reason_bn: a.reason_bn || ''
+        });
+      }
+    }
+    return rows;
+  }
+
+  function setPassbookFilter(type, btn) {
+    activePassbookType = type;
+    ['pbAllBtn', 'pbBuyBtn', 'pbSellBtn'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('active');
+    });
+    if (btn) btn.classList.add('active');
+    renderTradePassbook();
+  }
+
+  function setPassbookAssetFilter(assetId) {
+    activePassbookAsset = assetId || 'ALL';
+    renderTradePassbook();
+  }
+
+  function renderTradePassbook() {
+    const body = document.getElementById('tradePassbookBody');
+    const sumBox = document.getElementById('passbookSummary');
+    if (!body || !sumBox) return;
+
+    const allTrades = buildTradeHistoryList();
+    let buySum = 0, buyCnt = 0, sellSum = 0, sellCnt = 0, realizedSum = 0;
+    for (const t of allTrades) {
+      if (t.action === 'BUY') { buySum += t.amount_inr; buyCnt++; }
+      else if (t.action === 'SELL') {
+        sellSum += t.amount_inr; sellCnt++;
+        if (t.pnl_inr !== null) realizedSum += t.pnl_inr;
+      }
+    }
+
+    sumBox.innerHTML =
+      '<div class="pb-stat" style="background:#f0fdf4;border-color:#bbf7d0;"><small>মোট কেনা (BUY)</small><strong style="color:#166534;">' + fmt(buySum) + ' (' + toBnNum(buyCnt) + 'টি)</strong></div>' +
+      '<div class="pb-stat" style="background:#fef2f2;border-color:#fecaca;"><small>মোট বিক্রি (SELL)</small><strong style="color:#991b1b;">' + fmt(sellSum) + ' (' + toBnNum(sellCnt) + 'টি)</strong></div>' +
+      '<div class="pb-stat" style="background:#eff6ff;border-color:#bfdbfe;"><small>বুক করা লাভ/লস</small><strong style="color:' + (realizedSum >= 0 ? '#15803d' : '#b91c1c') + ';">' + (realizedSum >= 0 ? '+' : '') + fmt(realizedSum) + '</strong></div>';
+
+    const filtered = allTrades.filter(t => {
+      if (activePassbookType !== 'ALL' && t.action !== activePassbookType) return false;
+      if (activePassbookAsset !== 'ALL' && t.asset_id !== activePassbookAsset) return false;
+      return true;
+    });
+
+    if (!filtered.length) {
+      body.innerHTML = '<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:16px;">এই ফিল্টারে কোনো BUY বা SELL ট্রেড পাওয়া যায়নি।</td></tr>';
+      return;
+    }
+
+    body.innerHTML = filtered.map(t => {
+      const d = t.created_at ? new Date(t.created_at) : null;
+      const datePart = d ? d.toLocaleDateString('bn-BD', { day: 'numeric', month: 'short', year: '2-digit' }) : '—';
+      const timePart = d ? d.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' }) : '';
+      const actTag = t.action === 'BUY'
+        ? '<span class="tag tag-buy">কেনা (BUY)</span>'
+        : '<span class="tag tag-sell">বিক্রি (SELL)</span>';
+      const srcTag = '<div style="margin-top:3px;"><span class="tag ' + (t.isReal ? 'tag-neut' : 'tag-cat') + '" style="font-size:10px;">' + escapeHtml(t.source) + '</span></div>';
+      const qtyStr = t.qty > 0 ? (t.qty < 0.01 ? t.qty.toFixed(6) : t.qty.toFixed(4)) + ' ইউনিট' : '—';
+      const priceStr = t.price > 0 ? fmt(t.price) : '—';
+      let pnlCell = '<span style="color:var(--muted);">—</span>';
+      if (t.action === 'SELL' && t.pnl_inr !== null) {
+        const col = t.pnl_inr >= 0 ? '#15803d' : '#b91c1c';
+        pnlCell = '<b style="color:' + col + ';">' + (t.pnl_inr >= 0 ? '+' : '') + fmt(t.pnl_inr) + '</b>';
+      }
+      return '<tr>' +
+        '<td class="pb-time"><b>' + datePart + '</b><br>' + timePart + '<br><span style="color:#0f766e;">দিন ' + toBnNum(t.day_number) + '</span></td>' +
+        '<td>' + actTag + srcTag + '</td>' +
+        '<td><b>' + escapeHtml(t.asset_name) + '</b><br><span class="tag tag-cat" style="font-size:10px;">' + escapeHtml(t.broker) + '</span><div class="pb-reason">' + escapeHtml(t.reason_bn) + '</div></td>' +
+        '<td style="white-space:nowrap;"><b>' + priceStr + '</b><br><small style="color:var(--muted);">' + qtyStr + '</small></td>' +
+        '<td style="white-space:nowrap;"><b>' + fmt(t.amount_inr) + '</b></td>' +
+        '<td style="white-space:nowrap;">' + pnlCell + '</td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  function exportTradePassbookCSV() {
+    const trades = buildTradeHistoryList();
+    if (!trades.length) { alert('এখনও কোনো ট্রেড হিস্ট্রি নেই।'); return; }
+    const esc = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+    const header = ['Date_Time_IST', 'Day', 'Type', 'Source', 'Broker', 'Asset', 'Unit_Price_INR', 'Quantity', 'Total_Amount_INR', 'Realized_PnL_INR', 'Reason'];
+    const lines = [header.join(',')];
+    for (const t of trades) {
+      const dt = t.created_at ? new Date(t.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : '';
+      lines.push([
+        esc(dt), t.day_number, t.action, esc(t.source), esc(t.broker), esc(t.asset_name),
+        t.price || '', t.qty ? t.qty.toFixed(6) : '', t.amount_inr,
+        t.pnl_inr !== null ? t.pnl_inr : '', esc(t.reason_bn)
+      ].join(','));
+    }
+    const blob = new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'safeyield-trade-passbook.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
 
   function renderChart() {
     if (typeof Chart === 'undefined') return;
