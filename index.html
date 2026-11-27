@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SafeYield AI v5.0.4 — পার্মানেন্ট config.js, প্রোফাইল ও AI পোর্টফোলিও</title>
+  <title>SafeYield AI v5.1 — ১২টি ফিক্সড + কাস্টম অ্যাসেট, প্রোফাইল ও AI পোর্টফোলিও</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
@@ -337,6 +337,18 @@
       margin-top: 12px; padding: 11px 12px; border: 1px solid var(--border);
       border-radius: 12px; background: #f8fafc;
     }
+    .asset-del-btn {
+      border: 1px solid #fecaca; background: #fef2f2; color: #b91c1c;
+      border-radius: 6px; padding: 1px 6px; font-size: 10.5px; font-weight: 700;
+      cursor: pointer; margin-left: 5px; font-family: inherit;
+    }
+    .asset-del-btn:hover { background: #fee2e2; }
+    .tag-custom { background: #ede9fe; color: #5b21b6; font-size: 10px; margin-left: 4px; }
+    .custom-list-item {
+      display: flex; justify-content: space-between; align-items: center; gap: 8px;
+      padding: 7px 10px; border: 1px solid var(--border); border-radius: 10px;
+      background: #f8fafc; margin-bottom: 6px; font-size: 12.5px;
+    }
     .btn-danger {
       width: 100%; padding: 10px; border-radius: 11px; border: 1px solid #fecaca;
       background: #fef2f2; color: #b91c1c; font-size: 13.5px; font-weight: 700;
@@ -379,7 +391,7 @@
     <div class="auth-head">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1 style="font-size:19px;">SafeYield AI <span class="badge-v">v5.0.4</span></h1>
+        <h1 style="font-size:19px;">SafeYield AI <span class="badge-v">v5.1</span></h1>
         <p style="font-size:12.5px;">আপনার নিজস্ব AI পোর্টফোলিও অ্যাকাউন্ট তৈরি বা সাইন-ইন করুন</p>
       </div>
     </div>
@@ -515,7 +527,7 @@
     <div class="brand-row">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1>SafeYield AI <span class="badge-v">v5.0.4 • অটো-কনফিগ + সিঙ্ক</span></h1>
+        <h1>SafeYield AI <span class="badge-v">v5.1 • ১২+ কাস্টম অ্যাসেট</span></h1>
         <p>AI মার্কেট রিসার্চ ও চ্যাট • Groww / Binance টু-ওয়ে সিঙ্ক • ট্যাক্স রিপোর্ট</p>
       </div>
     </div>
@@ -719,7 +731,10 @@
     <div class="card">
       <div class="sec-title">
         <span>📊 কিসের ভিত্তিতে ইনভেস্ট করছে? (লাইভ ইন্ডিকেটর)</span>
-        <button type="button" class="pill" style="font-size:11.5px;padding:4px 10px;" onclick="fetchLiveRatesOnly(false)">📡 রেট রিফ্রেশ</button>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button type="button" class="pill active" style="font-size:11.5px;padding:4px 11px;" onclick="openAddAssetModal()">➕ অ্যাসেট যোগ করুন</button>
+          <button type="button" class="pill" style="font-size:11.5px;padding:4px 10px;" onclick="fetchLiveRatesOnly(false)">📡 রেট রিফ্রেশ</button>
+        </div>
       </div>
       <div class="sec-sub">প্রতিটি অ্যাসেটের বর্তমান দাম, RSI (14), ১৪-দিনের গড় (SMA14) ও ডিসকাউন্ট %</div>
       <div class="table-wrap">
@@ -982,6 +997,66 @@
   </div>
 </div>
 
+<!-- Add Custom Asset Modal -->
+<div class="modal-bg" id="addAssetModal">
+  <div class="modal" style="max-width:450px;max-height:90vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <h3>➕ নতুন স্টক / ETF / ক্রিপ্টো যোগ করুন</h3>
+      <button type="button" class="pill" style="padding:4px 10px;font-size:12px;" onclick="closeAddAssetModal()">✕</button>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:10px;">
+      ১২টি ফিক্সড অ্যাসেটের পাশাপাশি আপনার পছন্দের যেকোনো NSE স্টক/ETF (Groww) বা Binance কয়েন যোগ করুন—এটি শুধু আপনার প্রোফাইলে সেভ থাকবে।
+    </p>
+
+    <div style="margin-bottom:10px;">
+      <small style="display:block;font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:5px;">⚡ জনপ্রিয় কুইক-অ্যাড (১-ক্লিক):</small>
+      <div class="cap-presets">
+        <button type="button" class="cap-chip" onclick="prefillCustomAsset('STOCK','ITC','ITC Ltd','EQUITY')">+ ITC</button>
+        <button type="button" class="cap-chip" onclick="prefillCustomAsset('STOCK','TATAMOTORS','Tata Motors','EQUITY')">+ Tata Motors</button>
+        <button type="button" class="cap-chip" onclick="prefillCustomAsset('STOCK','BANKBEES','Bank Nifty ETF','EQUITY')">+ Bank Nifty ETF</button>
+        <button type="button" class="cap-chip" onclick="prefillCustomAsset('STOCK','MID150BEES','Midcap 150 ETF','EQUITY')">+ Midcap ETF</button>
+        <button type="button" class="cap-chip" onclick="prefillCustomAsset('CRYPTO','BNB','BNB (Binance)','CRYPTO')">+ BNB</button>
+        <button type="button" class="cap-chip" onclick="prefillCustomAsset('CRYPTO','XRP','Ripple (XRP)','CRYPTO')">+ XRP</button>
+        <button type="button" class="cap-chip" onclick="prefillCustomAsset('CRYPTO','DOGE','Dogecoin (DOGE)','CRYPTO')">+ DOGE</button>
+      </div>
+    </div>
+
+    <div class="form-grid" style="margin-bottom:8px;">
+      <div class="form-field">
+        <label>প্ল্যাটফর্ম / ধরন</label>
+        <select id="caType" onchange="onCustomAssetTypeChange()">
+          <option value="STOCK">Groww (NSE Stock / ETF)</option>
+          <option value="CRYPTO">Binance (Crypto Coin)</option>
+        </select>
+      </div>
+      <div class="form-field" id="caTaxWrap">
+        <label>ট্যাক্স ক্যাটাগরি</label>
+        <select id="caTaxCat">
+          <option value="EQUITY">Equity / Stock / Index ETF (20%)</option>
+          <option value="GOLD">Gold / Silver ETF (Income Slab)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="auth-field" style="margin-bottom:8px;">
+      <label id="caSymbolLabel">NSE সিম্বল (যেমন: ITC, WIPRO, ZOMATO, BANKBEES)</label>
+      <input id="caSymbol" type="text" placeholder="যেমন: ITC বা TATAMOTORS" style="text-transform:uppercase;" onkeydown="if(event.key==='Enter') handleAddCustomAsset()" />
+    </div>
+    <div class="auth-field" style="margin-bottom:10px;">
+      <label>দেখানোর নাম (ঐচ্ছিক — ফাঁকা রাখলে অটো নেবে)</label>
+      <input id="caName" type="text" placeholder="যেমন: ITC Ltd" onkeydown="if(event.key==='Enter') handleAddCustomAsset()" />
+    </div>
+
+    <button type="button" class="btn-run" id="caSubmitBtn" style="padding:11px;font-size:14.5px;" onclick="handleAddCustomAsset()">✅ লাইভ রেট যাচাই করে যোগ করুন</button>
+    <div id="caMsg" class="auth-msg"></div>
+
+    <div id="caListWrap" style="margin-top:14px;padding-top:10px;border-top:1px solid var(--border);display:none;">
+      <div style="font-size:12.5px;font-weight:700;color:#334155;margin-bottom:6px;">📌 আপনার যোগ করা কাস্টম অ্যাসেটসমূহ:</div>
+      <div id="caCustomList"></div>
+    </div>
+  </div>
+</div>
+
 <!-- Setup Modal -->
 <div class="modal-bg" id="setupModal">
   <div class="modal">
@@ -1008,14 +1083,66 @@
   // নিচে আপনার Supabase Anon / Publishable Key বসালে নতুন ইউজাররা সেটআপ ছাড়াই সরাসরি সাইন-আপ করতে পারবে:
   const DEFAULT_ANON_KEY = '';
   const AUTO_REFRESH_INTERVAL_SEC = 60;
-  const ASSETS = {
-    nifty: { name: 'Nifty 50 ETF', type: 'ইক্যুইটি সূচক', taxCat: 'EQUITY', isCrypto: false, broker: 'Groww' },
-    gold:  { name: 'Gold ETF',     type: 'নিরাপদ হেজ',   taxCat: 'GOLD',   isCrypto: false, broker: 'Groww' },
-    tcs:   { name: 'TCS',          type: 'আইটি লার্জ-ক্যাপ', taxCat: 'EQUITY', isCrypto: false, broker: 'Groww' },
-    hdfc:  { name: 'HDFC Bank',    type: 'ব্যাংকিং লিডার', taxCat: 'EQUITY', isCrypto: false, broker: 'Groww' },
-    btc:   { name: 'Bitcoin (BTC)', type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', taxCat: 'CRYPTO', isCrypto: true, broker: 'Binance' },
-    eth:   { name: 'Ethereum (ETH)', type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', taxCat: 'CRYPTO', isCrypto: true, broker: 'Binance' }
+  const DEFAULT_ASSETS = {
+    nifty:    { name: 'Nifty 50 ETF',   type: 'ইক্যুইটি সূচক',        taxCat: 'EQUITY', isCrypto: false, broker: 'Groww',   isCustom: false },
+    gold:     { name: 'Gold ETF',       type: 'নিরাপদ হেজ',          taxCat: 'GOLD',   isCrypto: false, broker: 'Groww',   isCustom: false },
+    silver:   { name: 'Silver ETF',     type: 'কমোডিটি হেজ',        taxCat: 'GOLD',   isCrypto: false, broker: 'Groww',   isCustom: false },
+    tcs:      { name: 'TCS',            type: 'আইটি লার্জ-ক্যাপ',    taxCat: 'EQUITY', isCrypto: false, broker: 'Groww',   isCustom: false },
+    hdfc:     { name: 'HDFC Bank',      type: 'ব্যাংকিং লিডার',      taxCat: 'EQUITY', isCrypto: false, broker: 'Groww',   isCustom: false },
+    reliance: { name: 'Reliance Ind.',  type: 'ব্লু-চিপ লার্জ-ক্যাপ', taxCat: 'EQUITY', isCrypto: false, broker: 'Groww',   isCustom: false },
+    infy:     { name: 'Infosys',        type: 'আইটি লার্জ-ক্যাপ',    taxCat: 'EQUITY', isCrypto: false, broker: 'Groww',   isCustom: false },
+    icici:    { name: 'ICICI Bank',     type: 'ব্যাংকিং লিডার',      taxCat: 'EQUITY', isCrypto: false, broker: 'Groww',   isCustom: false },
+    sbi:      { name: 'SBI',            type: 'পিএসইউ ব্যাংক',       taxCat: 'EQUITY', isCrypto: false, broker: 'Groww',   isCustom: false },
+    btc:      { name: 'Bitcoin (BTC)',  type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', taxCat: 'CRYPTO', isCrypto: true,  broker: 'Binance', isCustom: false },
+    eth:      { name: 'Ethereum (ETH)', type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', taxCat: 'CRYPTO', isCrypto: true,  broker: 'Binance', isCustom: false },
+    sol:      { name: 'Solana (SOL)',   type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', taxCat: 'CRYPTO', isCrypto: true,  broker: 'Binance', isCustom: false }
   };
+  let customAssetsList = [];
+  let ASSETS = { ...DEFAULT_ASSETS };
+
+  function syncAssetsFromState() {
+    const raw = (stateData && stateData.profile && Array.isArray(stateData.profile.custom_assets))
+      ? stateData.profile.custom_assets
+      : [];
+    customAssetsList = raw;
+    const merged = { ...DEFAULT_ASSETS };
+    for (const item of raw) {
+      if (!item || !item.id) continue;
+      const id = String(item.id).toLowerCase();
+      if (merged[id]) continue;
+      const isCrypto = item.type === 'CRYPTO';
+      merged[id] = {
+        name: String(item.name || item.symbol || id),
+        type: isCrypto ? 'কাস্টম ক্রিপ্টো' : 'কাস্টম স্টক / ETF',
+        taxCat: isCrypto ? 'CRYPTO' : (item.taxCat === 'GOLD' ? 'GOLD' : 'EQUITY'),
+        isCrypto,
+        broker: isCrypto ? 'Binance' : 'Groww',
+        symbol: item.symbol || '',
+        isCustom: true
+      };
+    }
+    ASSETS = merged;
+    refreshAssetDropdowns();
+  }
+
+  function refreshAssetDropdowns() {
+    const syncSel = document.getElementById('syncAsset');
+    if (syncSel) {
+      const prev = syncSel.value;
+      syncSel.innerHTML = Object.entries(ASSETS).map(([id, info]) =>
+        '<option value="' + escapeHtml(id) + '">' + escapeHtml(info.name) + ' (' + escapeHtml(info.broker) + ')</option>'
+      ).join('');
+      if (prev && ASSETS[prev]) syncSel.value = prev;
+    }
+    const pbSel = document.getElementById('pbAssetFilter');
+    if (pbSel) {
+      const prevPb = pbSel.value || 'ALL';
+      pbSel.innerHTML = '<option value="ALL">সব অ্যাসেট</option>' + Object.entries(ASSETS).map(([id, info]) =>
+        '<option value="' + escapeHtml(id) + '">' + escapeHtml(info.name) + '</option>'
+      ).join('');
+      pbSel.value = (prevPb === 'ALL' || ASSETS[prevPb]) ? prevPb : 'ALL';
+    }
+  }
 
   let currency = 'INR';
   let USD_RATE = 85.0;
@@ -1351,6 +1478,7 @@
       }
       const defCap = Number((userProfile && userProfile.initial_capital) || 10000);
       stateData = dash.state || { cash: defCap, practice_day: 1, holdings: {} };
+      syncAssetsFromState();
       memoryData = dash.memory || { initial_capital: defCap, win_count: 0, loss_count: 0, total_trades: 0, strategy_weights: { dip_buying: 1, smart_sip: 1, gold_hedge: 1, profit_lock: 1 }, lessons: [] };
       logsData = Array.isArray(dash.logs) ? dash.logs : [];
       document.getElementById('lastUpdated').textContent = 'সিঙ্ক: ' + new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -1505,7 +1633,7 @@
 
     const compactHistory = chatHistory.filter(x => !x.loading).slice(-6).map(x => ({ role: x.role, text: x.text }));
     const latestSnap = liveMarketOverride || ((logsData[0] && logsData[0].market_snapshot) ? logsData[0].market_snapshot : null);
-    const cachedMarket = (latestSnap && latestSnap.nifty && latestSnap.nifty.price && latestSnap.btc && latestSnap.btc.price) ? latestSnap : undefined;
+    const cachedMarket = (latestSnap && Object.keys(ASSETS).every(k => latestSnap[k] && latestSnap[k].price)) ? latestSnap : undefined;
     let cachedNews = undefined;
     if (liveNewsList.length) {
       cachedNews = liveNewsList.slice(0, 8).map(n => n.title).filter(Boolean);
@@ -1843,8 +1971,8 @@
       '</div>';
 
     document.getElementById('taxBreakdownBody').innerHTML =
-      '<tr><td><b>Equity STCG Tax</b><br><small style="color:var(--muted);">Nifty, TCS, HDFC লাভ: ' + fmt(st.tax.equityNetPnl) + '</small></td><td>২০% (Sec 111A)</td><td>' + fmt(st.tax.equityTax) + '</td></tr>' +
-      '<tr><td><b>Gold ETF Tax</b><br><small style="color:var(--muted);">Gold লাভ: ' + fmt(st.tax.goldNetPnl) + '</small></td><td>স্ল্যাব ' + goldTaxSlab + '%</td><td>' + fmt(st.tax.goldTax) + '</td></tr>' +
+      '<tr><td><b>Equity STCG Tax</b><br><small style="color:var(--muted);">ইক্যুইটি ও স্টক লাভ: ' + fmt(st.tax.equityNetPnl) + '</small></td><td>২০% (Sec 111A)</td><td>' + fmt(st.tax.equityTax) + '</td></tr>' +
+      '<tr><td><b>Gold / Silver ETF Tax</b><br><small style="color:var(--muted);">Gold / Silver ETF লাভ: ' + fmt(st.tax.goldNetPnl) + '</small></td><td>স্ল্যাব ' + goldTaxSlab + '%</td><td>' + fmt(st.tax.goldTax) + '</td></tr>' +
       '<tr><td><b>Crypto VDA Tax</b><br><small style="color:var(--muted);">করযোগ্য লাভ: ' + fmt(st.tax.cryptoTaxableGain) + '</small></td><td>ফ্ল্যাট ৩০% (No Set-Off)</td><td>' + fmt(st.tax.cryptoTax) + '</td></tr>' +
       '<tr><td><b>Crypto 1% TDS</b></td><td>বিক্রির ওপর ১%</td><td>' + fmt(st.tax.cryptoTds) + '</td></tr>' +
       '<tr><td><b>Health &amp; Edu Cess</b></td><td>ট্যাক্সের ওপর ৪%</td><td>' + fmt(st.tax.cess) + '</td></tr>' +
@@ -1969,8 +2097,11 @@
         if (dip >= 2.5 || rsi < 48) sig = '<span class="tag tag-buy">কেনার সুযোগ (Buy)</span>';
         else if (rsi > 68) sig = '<span class="tag tag-sell">অতিরিক্ত দাম (Profit Lock)</span>';
         const chg = Number(m.changePct || 0);
+        const customCtrl = ASSETS[id].isCustom
+          ? '<span class="tag tag-custom">কাস্টম</span><button type="button" class="asset-del-btn" title="মুছে ফেলুন" onclick="handleRemoveCustomAsset(\'' + escapeHtml(id) + '\')">✕</button>'
+          : '';
         return '<tr>' +
-          '<td><b>' + ASSETS[id].name + '</b><br><small style="color:var(--muted);">' + ASSETS[id].type + (m.source ? ' • ' + escapeHtml(m.source) : '') + '</small></td>' +
+          '<td><b>' + escapeHtml(ASSETS[id].name) + '</b>' + customCtrl + '<br><small style="color:var(--muted);">' + escapeHtml(ASSETS[id].type) + (m.source ? ' • ' + escapeHtml(m.source) : '') + '</small></td>' +
           '<td>' + (m.price ? fmt(m.price) : '—') + (m.usdtPrice ? '<br><small style="color:var(--muted);">$' + Number(m.usdtPrice).toLocaleString('en-US', {maximumFractionDigits: 2}) + ' USDT</small>' : '') + '</td>' +
           '<td style="color:' + (chg >= 0 ? '#15803d' : '#b91c1c') + ';font-weight:600;">' + (chg >= 0 ? '+' : '') + chg + '%</td>' +
           '<td><b>' + rsi + '</b></td>' +
@@ -2858,13 +2989,133 @@
     liveMarketOverride = null;
     logsData = [];
     stateData = { cash: 10000, practice_day: 1, holdings: {} };
+    syncAssetsFromState();
     memoryData = { initial_capital: 10000, win_count: 0, loss_count: 0, total_trades: 0, strategy_weights: { dip_buying: 1, smart_sip: 1, gold_hedge: 1, profit_lock: 1 }, lessons: [] };
     saveAuthLocal();
     switchAuthTab('signin');
     showAuthScreen();
   }
 
+
+  // ===== CUSTOM ASSETS (+ ADD / REMOVE) =====
+  function onCustomAssetTypeChange() {
+    const t = document.getElementById('caType').value;
+    const isCrypto = t === 'CRYPTO';
+    document.getElementById('caTaxWrap').style.display = isCrypto ? 'none' : 'block';
+    document.getElementById('caSymbolLabel').textContent = isCrypto
+      ? 'Binance কয়েন সিম্বল (যেমন: BNB, XRP, DOGE, ADA)'
+      : 'NSE সিম্বল (যেমন: ITC, WIPRO, ZOMATO, BANKBEES)';
+    document.getElementById('caSymbol').placeholder = isCrypto ? 'যেমন: BNB বা XRP' : 'যেমন: ITC বা TATAMOTORS';
+  }
+
+  function prefillCustomAsset(type, sym, name, taxCat) {
+    document.getElementById('caType').value = type;
+    onCustomAssetTypeChange();
+    if (type !== 'CRYPTO' && taxCat) document.getElementById('caTaxCat').value = taxCat;
+    document.getElementById('caSymbol').value = sym;
+    document.getElementById('caName').value = name;
+    setAuthMsg('caMsg', '', false);
+  }
+
+  function renderCustomAssetsListInModal() {
+    const wrap = document.getElementById('caListWrap');
+    const box = document.getElementById('caCustomList');
+    if (!wrap || !box) return;
+    if (!customAssetsList.length) {
+      wrap.style.display = 'none';
+      box.innerHTML = '';
+      return;
+    }
+    wrap.style.display = 'block';
+    box.innerHTML = customAssetsList.map(item =>
+      '<div class="custom-list-item">' +
+        '<div><b>' + escapeHtml(item.name || item.id) + '</b> <span class="tag tag-cat" style="font-size:10px;">' + escapeHtml(item.broker || (item.type === 'CRYPTO' ? 'Binance' : 'Groww')) + '</span><br><small style="color:var(--muted);">' + escapeHtml(item.binanceSymbol || item.symbol || item.id) + '</small></div>' +
+        '<button type="button" class="asset-del-btn" style="padding:4px 9px;font-size:11.5px;" onclick="handleRemoveCustomAsset(\'' + escapeHtml(item.id) + '\')">🗑️ মুছুন</button>' +
+      '</div>'
+    ).join('');
+  }
+
+  function openAddAssetModal() {
+    document.getElementById('caType').value = 'STOCK';
+    onCustomAssetTypeChange();
+    document.getElementById('caSymbol').value = '';
+    document.getElementById('caName').value = '';
+    setAuthMsg('caMsg', '', false);
+    renderCustomAssetsListInModal();
+    document.getElementById('addAssetModal').classList.add('open');
+    setTimeout(() => document.getElementById('caSymbol').focus(), 100);
+  }
+
+  function closeAddAssetModal() {
+    document.getElementById('addAssetModal').classList.remove('open');
+  }
+
+  async function handleAddCustomAsset() {
+    const type = document.getElementById('caType').value;
+    const rawSym = (document.getElementById('caSymbol').value || '').trim().toUpperCase();
+    const name = (document.getElementById('caName').value || '').trim();
+    const taxCat = type === 'CRYPTO' ? 'CRYPTO' : (document.getElementById('caTaxCat').value || 'EQUITY');
+
+    if (!rawSym || rawSym.length < 2 || rawSym.length > 20) {
+      setAuthMsg('caMsg', '⚠️ সঠিক সিম্বল দিন (যেমন: ITC, TATAMOTORS, BANKBEES, BNB, XRP)।', true);
+      return;
+    }
+
+    const btn = document.getElementById('caSubmitBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ লাইভ দাম যাচাই হচ্ছে...';
+    setAuthMsg('caMsg', '', false);
+    try {
+      const data = await callAutopilotApi({
+        mode: 'add_custom_asset',
+        asset_type: type,
+        symbol: rawSym,
+        name,
+        tax_cat: taxCat
+      }, 22000);
+
+      if (!stateData.profile || typeof stateData.profile !== 'object') stateData.profile = {};
+      stateData.profile.custom_assets = Array.isArray(data.custom_assets) ? data.custom_assets : [];
+      if (data.market) liveMarketOverride = data.market;
+      syncAssetsFromState();
+      renderCustomAssetsListInModal();
+      renderAll();
+      document.getElementById('caSymbol').value = '';
+      document.getElementById('caName').value = '';
+      const addedInfo = data.added || {};
+      const liveP = addedInfo.live_price ? ' (বর্তমান দাম: ' + fmt(addedInfo.live_price) + ')' : '';
+      setAuthMsg('caMsg', '✅ ' + (addedInfo.name || rawSym) + ' সফলভাবে যোগ হয়েছে!' + liveP, false);
+    } catch (e) {
+      setAuthMsg('caMsg', '❌ ' + e.message, true);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '✅ লাইভ রেট যাচাই করে যোগ করুন';
+    }
+  }
+
+  async function handleRemoveCustomAsset(assetId) {
+    const info = ASSETS[assetId];
+    const label = info ? info.name : assetId;
+    if (!confirm('আপনি কি "' + label + '" তালিকা থেকে মুছে ফেলতে চান?')) return;
+    try {
+      const data = await callAutopilotApi({
+        mode: 'remove_custom_asset',
+        asset_id: assetId
+      }, 18000);
+      if (!stateData.profile || typeof stateData.profile !== 'object') stateData.profile = {};
+      stateData.profile.custom_assets = Array.isArray(data.custom_assets) ? data.custom_assets : [];
+      if (liveMarketOverride && liveMarketOverride[assetId]) delete liveMarketOverride[assetId];
+      syncAssetsFromState();
+      renderCustomAssetsListInModal();
+      renderAll();
+      setAuthMsg('caMsg', '✅ "' + label + '" তালিকা থেকে মুছে ফেলা হয়েছে।', false);
+    } catch (e) {
+      alert('মুছে ফেলতে সমস্যা: ' + e.message);
+    }
+  }
+
   window.addEventListener('DOMContentLoaded', () => {
+    syncAssetsFromState();
     renderChatMessages();
     startAutoLiveTimer();
     updateLockUI();
