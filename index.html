@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SafeYield AI v5.0.2 — ক্লিন সাইন-ইন, প্রোফাইল ও AI পোর্টফোলিও</title>
+  <title>SafeYield AI v5.0.4 — পার্মানেন্ট config.js, প্রোফাইল ও AI পোর্টফোলিও</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
@@ -325,6 +325,18 @@
       display: flex; justify-content: space-between; align-items: center; padding: 8px 0;
       border-bottom: 1px solid var(--border); font-size: 13px; gap: 8px;
     }
+    .forgot-row {
+      display: flex; justify-content: flex-end; margin: -4px 0 12px;
+    }
+    .link-btn {
+      border: none; background: none; color: var(--primary); font-family: inherit;
+      font-size: 12.5px; font-weight: 600; cursor: pointer; padding: 2px 0;
+    }
+    .link-btn:hover { text-decoration: underline; }
+    .pwd-change-box {
+      margin-top: 12px; padding: 11px 12px; border: 1px solid var(--border);
+      border-radius: 12px; background: #f8fafc;
+    }
     .btn-danger {
       width: 100%; padding: 10px; border-radius: 11px; border: 1px solid #fecaca;
       background: #fef2f2; color: #b91c1c; font-size: 13.5px; font-weight: 700;
@@ -367,7 +379,7 @@
     <div class="auth-head">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1 style="font-size:19px;">SafeYield AI <span class="badge-v">v5.0.2</span></h1>
+        <h1 style="font-size:19px;">SafeYield AI <span class="badge-v">v5.0.4</span></h1>
         <p style="font-size:12.5px;">আপনার নিজস্ব AI পোর্টফোলিও অ্যাকাউন্ট তৈরি বা সাইন-ইন করুন</p>
       </div>
     </div>
@@ -386,6 +398,9 @@
       <div class="auth-field">
         <label>পাসওয়ার্ড (Password)</label>
         <input id="siPassword" type="password" autocomplete="current-password" placeholder="কমপক্ষে ৮ অক্ষরের পাসওয়ার্ড" onkeydown="if(event.key==='Enter') handleSignIn()" />
+      </div>
+      <div class="forgot-row">
+        <button type="button" class="link-btn" onclick="openForgotPasswordPane()">🔑 পাসওয়ার্ড ভুলে গেছেন? (Forgot Password)</button>
       </div>
       <button type="button" class="btn-run" id="siSubmitBtn" onclick="handleSignIn()">🔓 সাইন ইন করুন</button>
       <div id="siMsg" class="auth-msg"></div>
@@ -448,6 +463,42 @@
       <div id="otpMsg" class="auth-msg"></div>
     </div>
 
+    <!-- FORGOT PASSWORD PANE -->
+    <div id="authForgotPane" style="display:none;">
+      <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:11px 12px;margin-bottom:13px;font-size:12.5px;color:#1e40af;line-height:1.5;">
+        🔑 <b>পাসওয়ার্ড রিসেট করুন:</b> আপনার অ্যাকাউন্টের ইউজারনেম বা ইমেইল আইডি দিন—আমরা ইমেইলে একটি <b>Reset Password</b> লিংক পাঠিয়ে দেব।
+      </div>
+      <div class="auth-field">
+        <label>ইউজারনেম বা ইমেইল আইডি (Username / Email)</label>
+        <input id="fpIdentifier" type="text" autocomplete="username" placeholder="যেমন: username বা name@gmail.com" onkeydown="if(event.key==='Enter') handleForgotPassword()" />
+      </div>
+      <button type="button" class="btn-run" id="fpSubmitBtn" onclick="handleForgotPassword()">📧 পাসওয়ার্ড রিসেট লিংক পাঠান</button>
+      <div style="margin-top:10px;display:flex;justify-content:flex-start;">
+        <button type="button" class="pill" onclick="switchAuthTab('signin')">← সাইন ইনে ফিরে যান</button>
+      </div>
+      <div id="fpMsg" class="auth-msg"></div>
+    </div>
+
+    <!-- SET NEW PASSWORD PANE (AFTER CLICKING RESET LINK) -->
+    <div id="authResetPane" style="display:none;">
+      <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:12px;padding:11px 12px;margin-bottom:13px;font-size:12.5px;color:#065f46;line-height:1.5;">
+        🔐 <b>নতুন পাসওয়ার্ড সেট করুন:</b> আপনার ইমেইল রিসেট লিংক ভেরিফাই হয়েছে। নিচে কমপক্ষে ৮ অক্ষরের একটি নতুন পাসওয়ার্ড দিন।
+      </div>
+      <div class="auth-field">
+        <label>নতুন পাসওয়ার্ড (কমপক্ষে ৮ অক্ষর)</label>
+        <input id="rpNewPassword" type="password" autocomplete="new-password" placeholder="ন্যূনতম ৮ অক্ষর (অক্ষর + সংখ্যা)" />
+      </div>
+      <div class="auth-field">
+        <label>নতুন পাসওয়ার্ড কনফার্ম করুন</label>
+        <input id="rpConfirmPassword" type="password" autocomplete="new-password" placeholder="একই নতুন পাসওয়ার্ড আবার লিখুন" onkeydown="if(event.key==='Enter') handleConfirmPasswordReset()" />
+      </div>
+      <button type="button" class="btn-run" id="rpSubmitBtn" onclick="handleConfirmPasswordReset()">✅ নতুন পাসওয়ার্ড সেভ করুন</button>
+      <div style="margin-top:10px;display:flex;justify-content:flex-start;">
+        <button type="button" class="pill" onclick="cancelPasswordReset()">← বাতিল করে সাইন ইনে যান</button>
+      </div>
+      <div id="rpMsg" class="auth-msg"></div>
+    </div>
+
     <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
       <span id="authServerStatus" style="font-size:11.5px;color:var(--muted);">☁️ Supabase Auth প্রস্তুত</span>
       <button type="button" class="pill" style="font-size:11.5px;padding:4px 10px;" onclick="openSetupPublic()">⚙️ সার্ভার সেটআপ</button>
@@ -464,7 +515,7 @@
     <div class="brand-row">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1>SafeYield AI <span class="badge-v">v5.0.2 • প্রোফাইল + সিঙ্ক</span></h1>
+        <h1>SafeYield AI <span class="badge-v">v5.0.4 • অটো-কনফিগ + সিঙ্ক</span></h1>
         <p>AI মার্কেট রিসার্চ ও চ্যাট • Groww / Binance টু-ওয়ে সিঙ্ক • ট্যাক্স রিপোর্ট</p>
       </div>
     </div>
@@ -894,6 +945,22 @@
     </div>
     <div id="profileDetailsBox">লোড হচ্ছে...</div>
 
+    <div class="pwd-change-box">
+      <button type="button" class="link-btn" style="font-size:13px;" onclick="toggleProfilePwdForm()">🔑 পাসওয়ার্ড পরিবর্তন করুন (Change Password)</button>
+      <div id="profilePwdForm" style="display:none;margin-top:10px;">
+        <div class="auth-field" style="margin-bottom:8px;">
+          <label>নতুন পাসওয়ার্ড (কমপক্ষে ৮ অক্ষর)</label>
+          <input id="profNewPwd" type="password" autocomplete="new-password" placeholder="ন্যূনতম ৮ অক্ষর" />
+        </div>
+        <div class="auth-field" style="margin-bottom:8px;">
+          <label>নতুন পাসওয়ার্ড কনফার্ম করুন</label>
+          <input id="profConfirmPwd" type="password" autocomplete="new-password" placeholder="আবার লিখুন" onkeydown="if(event.key==='Enter') handleChangePasswordLoggedIn()" />
+        </div>
+        <button type="button" class="chat-sync-btn" id="profPwdBtn" style="width:100%;" onclick="handleChangePasswordLoggedIn()">✅ পাসওয়ার্ড আপডেট করুন</button>
+        <div id="profPwdMsg" class="auth-msg"></div>
+      </div>
+    </div>
+
     <div style="margin-top:14px;">
       <button type="button" class="btn-danger" onclick="handleSignOut()">🚪 সাইন আউট (Sign Out)</button>
     </div>
@@ -935,10 +1002,11 @@
   </div>
 </div>
 
+<script src="./config.js"></script>
 <script>
   const DEFAULT_URL = 'https://pjacpgpysrdnotdezxrh.supabase.co';
   // নিচে আপনার Supabase Anon / Publishable Key বসালে নতুন ইউজাররা সেটআপ ছাড়াই সরাসরি সাইন-আপ করতে পারবে:
-  const DEFAULT_ANON_KEY = 'sb_publishable_OUnsXqPvI-TPCc_vREARZg_Py2oDtKA';
+  const DEFAULT_ANON_KEY = '';
   const AUTO_REFRESH_INTERVAL_SEC = 60;
   const ASSETS = {
     nifty: { name: 'Nifty 50 ETF', type: 'ইক্যুইটি সূচক', taxCat: 'EQUITY', isCrypto: false, broker: 'Groww' },
@@ -958,6 +1026,8 @@
   let userProfile = null; // { id, username, email, phone, sync_id, initial_capital }
   let pendingSignUp = null; // { username, email, phone, initial_capital }
   let resendCooldown = 0;
+  let forgotCooldown = 0;
+  let recoveryAccessToken = '';
   let pendingAdminAction = null;
   let countdownSec = AUTO_REFRESH_INTERVAL_SEC;
   let isFetchingRates = false;
@@ -1002,8 +1072,11 @@
   }
 
   function getCfg() {
-    const savedKey = localStorage.getItem('sy_key') || localStorage.getItem('sb_key') || localStorage.getItem('supabase_key') || DEFAULT_ANON_KEY || '';
-    const savedUrl = localStorage.getItem('sy_url') || localStorage.getItem('sb_url') || DEFAULT_URL;
+    const ext = (typeof window !== 'undefined' && window.SAFEYIELD_CONFIG && typeof window.SAFEYIELD_CONFIG === 'object') ? window.SAFEYIELD_CONFIG : {};
+    const extKey = String(ext.SUPABASE_ANON_KEY || ext.key || '').trim();
+    const extUrl = String(ext.SUPABASE_URL || ext.url || '').trim();
+    const savedKey = localStorage.getItem('sy_key') || localStorage.getItem('sb_key') || localStorage.getItem('supabase_key') || extKey || DEFAULT_ANON_KEY || '';
+    const savedUrl = localStorage.getItem('sy_url') || localStorage.getItem('sb_url') || extUrl || DEFAULT_URL;
     const activeSync = (userProfile && userProfile.sync_id)
       ? userProfile.sync_id
       : (localStorage.getItem('sy_sync') || localStorage.getItem('sync_id') || '');
@@ -2265,8 +2338,12 @@
     document.getElementById('authSigninPane').style.display = isSi ? 'block' : 'none';
     document.getElementById('authSignupPane').style.display = isSi ? 'none' : 'block';
     document.getElementById('authOtpPane').style.display = 'none';
+    document.getElementById('authForgotPane').style.display = 'none';
+    document.getElementById('authResetPane').style.display = 'none';
     document.getElementById('siMsg').textContent = '';
     document.getElementById('suMsg').textContent = '';
+    document.getElementById('fpMsg').textContent = '';
+    document.getElementById('rpMsg').textContent = '';
   }
 
   function selectCapitalPreset(val, btn) {
@@ -2296,6 +2373,192 @@
       throw new Error(m);
     }
     return data;
+  }
+
+  async function sbUpdatePasswordWithToken(token, newPassword) {
+    const c = getCfg();
+    if (!c.key) throw new Error('আগে ⚙️ সার্ভার সেটআপে Supabase Key সেভ করুন।');
+    if (!token) throw new Error('ভেরিফিকেশন টোকেন পাওয়া যায়নি—আবার চেষ্টা করুন।');
+    const r = await fetchWithTimeout(c.url + '/auth/v1/user', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': c.key,
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({ password: newPassword })
+    }, 18000);
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      const m = data.msg || data.error_description || data.message || data.error || ('Update error ' + r.status);
+      throw new Error(m);
+    }
+    return data;
+  }
+
+  function openForgotPasswordPane() {
+    const prefill = (document.getElementById('siIdentifier').value || '').trim();
+    document.getElementById('authTabsBar').style.display = 'none';
+    document.getElementById('authSigninPane').style.display = 'none';
+    document.getElementById('authSignupPane').style.display = 'none';
+    document.getElementById('authOtpPane').style.display = 'none';
+    document.getElementById('authResetPane').style.display = 'none';
+    document.getElementById('authForgotPane').style.display = 'block';
+    document.getElementById('fpIdentifier').value = prefill;
+    document.getElementById('fpMsg').textContent = '';
+    setTimeout(() => document.getElementById('fpIdentifier').focus(), 100);
+  }
+
+  function startForgotCooldown() {
+    forgotCooldown = 45;
+    const btn = document.getElementById('fpSubmitBtn');
+    const tick = setInterval(() => {
+      forgotCooldown--;
+      if (!btn || forgotCooldown <= 0) {
+        clearInterval(tick);
+        if (btn) { btn.disabled = false; btn.textContent = '📧 পাসওয়ার্ড রিসেট লিংক পাঠান'; }
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = '⏳ অপেক্ষা করুন (' + toBnNum(forgotCooldown) + ' সে.)';
+    }, 1000);
+  }
+
+  async function handleForgotPassword() {
+    const rawId = (document.getElementById('fpIdentifier').value || '').trim().toLowerCase();
+    if (!rawId) {
+      setAuthMsg('fpMsg', '⚠️ আপনার ইউজারনেম বা ইমেইল আইডি দিন।', true);
+      return;
+    }
+    const btn = document.getElementById('fpSubmitBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ লিংক পাঠানো হচ্ছে...';
+    setAuthMsg('fpMsg', '', false);
+    try {
+      let emailToUse = rawId;
+      if (!rawId.includes('@')) {
+        const resolved = await callAutopilotApi({ mode: 'resolve_login', username: rawId }, 15000);
+        if (!resolved.email) throw new Error('এই ইউজারনেম খুঁজে পাওয়া যায়নি।');
+        emailToUse = resolved.email;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailToUse)) {
+        throw new Error('একটি সঠিক ইমেইল আইডি দিন।');
+      }
+
+      const redirectUrl = window.location.origin + window.location.pathname;
+      await sbAuthCall('/auth/v1/recover?redirect_to=' + encodeURIComponent(redirectUrl), {
+        email: emailToUse
+      });
+      setAuthMsg('fpMsg', '✅ ' + emailToUse + ' ঠিকানায় পাসওয়ার্ড রিসেট লিংক পাঠানো হয়েছে। ইনবক্স (বা Spam ফোল্ডার) খুলে "Reset Password" লিংকে ক্লিক করে নতুন পাসওয়ার্ড দিন।', false);
+      startForgotCooldown();
+    } catch (e) {
+      let m = e.message || 'লিংক পাঠাতে সমস্যা হয়েছে';
+      if (/rate limit|too many/i.test(m)) m = 'কিছুক্ষণ আগে লিংক পাঠানো হয়েছে—১ মিনিট পর আবার চেষ্টা করুন।';
+      setAuthMsg('fpMsg', '❌ ' + m, true);
+      btn.disabled = false;
+      btn.textContent = '📧 পাসওয়ার্ড রিসেট লিংক পাঠান';
+    }
+  }
+
+  function openResetPasswordPane() {
+    showAuthScreen();
+    document.getElementById('authTabsBar').style.display = 'none';
+    document.getElementById('authSigninPane').style.display = 'none';
+    document.getElementById('authSignupPane').style.display = 'none';
+    document.getElementById('authOtpPane').style.display = 'none';
+    document.getElementById('authForgotPane').style.display = 'none';
+    document.getElementById('authResetPane').style.display = 'block';
+    document.getElementById('rpNewPassword').value = '';
+    document.getElementById('rpConfirmPassword').value = '';
+    document.getElementById('rpMsg').textContent = '';
+    setTimeout(() => document.getElementById('rpNewPassword').focus(), 100);
+  }
+
+  function cancelPasswordReset() {
+    recoveryAccessToken = '';
+    switchAuthTab('signin');
+  }
+
+  async function handleConfirmPasswordReset() {
+    const p1 = document.getElementById('rpNewPassword').value || '';
+    const p2 = document.getElementById('rpConfirmPassword').value || '';
+    if (p1.length < 8) {
+      setAuthMsg('rpMsg', '⚠️ নতুন পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।', true);
+      return;
+    }
+    if (p1 !== p2) {
+      setAuthMsg('rpMsg', '⚠️ নতুন পাসওয়ার্ড এবং কনফার্ম পাসওয়ার্ড মেলেনি।', true);
+      return;
+    }
+    if (!recoveryAccessToken) {
+      setAuthMsg('rpMsg', '⚠️ রিসেট সেশনের মেয়াদ শেষ হয়েছে—আবার Forgot Password থেকে লিংক নিন।', true);
+      return;
+    }
+    const btn = document.getElementById('rpSubmitBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ পাসওয়ার্ড সেভ হচ্ছে...';
+    setAuthMsg('rpMsg', '', false);
+    try {
+      const uRes = await sbUpdatePasswordWithToken(recoveryAccessToken, p1);
+      recoveryAccessToken = '';
+      document.getElementById('rpNewPassword').value = '';
+      document.getElementById('rpConfirmPassword').value = '';
+      switchAuthTab('signin');
+      if (uRes && uRes.email) document.getElementById('siIdentifier').value = uRes.email;
+      setAuthMsg('siMsg', '✅ পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে! এখন নতুন পাসওয়ার্ড দিয়ে সাইন ইন করুন।', false);
+      setTimeout(() => document.getElementById('siPassword').focus(), 100);
+    } catch (e) {
+      let m = e.message || 'পাসওয়ার্ড আপডেট ব্যর্থ হয়েছে';
+      if (/different from the old password/i.test(m)) m = 'নতুন পাসওয়ার্ডটি পুরোনো পাসওয়ার্ডের চেয়ে আলাদা হতে হবে।';
+      setAuthMsg('rpMsg', '❌ ' + m, true);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '✅ নতুন পাসওয়ার্ড সেভ করুন';
+    }
+  }
+
+  function toggleProfilePwdForm() {
+    const f = document.getElementById('profilePwdForm');
+    if (!f) return;
+    const isHidden = f.style.display === 'none';
+    f.style.display = isHidden ? 'block' : 'none';
+    document.getElementById('profNewPwd').value = '';
+    document.getElementById('profConfirmPwd').value = '';
+    document.getElementById('profPwdMsg').textContent = '';
+  }
+
+  async function handleChangePasswordLoggedIn() {
+    const p1 = document.getElementById('profNewPwd').value || '';
+    const p2 = document.getElementById('profConfirmPwd').value || '';
+    if (p1.length < 8) {
+      setAuthMsg('profPwdMsg', '⚠️ নতুন পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।', true);
+      return;
+    }
+    if (p1 !== p2) {
+      setAuthMsg('profPwdMsg', '⚠️ দুটি পাসওয়ার্ড মেলেনি।', true);
+      return;
+    }
+    const token = getAuthToken();
+    if (!token) {
+      setAuthMsg('profPwdMsg', '⚠️ সেশন পাওয়া যায়নি—আবার সাইন ইন করুন।', true);
+      return;
+    }
+    const btn = document.getElementById('profPwdBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ আপডেট হচ্ছে...';
+    setAuthMsg('profPwdMsg', '', false);
+    try {
+      await sbUpdatePasswordWithToken(token, p1);
+      document.getElementById('profNewPwd').value = '';
+      document.getElementById('profConfirmPwd').value = '';
+      setAuthMsg('profPwdMsg', '✅ পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে!', false);
+    } catch (e) {
+      let m = e.message || 'সমস্যা হয়েছে';
+      if (/different from the old password/i.test(m)) m = 'নতুন পাসওয়ার্ডটি পুরোনো পাসওয়ার্ডের চেয়ে আলাদা হতে হবে।';
+      setAuthMsg('profPwdMsg', '❌ ' + m, true);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '✅ পাসওয়ার্ড আপডেট করুন';
+    }
   }
 
   async function handleSignUp() {
@@ -2508,6 +2771,14 @@
 
       const accessToken = params.get('access_token');
       const refreshToken = params.get('refresh_token') || '';
+      const authType = (params.get('type') || '').toLowerCase();
+
+      if (accessToken && authType === 'recovery') {
+        recoveryAccessToken = accessToken;
+        openResetPasswordPane();
+        return;
+      }
+
       if (accessToken) {
         authSession = { access_token: accessToken, refresh_token: refreshToken, user: null };
         try {
@@ -2569,6 +2840,10 @@
       '<div class="profile-row"><span style="color:var(--muted);">শুরুর মূলধন</span><b>' + fmt(p.initial_capital || 10000) + '</b></div>' +
       '<div class="profile-row" style="border-bottom:none;"><span style="color:var(--muted);">পোর্টফোলিও Sync ID</span><span class="tag tag-cat">' + escapeHtml(p.sync_id) + '</span></div>';
 
+    const pf = document.getElementById('profilePwdForm');
+    if (pf) pf.style.display = 'none';
+    const pm = document.getElementById('profPwdMsg');
+    if (pm) pm.textContent = '';
     document.getElementById('profileModal').classList.add('open');
   }
 
