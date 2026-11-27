@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SafeYield AI v4.11 — ট্রেড পাসবুক (সময়সহ) ও Groww/Binance সিঙ্ক</title>
+  <title>SafeYield AI v5.0.1 — ইমেইল লিংক সাইন-ইন, প্রোফাইল ও পোর্টফোলিও</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
@@ -267,6 +267,78 @@
     .pb-time { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
     .pb-reason { font-size: 11px; color: var(--muted); margin-top: 2px; max-width: 210px; }
 
+    
+    /* Auth Screen (Sign In / Sign Up / Email OTP) */
+    .auth-wrap {
+      max-width: 460px; margin: 24px auto; padding: 14px;
+    }
+    .auth-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 22px;
+      padding: 22px 18px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+    .auth-head {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+    }
+    .auth-tabs {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+      background: #f1f5f9; padding: 4px; border-radius: 12px; margin-bottom: 16px;
+    }
+    .auth-tab {
+      border: none; background: transparent; padding: 9px; border-radius: 9px;
+      font-family: inherit; font-size: 13.5px; font-weight: 700; color: var(--muted); cursor: pointer;
+    }
+    .auth-tab.active {
+      background: #ffffff; color: var(--primary); box-shadow: 0 2px 6px rgba(15,23,42,0.08);
+    }
+    .auth-field { margin-bottom: 11px; }
+    .auth-field label {
+      display: block; font-size: 12.5px; font-weight: 600; color: #334155; margin-bottom: 4px;
+    }
+    .auth-field input {
+      width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 11px;
+      font-size: 13.5px; font-family: inherit; background: #fff; color: var(--text); outline: none;
+    }
+    .auth-field input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(15,118,110,0.12); }
+    .phone-row { display: flex; gap: 6px; align-items: center; }
+    .phone-prefix {
+      padding: 10px 11px; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 11px;
+      font-size: 13.5px; font-weight: 700; color: #334155; flex-shrink: 0;
+    }
+    .cap-presets { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 7px; }
+    .cap-chip {
+      padding: 5px 10px; border-radius: 99px; border: 1px solid #cbd5e1; background: #f8fafc;
+      font-size: 12px; font-weight: 700; color: #334155; cursor: pointer; font-family: inherit;
+    }
+    .cap-chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .owner-box {
+      background: #f0fdfa; border: 1px solid #99f6e4; border-radius: 12px;
+      padding: 10px 12px; margin: 12px 0; font-size: 12.5px;
+    }
+    .owner-toggle {
+      display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600; color: #0f766e;
+    }
+    .owner-toggle input { width: auto; accent-color: #0f766e; }
+    .auth-msg {
+      margin-top: 10px; font-size: 12.5px; font-weight: 600; line-height: 1.45;
+    }
+    .auth-msg.err { color: #dc2626; }
+    .auth-msg.ok { color: #15803d; }
+    .otp-input {
+      text-align: center; font-size: 22px !important; letter-spacing: 8px; font-weight: 700;
+    }
+    .profile-pill {
+      background: #eef2ff; color: #3730a3; border-color: #c7d2fe;
+    }
+    .profile-row {
+      display: flex; justify-content: space-between; align-items: center; padding: 8px 0;
+      border-bottom: 1px solid var(--border); font-size: 13px; gap: 8px;
+    }
+    .btn-danger {
+      width: 100%; padding: 10px; border-radius: 11px; border: 1px solid #fecaca;
+      background: #fef2f2; color: #b91c1c; font-size: 13.5px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+    }
+
     /* Bottom Nav (6 Tabs) */
     .tab-pane { display: none; }
     .tab-pane.active { display: block; }
@@ -297,23 +369,139 @@
 </head>
 <body>
 
+<!-- AUTH SHELL (SIGN IN / SIGN UP / EMAIL OTP) -->
+<div id="authShell" class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-head">
+      <div class="logo">🛡️</div>
+      <div class="title-wrap">
+        <h1 style="font-size:19px;">SafeYield AI <span class="badge-v">v5.0.1</span></h1>
+        <p style="font-size:12.5px;">আপনার নিজস্ব AI পোর্টফোলিও অ্যাকাউন্ট তৈরি বা সাইন-ইন করুন</p>
+      </div>
+    </div>
+
+    <div class="auth-tabs" id="authTabsBar">
+      <button type="button" class="auth-tab active" id="tabBtnSignin" onclick="switchAuthTab('signin')">🔐 সাইন ইন (Sign In)</button>
+      <button type="button" class="auth-tab" id="tabBtnSignup" onclick="switchAuthTab('signup')">✨ নতুন অ্যাকাউন্ট</button>
+    </div>
+
+    <!-- SIGN IN FORM -->
+    <div id="authSigninPane">
+      <div class="auth-field">
+        <label>ইউজারনেম বা ইমেইল আইডি (Username / Email)</label>
+        <input id="siIdentifier" type="text" autocomplete="username" placeholder="যেমন: rafikul বা name@gmail.com" />
+      </div>
+      <div class="auth-field">
+        <label>পাসওয়ার্ড (Password)</label>
+        <input id="siPassword" type="password" autocomplete="current-password" placeholder="কমপক্ষে ৮ অক্ষরের পাসওয়ার্ড" onkeydown="if(event.key==='Enter') handleSignIn()" />
+      </div>
+      <button type="button" class="btn-run" id="siSubmitBtn" onclick="handleSignIn()">🔓 সাইন ইন করুন</button>
+      <div id="siMsg" class="auth-msg"></div>
+    </div>
+
+    <!-- SIGN UP FORM -->
+    <div id="authSignupPane" style="display:none;">
+      <div class="auth-field">
+        <label>ইউজারনেম (Username — ইউনিক হতে হবে)</label>
+        <input id="suUsername" type="text" placeholder="যেমন: rafikul_2026 (ছোট হাতের অক্ষর/সংখ্যা)" />
+      </div>
+      <div class="auth-field">
+        <label>সঠিক ইমেইল আইডি (Valid Email — ভেরিফিকেশন লিংক যাবে)</label>
+        <input id="suEmail" type="email" placeholder="example@gmail.com" />
+      </div>
+      <div class="auth-field">
+        <label>সঠিক মোবাইল নম্বর (Phone — প্রোফাইলে সেভ থাকবে)</label>
+        <div class="phone-row">
+          <span class="phone-prefix">+91</span>
+          <input id="suPhone" type="tel" maxlength="10" inputmode="numeric" placeholder="10-digit mobile number" />
+        </div>
+        <small style="font-size:11px;color:var(--muted);">* এখন ইমেইল লিংক ভেরিফিকেশন চালু আছে; ফোন নম্বর প্রোফাইলে সেভ থাকবে।</small>
+      </div>
+      <div class="auth-field" id="suCapitalWrap">
+        <label>শুরুর মূলধন কত টাকা দিয়ে শুরু করবেন? (Starting Capital ₹)</label>
+        <div class="cap-presets">
+          <button type="button" class="cap-chip" onclick="selectCapitalPreset(5000, this)">₹5,000</button>
+          <button type="button" class="cap-chip active" onclick="selectCapitalPreset(10000, this)">₹10,000</button>
+          <button type="button" class="cap-chip" onclick="selectCapitalPreset(20000, this)">₹20,000</button>
+          <button type="button" class="cap-chip" onclick="selectCapitalPreset(25000, this)">₹25,000</button>
+        </div>
+        <input id="suCapital" type="number" min="1000" max="10000000" step="500" value="10000" placeholder="অন্য যেকোনো অ্যামাউন্ট লিখুন (যেমন: 15000)" />
+      </div>
+      <div class="auth-field">
+        <label>পাসওয়ার্ড তৈরি করুন (কমপক্ষে ৮ অক্ষর)</label>
+        <input id="suPassword" type="password" autocomplete="new-password" placeholder="ন্যূনতম ৮ অক্ষর (অক্ষর + সংখ্যা)" />
+      </div>
+      <div class="auth-field">
+        <label>পাসওয়ার্ড কনফার্ম করুন (Confirm Password)</label>
+        <input id="suConfirmPassword" type="password" autocomplete="new-password" placeholder="একই পাসওয়ার্ড আবার লিখুন" onkeydown="if(event.key==='Enter') handleSignUp()" />
+      </div>
+
+      <div class="owner-box">
+        <label class="owner-toggle">
+          <input type="checkbox" id="suLinkOwner" onchange="toggleOwnerClaimFields()" />
+          <span>আমার আগের SafeYield পোর্টফোলিও লিংক করুন (Owner Only)</span>
+        </label>
+        <div id="ownerClaimFields" style="display:none;margin-top:8px;">
+          <div class="auth-field" style="margin-bottom:7px;">
+            <label>পুরোনো Sync ID</label>
+            <input id="suClaimSyncId" type="text" value="rafikul-2026" />
+          </div>
+          <div class="auth-field" style="margin-bottom:0;">
+            <label>অ্যাডমিন PIN (ডিফল্ট: 2026)</label>
+            <input id="suClaimPin" type="password" inputmode="numeric" placeholder="2026" />
+          </div>
+          <small style="display:block;margin-top:5px;color:#0f766e;">এটি দিলে আপনার আগের সব ডেটা ও ট্রেড হিস্ট্রি এই প্রোফাইলের সাথে যুক্ত হয়ে যাবে।</small>
+        </div>
+      </div>
+
+      <button type="button" class="btn-run" id="suSubmitBtn" onclick="handleSignUp()">📧 ভেরিফিকেশন লিংক পাঠান</button>
+      <div id="suMsg" class="auth-msg"></div>
+    </div>
+
+    <!-- EMAIL LINK VERIFICATION PANE -->
+    <div id="authOtpPane" style="display:none;">
+      <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:12px;padding:13px;margin-bottom:14px;font-size:13px;color:#065f46;line-height:1.55;">
+        📧 <b id="otpTargetEmail">your@email.com</b> ঠিকানায় একটি <b>Confirm your mail</b> ভেরিফিকেশন লিংক পাঠানো হয়েছে।<br><br>
+        ১. আপনার ইমেইল ইনবক্স (বা <b>Spam / Junk</b> ফোল্ডার) খুলুন।<br>
+        ২. ইমেইলের ভেতরের <b>Confirm your mail</b> লিংকে ক্লিক করুন — অটো-সাইন-ইন হয়ে আপনার পোর্টফোলিও খুলে যাবে।<br>
+        ৩. অন্য ফোন থেকে লিংকে ক্লিক করে থাকলে নিচের সবুজ বাটনে চাপুন।
+      </div>
+      <button type="button" class="btn-run" onclick="goToSignInAfterLink()">✅ লিংক ক্লিক করেছি — এখন সাইন ইন করুন</button>
+      <div style="display:flex;gap:8px;margin-top:10px;justify-content:space-between;flex-wrap:wrap;">
+        <button type="button" class="pill" id="resendOtpBtn" onclick="handleResendOtp()">🔄 আবার লিংক পাঠান</button>
+        <button type="button" class="pill" onclick="backToSignUp()">← তথ্য পরিবর্তন</button>
+      </div>
+      <div id="otpMsg" class="auth-msg"></div>
+    </div>
+
+    <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+      <span id="authServerStatus" style="font-size:11.5px;color:var(--muted);">☁️ Supabase Auth প্রস্তুত</span>
+      <button type="button" class="pill" style="font-size:11.5px;padding:4px 10px;" onclick="openSetupPublic()">⚙️ সার্ভার সেটআপ</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP SHELL (VISIBLE AFTER SIGN IN) -->
+<div id="appShell" style="display:none;">
+
 <div class="container">
   <!-- Top Header -->
   <div class="card header-card">
     <div class="brand-row">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1>SafeYield AI <span class="badge-v">v4.11 • ট্রেড পাসবুক</span></h1>
+        <h1>SafeYield AI <span class="badge-v">v5.0.1 • ইমেইল লিংক + প্রোফাইল</span></h1>
         <p>AI মার্কেট রিসার্চ ও চ্যাট • Groww / Binance টু-ওয়ে সিঙ্ক • ট্যাক্স রিপোর্ট</p>
       </div>
     </div>
     <div class="controls-row">
       <button type="button" class="pill active" id="btnINR" onclick="setCurrency('INR')">₹ INR</button>
       <button type="button" class="pill" id="btnUSD" onclick="setCurrency('USD')">$ USD</button>
+      <button type="button" class="pill profile-pill" id="profilePillBtn" onclick="openProfileModal()">👤 প্রোফাইল</button>
       <button type="button" class="pill" onclick="openSetup()">⚙️ সেটআপ</button>
       <button type="button" class="pill" onclick="fetchLiveRatesOnly(false)">📡 লাইভ রেট</button>
       <button type="button" class="pill auto-on" id="autoLiveBtn" onclick="toggleAutoLive()">⏱️ অটো-লাইভ: ON</button>
-      <button type="button" class="pill auto-off" id="lockBtn" onclick="toggleAdminLock()">🔒 View-Only</button>
+      <button type="button" class="pill auto-on" id="lockBtn" onclick="toggleAdminLock()">🔓 আনলকড</button>
     </div>
     <div class="status-strip">
       <span class="chip-live" id="liveCount">● অটো-কম্পাউন্ডিং সক্রিয়</span>
@@ -567,7 +755,7 @@
   <div id="tab-report" class="tab-pane">
     <div class="report-hero" id="reportHeroCard">
       <span class="verdict-pill" id="reportStatusPill">📊 ৩০-দিনের মাসিক রিপোর্ট কার্ড</span>
-      <h2 id="reportVerdictTitle" style="font-size:21px;margin-bottom:4px;">₹10,000-এর হিসাব তৈরি হচ্ছে...</h2>
+      <h2 id="reportVerdictTitle" style="font-size:21px;margin-bottom:4px;">আপনার পোর্টফোলিওর হিসাব তৈরি হচ্ছে...</h2>
       <p id="reportVerdictSub" style="font-size:13.5px;color:#e2e8f0;"></p>
       <div class="rep-grid">
         <div class="rep-stat"><small>শুরুর মূলধন (Day 0)</small><strong id="repInitCap">₹10,000</strong></div>
@@ -721,6 +909,36 @@
   <button type="button" class="nav-btn" id="nav-report" onclick="switchTab('report', this)"><span class="ico">📊</span>রিপোর্ট</button>
   <button type="button" class="nav-btn" id="nav-wallet" onclick="switchTab('wallet', this)"><span class="ico">💼</span>ওয়ালেট</button>
 </nav>
+</div><!-- /#appShell -->
+
+<!-- Profile Modal -->
+<div class="modal-bg" id="profileModal">
+  <div class="modal" style="max-width:420px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <h3>👤 আমার প্রোফাইল</h3>
+      <button type="button" class="pill" style="padding:4px 10px;font-size:12px;" onclick="closeProfileModal()">✕</button>
+    </div>
+    <div id="profileDetailsBox">লোড হচ্ছে...</div>
+
+    <div id="profileOwnerLinkBox" class="owner-box" style="display:none;margin-top:12px;">
+      <div style="font-weight:700;color:#0f766e;margin-bottom:6px;">🔗 পুরোনো পোর্টফোলিও লিংক করুন (Owner Only)</div>
+      <div class="auth-field" style="margin-bottom:6px;">
+        <label>পুরোনো Sync ID</label>
+        <input id="profClaimSync" type="text" value="rafikul-2026" />
+      </div>
+      <div class="auth-field" style="margin-bottom:8px;">
+        <label>অ্যাডমিন PIN</label>
+        <input id="profClaimPin" type="password" inputmode="numeric" placeholder="2026" />
+      </div>
+      <button type="button" class="chat-sync-btn" style="width:100%;" onclick="handleLinkExistingFromProfile()">✅ পুরোনো পোর্টফোলিও লিংক করুন</button>
+      <div id="profClaimMsg" class="auth-msg"></div>
+    </div>
+
+    <div style="margin-top:14px;">
+      <button type="button" class="btn-danger" onclick="handleSignOut()">🚪 সাইন আউট (Sign Out)</button>
+    </div>
+  </div>
+</div>
 
 <!-- PIN Modal -->
 <div class="modal-bg" id="pinModal">
@@ -759,6 +977,8 @@
 
 <script>
   const DEFAULT_URL = 'https://pjacpgpysrdnotdezxrh.supabase.co';
+  // নিচে আপনার Supabase Anon / Publishable Key বসালে নতুন ইউজাররা সেটআপ ছাড়াই সরাসরি সাইন-আপ করতে পারবে:
+  const DEFAULT_ANON_KEY = '';
   const AUTO_REFRESH_INTERVAL_SEC = 60;
   const ASSETS = {
     nifty: { name: 'Nifty 50 ETF', type: 'ইক্যুইটি সূচক', taxCat: 'EQUITY', isCrypto: false, broker: 'Groww' },
@@ -774,6 +994,10 @@
   let goldTaxSlab = Number(localStorage.getItem('sy_tax_slab') ?? 10);
   let autoLiveEnabled = localStorage.getItem('sy_auto_live') !== 'off';
   let isAdminUnlocked = false;
+  let authSession = null; // { access_token, refresh_token, user }
+  let userProfile = null; // { id, username, email, phone, sync_id, initial_capital }
+  let pendingSignUp = null; // { username, email, phone, initial_capital, claim_sync_id, claim_pin }
+  let resendCooldown = 0;
   let pendingAdminAction = null;
   let countdownSec = AUTO_REFRESH_INTERVAL_SEC;
   let isFetchingRates = false;
@@ -818,10 +1042,16 @@
   }
 
   function getCfg() {
-    const savedKey = localStorage.getItem('sy_key') || localStorage.getItem('sb_key') || localStorage.getItem('supabase_key') || '';
+    const savedKey = localStorage.getItem('sy_key') || localStorage.getItem('sb_key') || localStorage.getItem('supabase_key') || DEFAULT_ANON_KEY || '';
     const savedUrl = localStorage.getItem('sy_url') || localStorage.getItem('sb_url') || DEFAULT_URL;
-    const savedSync = localStorage.getItem('sy_sync') || localStorage.getItem('sync_id') || 'rafikul-2026';
-    return { url: savedUrl.trim(), key: savedKey.trim(), syncId: savedSync.trim() };
+    const activeSync = (userProfile && userProfile.sync_id)
+      ? userProfile.sync_id
+      : (localStorage.getItem('sy_sync') || localStorage.getItem('sync_id') || 'rafikul-2026');
+    return { url: savedUrl.trim(), key: savedKey.trim(), syncId: activeSync.trim() };
+  }
+
+  function getAuthToken() {
+    return (authSession && authSession.access_token) ? authSession.access_token : '';
   }
 
   function fmt(inr) {
@@ -877,7 +1107,7 @@
     if (timerHandle) clearInterval(timerHandle);
     updateAutoLiveUI();
     timerHandle = setInterval(() => {
-      if (!autoLiveEnabled || document.hidden) return;
+      if (!autoLiveEnabled || document.hidden || !authSession || !userProfile) return;
       const c = getCfg();
       if (!c.key || isFetchingRates) return;
       countdownSec--;
@@ -890,7 +1120,7 @@
   }
 
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && autoLiveEnabled && getCfg().key) {
+    if (!document.hidden && autoLiveEnabled && authSession && userProfile && getCfg().key) {
       countdownSec = AUTO_REFRESH_INTERVAL_SEC;
       fetchLiveRatesOnly(true);
     }
@@ -996,14 +1226,18 @@
     }
   }
 
+  function openSetupPublic() {
+    const c = getCfg();
+    document.getElementById('cfgUrl').value = c.url;
+    document.getElementById('cfgKey').value = c.key;
+    document.getElementById('cfgSync').value = c.syncId;
+    document.getElementById('cfgPin').value = getAdminPin();
+    document.getElementById('setupModal').classList.add('open');
+  }
+
   function openSetup() {
     requireAdmin(() => {
-      const c = getCfg();
-      document.getElementById('cfgUrl').value = c.url;
-      document.getElementById('cfgKey').value = c.key;
-      document.getElementById('cfgSync').value = c.syncId;
-      document.getElementById('cfgPin').value = getAdminPin();
-      document.getElementById('setupModal').classList.add('open');
+      openSetupPublic();
     });
   }
   function closeSetup() { document.getElementById('setupModal').classList.remove('open'); }
@@ -1014,7 +1248,8 @@
     const newPin = document.getElementById('cfgPin').value.trim();
     if (newPin.length >= 4) localStorage.setItem('sy_pin', newPin);
     closeSetup();
-    refreshAll(true);
+    updateAuthServerStatus();
+    if (authSession && userProfile) refreshAll(true);
   }
 
   async function fetchWithTimeout(url, options, ms = 15000) {
@@ -1035,11 +1270,15 @@
 
   async function callAutopilotApi(payload, timeoutMs = 45000) {
     const c = getCfg();
-    if (!c.key) throw new Error('আগে ⚙️ সেটআপে Supabase Key দিন');
+    if (!c.key) throw new Error('আগে ⚙️ সার্ভার সেটআপে Supabase Key দিন');
+    const jwt = getAuthToken();
     const headers = { 'Content-Type': 'application/json', 'apikey': c.key };
-    if (c.key.startsWith('eyJ')) headers['Authorization'] = 'Bearer ' + c.key;
+    if (jwt) headers['Authorization'] = 'Bearer ' + jwt;
+    else if (c.key.startsWith('eyJ')) headers['Authorization'] = 'Bearer ' + c.key;
+    const bodyObj = { sync_id: c.syncId, ...payload };
+    if (jwt && !bodyObj.user_jwt) bodyObj.user_jwt = jwt;
     const r = await fetchWithTimeout(c.url + '/functions/v1/ai-autopilot', {
-      method: 'POST', headers, body: JSON.stringify({ sync_id: c.syncId, ...payload })
+      method: 'POST', headers, body: JSON.stringify(bodyObj)
     }, timeoutMs);
     const rawTxt = await r.text();
     let data = {};
@@ -1062,7 +1301,8 @@
 
   async function refreshAll(alsoFetchLive = false) {
     const c = getCfg();
-    document.getElementById('syncBadge').textContent = '☁️ সিঙ্ক (' + c.syncId + ')';
+    if (!authSession || !userProfile) return;
+    document.getElementById('syncBadge').textContent = '☁️ @' + userProfile.username + ' (' + userProfile.sync_id + ')';
     if (!c.key) {
       document.getElementById('lastUpdated').textContent = '⚠️ ⚙️ সেটআপে Supabase Key দিন';
       renderAll();
@@ -1070,24 +1310,21 @@
     }
     document.getElementById('lastUpdated').textContent = 'ডেটা সিঙ্ক হচ্ছে...';
     try {
-      const [st, mem, logs] = await Promise.all([
-        sbGet('/rest/v1/safeyield_state?sync_id=eq.' + encodeURIComponent(c.syncId) + '&select=*'),
-        sbGet('/rest/v1/ai_memory?sync_id=eq.' + encodeURIComponent(c.syncId) + '&select=*'),
-        sbGet('/rest/v1/ai_logs?sync_id=eq.' + encodeURIComponent(c.syncId) + '&order=created_at.desc&limit=200')
-      ]);
-      if (!st.ok && (st.status === 401 || st.status === 403)) {
-        document.getElementById('lastUpdated').textContent = '⚠️ API Key ভুল — ⚙️ সেটআপে ঠিক করুন';
-        renderAll();
-        return;
+      const dash = await callAutopilotApi({ mode: 'get_dashboard' }, 18000);
+      if (dash.profile) {
+        userProfile = dash.profile;
+        saveAuthLocal();
+        updateProfileHeaderUI();
       }
-      if (Array.isArray(st.data) && st.data[0]) stateData = st.data[0];
-      if (Array.isArray(mem.data) && mem.data[0]) memoryData = mem.data[0];
-      logsData = Array.isArray(logs.data) ? logs.data : [];
+      const defCap = Number((userProfile && userProfile.initial_capital) || 10000);
+      stateData = dash.state || { cash: defCap, practice_day: 1, holdings: {} };
+      memoryData = dash.memory || { initial_capital: defCap, win_count: 0, loss_count: 0, total_trades: 0, strategy_weights: { dip_buying: 1, smart_sip: 1, gold_hedge: 1, profit_lock: 1 }, lessons: [] };
+      logsData = Array.isArray(dash.logs) ? dash.logs : [];
       document.getElementById('lastUpdated').textContent = 'সিঙ্ক: ' + new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       renderAll();
       if (alsoFetchLive) fetchLiveRatesOnly(true);
     } catch (e) {
-      document.getElementById('lastUpdated').textContent = '⚠️ নেটওয়ার্ক ধীর — আবার চেষ্টা করুন';
+      document.getElementById('lastUpdated').textContent = '⚠️ ' + (e.message || 'নেটওয়ার্ক ধীর');
       renderAll();
     }
   }
@@ -1482,7 +1719,7 @@
     }
 
     const total = cash + invVal;
-    const initCap = Number(memoryData.initial_capital || 10000);
+    const initCap = Number(memoryData.initial_capital || (userProfile && userProfile.initial_capital) || 10000);
     const diff = total - initCap;
     const diffPct = (diff / initCap) * 100;
     const unrealizedPnl = invVal - invCost;
@@ -1500,12 +1737,13 @@
     const netProfitAfterTax = netTotalAfterTax - initCap;
     const netProfitPct = (netProfitAfterTax / initCap) * 100;
 
-    const stockCap = Math.max(2500, Math.round(total * 0.25));
-    const cryptoCap = Math.max(800, Math.round(total * 0.08));
+    const stockCap = Math.max(500, Math.round(total * 0.25));
+    const cryptoCap = Math.max(200, Math.round(total * 0.08));
+    const cashBuffer = Math.max(250, Math.min(2000, Math.round(total * 0.05)));
 
     return {
       latest, snap, cash, hold, invVal, invCost, total, initCap, diff, diffPct,
-      unrealizedPnl, realizedPnl, stockCap, cryptoCap,
+      unrealizedPnl, realizedPnl, stockCap, cryptoCap, cashBuffer,
       tax: {
         equityNetPnl, equityTax, goldNetPnl, goldTax,
         cryptoTaxableGain, cryptoTax, cryptoTds, cess, brokerageStt,
@@ -1804,7 +2042,7 @@
   }
 
   function renderWallet(st) {
-    document.getElementById('walletCapSub').textContent = 'কম্পাউন্ডিং সীমা: প্রতি স্টক/ETF সর্বোচ্চ ' + fmt(st.stockCap) + ' (২৫%) • প্রতি ক্রিপ্টো সর্বোচ্চ ' + fmt(st.cryptoCap) + ' (৮%) • ন্যূনতম ক্যাশ ₹500';
+    document.getElementById('walletCapSub').textContent = 'কম্পাউন্ডিং সীমা: প্রতি স্টক/ETF সর্বোচ্চ ' + fmt(st.stockCap) + ' (২৫%) • প্রতি ক্রিপ্টো সর্বোচ্চ ' + fmt(st.cryptoCap) + ' (৮%) • ন্যূনতম ক্যাশ ' + fmt(st.cashBuffer);
     const entries = Object.entries(st.hold).filter(([, h]) => h && h.qty > 0);
     let html = '<div class="weight-item" style="margin-bottom:10px;background:#ecfdf5;">' +
       '<div style="display:flex;justify-content:space-between;"><b>💵 হাতে নগদ (Cash Buffer)</b><b>' + fmt(st.cash) + '</b></div>' +
@@ -2001,12 +2239,462 @@
     });
   }
 
+
+  // ===== AUTHENTICATION, PROFILE & EMAIL OTP =====
+  function saveAuthLocal() {
+    try {
+      if (authSession) localStorage.setItem('sy_auth_session', JSON.stringify(authSession));
+      else localStorage.removeItem('sy_auth_session');
+      if (userProfile) localStorage.setItem('sy_user_profile', JSON.stringify(userProfile));
+      else localStorage.removeItem('sy_user_profile');
+    } catch (_) {}
+  }
+
+  function loadAuthLocal() {
+    try {
+      const s = JSON.parse(localStorage.getItem('sy_auth_session') || 'null');
+      const p = JSON.parse(localStorage.getItem('sy_user_profile') || 'null');
+      if (s && s.access_token) authSession = s;
+      if (p && p.sync_id) userProfile = p;
+    } catch (_) {}
+  }
+
+  function updateAuthServerStatus() {
+    const el = document.getElementById('authServerStatus');
+    if (!el) return;
+    const c = getCfg();
+    if (c.key) {
+      el.style.color = '#15803d';
+      el.textContent = '✅ সার্ভার সংযুক্ত (Supabase Auth প্রস্তুত)';
+    } else {
+      el.style.color = '#b45309';
+      el.textContent = '⚠️ ডানপাশের ⚙️ সার্ভার সেটআপে Supabase Key দিন';
+    }
+  }
+
+  function updateProfileHeaderUI() {
+    const pill = document.getElementById('profilePillBtn');
+    if (pill && userProfile) {
+      pill.textContent = '👤 @' + userProfile.username;
+    }
+    const syncB = document.getElementById('syncBadge');
+    if (syncB && userProfile) {
+      syncB.textContent = '☁️ @' + userProfile.username + ' (' + userProfile.sync_id + ')';
+    }
+  }
+
+  function showAuthScreen() {
+    document.getElementById('authShell').style.display = 'block';
+    document.getElementById('appShell').style.display = 'none';
+    updateAuthServerStatus();
+  }
+
+  function showAppShell() {
+    document.getElementById('authShell').style.display = 'none';
+    document.getElementById('appShell').style.display = 'block';
+    isAdminUnlocked = true; // Logged-in user owns their own account
+    updateLockUI();
+    updateProfileHeaderUI();
+  }
+
+  function switchAuthTab(tab) {
+    const isSi = tab === 'signin';
+    document.getElementById('authTabsBar').style.display = 'grid';
+    document.getElementById('tabBtnSignin').classList.toggle('active', isSi);
+    document.getElementById('tabBtnSignup').classList.toggle('active', !isSi);
+    document.getElementById('authSigninPane').style.display = isSi ? 'block' : 'none';
+    document.getElementById('authSignupPane').style.display = isSi ? 'none' : 'block';
+    document.getElementById('authOtpPane').style.display = 'none';
+    document.getElementById('siMsg').textContent = '';
+    document.getElementById('suMsg').textContent = '';
+  }
+
+  function selectCapitalPreset(val, btn) {
+    document.getElementById('suCapital').value = String(val);
+    document.querySelectorAll('.cap-chip').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+  }
+
+  function toggleOwnerClaimFields() {
+    const checked = document.getElementById('suLinkOwner').checked;
+    document.getElementById('ownerClaimFields').style.display = checked ? 'block' : 'none';
+    document.getElementById('suCapitalWrap').style.opacity = checked ? '0.55' : '1';
+  }
+
+  function setAuthMsg(elId, text, isErr) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    el.className = 'auth-msg ' + (isErr ? 'err' : 'ok');
+    el.textContent = text;
+  }
+
+  async function sbAuthCall(path, bodyObj) {
+    const c = getCfg();
+    if (!c.key) throw new Error('আগে ⚙️ সার্ভার সেটআপে Supabase Key সেভ করুন।');
+    const r = await fetchWithTimeout(c.url + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': c.key },
+      body: JSON.stringify(bodyObj)
+    }, 18000);
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      const m = data.msg || data.error_description || data.message || data.error || ('Auth error ' + r.status);
+      throw new Error(m);
+    }
+    return data;
+  }
+
+  async function handleSignUp() {
+    const username = (document.getElementById('suUsername').value || '').trim().toLowerCase();
+    const email = (document.getElementById('suEmail').value || '').trim().toLowerCase();
+    const phoneDigits = (document.getElementById('suPhone').value || '').replace(/\D/g, '');
+    const capital = Number(document.getElementById('suCapital').value || 10000);
+    const password = document.getElementById('suPassword').value || '';
+    const confirmPassword = document.getElementById('suConfirmPassword').value || '';
+    const linkOwner = document.getElementById('suLinkOwner').checked;
+    const claimSyncId = linkOwner ? (document.getElementById('suClaimSyncId').value || '').trim() : '';
+    const claimPin = linkOwner ? (document.getElementById('suClaimPin').value || '').trim() : '';
+
+    if (!/^[a-z0-9_-]{3,20}$/.test(username)) {
+      setAuthMsg('suMsg', '⚠️ ইউজারনেম ৩ থেকে ২০ অক্ষরের হতে হবে (শুধু ইংরেজি ছোট হাতের অক্ষর, সংখ্যা, _ বা -)।', true);
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      setAuthMsg('suMsg', '⚠️ একটি সঠিক (Valid) ইমেইল আইডি দিন।', true);
+      return;
+    }
+    if (!/^[6-9]\d{9}$/.test(phoneDigits)) {
+      setAuthMsg('suMsg', '⚠️ একটি সঠিক ১০-সংখ্যার ভারতীয় মোবাইল নম্বর দিন (৬, ৭, ৮ বা ৯ দিয়ে শুরু)।', true);
+      return;
+    }
+    if (!linkOwner && (isNaN(capital) || capital < 1000 || capital > 10000000)) {
+      setAuthMsg('suMsg', '⚠️ শুরুর মূলধন কমপক্ষে ₹1,000 থেকে ₹1,00,00,000-এর মধ্যে দিন।', true);
+      return;
+    }
+    if (password.length < 8) {
+      setAuthMsg('suMsg', '⚠️ পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের (Minimum 8 characters) হতে হবে।', true);
+      return;
+    }
+    if (password !== confirmPassword) {
+      setAuthMsg('suMsg', '⚠️ Password এবং Confirm Password মেলেনি—আবার মিলিয়ে লিখুন।', true);
+      return;
+    }
+    if (linkOwner && (!claimSyncId || !claimPin)) {
+      setAuthMsg('suMsg', '⚠️ পুরোনো পোর্টফোলিও লিংক করতে Sync ID ও অ্যাডমিন PIN দিন।', true);
+      return;
+    }
+
+    const btn = document.getElementById('suSubmitBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ যাচাই করা হচ্ছে...';
+    setAuthMsg('suMsg', '', false);
+    try {
+      // 1. Check username uniqueness
+      const chk = await callAutopilotApi({ mode: 'check_username', username, email }, 15000);
+      if (!chk.available) {
+        throw new Error(chk.reason || 'এই ইউজারনেম বা ইমেইল ইতিমধ্যেই ব্যবহৃত হয়েছে।');
+      }
+
+      // 2. Call Supabase Auth SignUp with redirect_to back to this exact page (Default Email Confirm Link)
+      const phoneFull = '+91' + phoneDigits;
+      const redirectUrl = window.location.origin + window.location.pathname;
+      const suRes = await sbAuthCall('/auth/v1/signup?redirect_to=' + encodeURIComponent(redirectUrl), {
+        email,
+        password,
+        data: { username, phone: phoneFull, initial_capital: capital }
+      });
+
+      pendingSignUp = {
+        username, email, phone: phoneFull,
+        initial_capital: capital,
+        claim_sync_id: claimSyncId,
+        claim_pin: claimPin
+      };
+      try { localStorage.setItem('sy_pending_signup', JSON.stringify(pendingSignUp)); } catch (_) {}
+
+      // If Supabase returned an active session directly, finalize right away
+      if (suRes.access_token) {
+        authSession = { access_token: suRes.access_token, refresh_token: suRes.refresh_token, user: suRes.user };
+        await finalizeVerifiedProfile();
+        return;
+      }
+
+      // Show Email Confirm Link instruction screen
+      document.getElementById('otpTargetEmail').textContent = email;
+      document.getElementById('otpMsg').textContent = '';
+      document.getElementById('authTabsBar').style.display = 'none';
+      document.getElementById('authSignupPane').style.display = 'none';
+      document.getElementById('authOtpPane').style.display = 'block';
+      startResendCooldown();
+    } catch (e) {
+      setAuthMsg('suMsg', '❌ ' + e.message, true);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '📧 ভেরিফিকেশন লিংক পাঠান';
+    }
+  }
+
+  function backToSignUp() {
+    document.getElementById('authTabsBar').style.display = 'grid';
+    document.getElementById('authOtpPane').style.display = 'none';
+    document.getElementById('authSignupPane').style.display = 'block';
+  }
+
+  function startResendCooldown() {
+    resendCooldown = 45;
+    const btn = document.getElementById('resendOtpBtn');
+    const tick = setInterval(() => {
+      resendCooldown--;
+      if (!btn || resendCooldown <= 0) {
+        clearInterval(tick);
+        if (btn) { btn.disabled = false; btn.textContent = '🔄 আবার লিংক পাঠান'; }
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = '⏳ অপেক্ষা করুন (' + toBnNum(resendCooldown) + ' সে.)';
+    }, 1000);
+  }
+
+  async function handleResendOtp() {
+    if (!pendingSignUp || !pendingSignUp.email) return;
+    try {
+      const redirectUrl = window.location.origin + window.location.pathname;
+      await sbAuthCall('/auth/v1/resend?redirect_to=' + encodeURIComponent(redirectUrl), {
+        type: 'signup',
+        email: pendingSignUp.email
+      });
+      setAuthMsg('otpMsg', '✅ আপনার ইমেইলে নতুন ভেরিফিকেশন লিংক পাঠানো হয়েছে।', false);
+      startResendCooldown();
+    } catch (e) {
+      setAuthMsg('otpMsg', '❌ লিংক পাঠাতে সমস্যা: ' + e.message, true);
+    }
+  }
+
+  function goToSignInAfterLink() {
+    const emailPrefill = (pendingSignUp && pendingSignUp.email) ? pendingSignUp.email : '';
+    switchAuthTab('signin');
+    if (emailPrefill) document.getElementById('siIdentifier').value = emailPrefill;
+    setAuthMsg('siMsg', '✅ ইমেইল লিংক ক্লিক করা হয়ে থাকলে এখন পাসওয়ার্ড দিয়ে সাইন ইন করুন।', false);
+    setTimeout(() => document.getElementById('siPassword').focus(), 100);
+  }
+
+  function loadPendingSignUpLocal() {
+    if (pendingSignUp) return pendingSignUp;
+    try {
+      const saved = JSON.parse(localStorage.getItem('sy_pending_signup') || 'null');
+      if (saved && saved.email) return saved;
+    } catch (_) {}
+    return null;
+  }
+
+  async function finalizeVerifiedProfile() {
+    const p = loadPendingSignUpLocal() || {};
+    const res = await callAutopilotApi({
+      mode: 'init_user_profile',
+      username: p.username || undefined,
+      phone: p.phone || undefined,
+      initial_capital: p.initial_capital || undefined,
+      claim_sync_id: p.claim_sync_id || '',
+      claim_pin: p.claim_pin || ''
+    }, 20000);
+    userProfile = res.profile;
+    pendingSignUp = null;
+    try { localStorage.removeItem('sy_pending_signup'); } catch (_) {}
+    saveAuthLocal();
+    showAppShell();
+    await refreshAll(true);
+  }
+
+  async function handleSignIn() {
+    const rawId = (document.getElementById('siIdentifier').value || '').trim().toLowerCase();
+    const password = document.getElementById('siPassword').value || '';
+    if (!rawId) { setAuthMsg('siMsg', '⚠️ আপনার ইউজারনেম বা ইমেইল আইডি দিন।', true); return; }
+    if (password.length < 8) { setAuthMsg('siMsg', '⚠️ কমপক্ষে ৮ অক্ষরের পাসওয়ার্ড দিন।', true); return; }
+
+    const btn = document.getElementById('siSubmitBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ সাইন ইন হচ্ছে...';
+    setAuthMsg('siMsg', '', false);
+    try {
+      let emailToUse = rawId;
+      if (!rawId.includes('@')) {
+        const resolved = await callAutopilotApi({ mode: 'resolve_login', username: rawId }, 15000);
+        if (!resolved.email) throw new Error('এই ইউজারনেম খুঁজে পাওয়া যায়নি।');
+        emailToUse = resolved.email;
+      }
+
+      const tRes = await sbAuthCall('/auth/v1/token?grant_type=password', {
+        email: emailToUse,
+        password
+      });
+      if (!tRes.access_token) throw new Error('লগইন সফল হয়নি।');
+      authSession = { access_token: tRes.access_token, refresh_token: tRes.refresh_token, user: tRes.user };
+
+      const savedPending = loadPendingSignUpLocal();
+      if (savedPending && savedPending.email === emailToUse && savedPending.claim_sync_id) {
+        const initRes = await callAutopilotApi({
+          mode: 'init_user_profile',
+          username: savedPending.username,
+          phone: savedPending.phone,
+          initial_capital: savedPending.initial_capital,
+          claim_sync_id: savedPending.claim_sync_id,
+          claim_pin: savedPending.claim_pin
+        }, 18000);
+        userProfile = initRes.profile;
+        pendingSignUp = null;
+        try { localStorage.removeItem('sy_pending_signup'); } catch (_) {}
+      } else {
+        const profRes = await callAutopilotApi({ mode: 'get_my_profile' }, 18000);
+        userProfile = profRes.profile;
+      }
+      saveAuthLocal();
+      document.getElementById('siPassword').value = '';
+      showAppShell();
+      await refreshAll(true);
+    } catch (e) {
+      let m = e.message || 'লগইন ব্যর্থ হয়েছে';
+      if (/email not confirmed/i.test(m)) m = 'আপনার ইমেইলের ভেরিফিকেশন লিংকে এখনো ক্লিক করা হয়নি। ইনবক্স বা Spam ফোল্ডার চেক করুন।';
+      else if (/invalid login credentials/i.test(m)) m = 'ইউজারনেম/ইমেইল বা পাসওয়ার্ড ভুল হয়েছে।';
+      setAuthMsg('siMsg', '❌ ' + m, true);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '🔓 সাইন ইন করুন';
+    }
+  }
+
+  async function restoreSessionOnBoot() {
+    // 1. Check if returning from Supabase Email Confirm Link (#access_token=... or #error=...)
+    const hashStr = (window.location.hash || '').replace(/^#/, '');
+    if (hashStr && (hashStr.includes('access_token=') || hashStr.includes('error='))) {
+      const params = new URLSearchParams(hashStr);
+      try { window.history.replaceState(null, '', window.location.pathname + window.location.search); } catch (_) {}
+
+      const errDesc = params.get('error_description') || params.get('error');
+      if (errDesc) {
+        showAuthScreen();
+        switchAuthTab('signin');
+        setAuthMsg('siMsg', '⚠️ ইমেইল লিংকটির মেয়াদ শেষ হয়েছে বা আগে ব্যবহৃত হয়েছে (' + errDesc + ')। ইতিমধ্যে ভেরিফাই হয়ে থাকলে সরাসরি সাইন ইন করুন।', true);
+        return;
+      }
+
+      const accessToken = params.get('access_token');
+      const refreshToken = params.get('refresh_token') || '';
+      if (accessToken) {
+        authSession = { access_token: accessToken, refresh_token: refreshToken, user: null };
+        try {
+          await finalizeVerifiedProfile();
+          return;
+        } catch (e) {
+          showAuthScreen();
+          switchAuthTab('signin');
+          setAuthMsg('siMsg', '⚠️ ইমেইল ভেরিফাই হয়েছে, তবে প্রোফাইল লোডে সমস্যা: ' + e.message + ' — অনুগ্রহ করে সাইন ইন করুন।', true);
+          return;
+        }
+      }
+    }
+
+    // 2. Normal saved session restore
+    loadAuthLocal();
+    if (!authSession || !authSession.access_token) {
+      showAuthScreen();
+      return;
+    }
+    try {
+      const profRes = await callAutopilotApi({ mode: 'get_my_profile' }, 15000);
+      userProfile = profRes.profile;
+      saveAuthLocal();
+      showAppShell();
+      await refreshAll(true);
+    } catch (e) {
+      // Try refreshing expired JWT token using refresh_token
+      if (authSession && authSession.refresh_token) {
+        try {
+          const refRes = await sbAuthCall('/auth/v1/token?grant_type=refresh_token', {
+            refresh_token: authSession.refresh_token
+          });
+          if (refRes.access_token) {
+            authSession = { access_token: refRes.access_token, refresh_token: refRes.refresh_token, user: refRes.user };
+            const profRes2 = await callAutopilotApi({ mode: 'get_my_profile' }, 15000);
+            userProfile = profRes2.profile;
+            saveAuthLocal();
+            showAppShell();
+            await refreshAll(true);
+            return;
+          }
+        } catch (_) {}
+      }
+      authSession = null;
+      userProfile = null;
+      saveAuthLocal();
+      showAuthScreen();
+    }
+  }
+
+  function openProfileModal() {
+    if (!userProfile) return;
+    const p = userProfile;
+    document.getElementById('profileDetailsBox').innerHTML =
+      '<div class="profile-row"><span style="color:var(--muted);">ইউজারনেম</span><b>@' + escapeHtml(p.username) + '</b></div>' +
+      '<div class="profile-row"><span style="color:var(--muted);">ইমেইল</span><span><b>' + escapeHtml(p.email) + '</b> <span class="tag tag-buy">✓ ভেরিফায়েড</span></span></div>' +
+      '<div class="profile-row"><span style="color:var(--muted);">মোবাইল নম্বর</span><span><b>' + escapeHtml(p.phone || '—') + '</b> <span class="tag tag-neut">সেভড</span></span></div>' +
+      '<div class="profile-row"><span style="color:var(--muted);">শুরুর মূলধন</span><b>' + fmt(p.initial_capital || 10000) + '</b></div>' +
+      '<div class="profile-row" style="border-bottom:none;"><span style="color:var(--muted);">পোর্টফোলিও Sync ID</span><span class="tag tag-cat">' + escapeHtml(p.sync_id) + '</span></div>';
+
+    const claimBox = document.getElementById('profileOwnerLinkBox');
+    if (claimBox) {
+      claimBox.style.display = (p.sync_id === 'rafikul-2026') ? 'none' : 'block';
+    }
+    document.getElementById('profClaimMsg').textContent = '';
+    document.getElementById('profileModal').classList.add('open');
+  }
+
+  function closeProfileModal() {
+    document.getElementById('profileModal').classList.remove('open');
+  }
+
+  async function handleLinkExistingFromProfile() {
+    const claimSync = (document.getElementById('profClaimSync').value || '').trim();
+    const claimPin = (document.getElementById('profClaimPin').value || '').trim();
+    if (!claimSync || !claimPin) {
+      setAuthMsg('profClaimMsg', '⚠️ Sync ID ও অ্যাডমিন PIN দিন।', true);
+      return;
+    }
+    try {
+      const res = await callAutopilotApi({
+        mode: 'link_existing_portfolio',
+        claim_sync_id: claimSync,
+        claim_pin: claimPin
+      }, 18000);
+      userProfile = res.profile;
+      saveAuthLocal();
+      updateProfileHeaderUI();
+      setAuthMsg('profClaimMsg', '✅ আপনার পুরোনো পোর্টফোলিও সফলভাবে লিংক হয়েছে!', false);
+      await refreshAll(true);
+      setTimeout(closeProfileModal, 900);
+    } catch (e) {
+      setAuthMsg('profClaimMsg', '❌ ' + e.message, true);
+    }
+  }
+
+  function handleSignOut() {
+    closeProfileModal();
+    authSession = null;
+    userProfile = null;
+    liveMarketOverride = null;
+    logsData = [];
+    stateData = { cash: 10000, practice_day: 1, holdings: {} };
+    memoryData = { initial_capital: 10000, win_count: 0, loss_count: 0, total_trades: 0, strategy_weights: { dip_buying: 1, smart_sip: 1, gold_hedge: 1, profit_lock: 1 }, lessons: [] };
+    saveAuthLocal();
+    switchAuthTab('signin');
+    showAuthScreen();
+  }
+
   window.addEventListener('DOMContentLoaded', () => {
-    renderAll();
     renderChatMessages();
-    refreshAll(true);
     startAutoLiveTimer();
     updateLockUI();
+    updateAuthServerStatus();
+    restoreSessionOnBoot();
   });
 </script>
 </body>
