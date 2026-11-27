@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SafeYield AI v5.0.1 — ইমেইল লিংক সাইন-ইন, প্রোফাইল ও পোর্টফোলিও</title>
+  <title>SafeYield AI v5.0.2 — ক্লিন সাইন-ইন, প্রোফাইল ও AI পোর্টফোলিও</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
@@ -310,14 +310,6 @@
       font-size: 12px; font-weight: 700; color: #334155; cursor: pointer; font-family: inherit;
     }
     .cap-chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
-    .owner-box {
-      background: #f0fdfa; border: 1px solid #99f6e4; border-radius: 12px;
-      padding: 10px 12px; margin: 12px 0; font-size: 12.5px;
-    }
-    .owner-toggle {
-      display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600; color: #0f766e;
-    }
-    .owner-toggle input { width: auto; accent-color: #0f766e; }
     .auth-msg {
       margin-top: 10px; font-size: 12.5px; font-weight: 600; line-height: 1.45;
     }
@@ -375,7 +367,7 @@
     <div class="auth-head">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1 style="font-size:19px;">SafeYield AI <span class="badge-v">v5.0.1</span></h1>
+        <h1 style="font-size:19px;">SafeYield AI <span class="badge-v">v5.0.2</span></h1>
         <p style="font-size:12.5px;">আপনার নিজস্ব AI পোর্টফোলিও অ্যাকাউন্ট তৈরি বা সাইন-ইন করুন</p>
       </div>
     </div>
@@ -389,7 +381,7 @@
     <div id="authSigninPane">
       <div class="auth-field">
         <label>ইউজারনেম বা ইমেইল আইডি (Username / Email)</label>
-        <input id="siIdentifier" type="text" autocomplete="username" placeholder="যেমন: rafikul বা name@gmail.com" />
+        <input id="siIdentifier" type="text" autocomplete="username" placeholder="যেমন: username বা name@gmail.com" />
       </div>
       <div class="auth-field">
         <label>পাসওয়ার্ড (Password)</label>
@@ -403,7 +395,7 @@
     <div id="authSignupPane" style="display:none;">
       <div class="auth-field">
         <label>ইউজারনেম (Username — ইউনিক হতে হবে)</label>
-        <input id="suUsername" type="text" placeholder="যেমন: rafikul_2026 (ছোট হাতের অক্ষর/সংখ্যা)" />
+        <input id="suUsername" type="text" placeholder="যেমন: amit_2026 (ছোট হাতের অক্ষর/সংখ্যা)" />
       </div>
       <div class="auth-field">
         <label>সঠিক ইমেইল আইডি (Valid Email — ভেরিফিকেশন লিংক যাবে)</label>
@@ -434,24 +426,6 @@
       <div class="auth-field">
         <label>পাসওয়ার্ড কনফার্ম করুন (Confirm Password)</label>
         <input id="suConfirmPassword" type="password" autocomplete="new-password" placeholder="একই পাসওয়ার্ড আবার লিখুন" onkeydown="if(event.key==='Enter') handleSignUp()" />
-      </div>
-
-      <div class="owner-box">
-        <label class="owner-toggle">
-          <input type="checkbox" id="suLinkOwner" onchange="toggleOwnerClaimFields()" />
-          <span>আমার আগের SafeYield পোর্টফোলিও লিংক করুন (Owner Only)</span>
-        </label>
-        <div id="ownerClaimFields" style="display:none;margin-top:8px;">
-          <div class="auth-field" style="margin-bottom:7px;">
-            <label>পুরোনো Sync ID</label>
-            <input id="suClaimSyncId" type="text" value="rafikul-2026" />
-          </div>
-          <div class="auth-field" style="margin-bottom:0;">
-            <label>অ্যাডমিন PIN (ডিফল্ট: 2026)</label>
-            <input id="suClaimPin" type="password" inputmode="numeric" placeholder="2026" />
-          </div>
-          <small style="display:block;margin-top:5px;color:#0f766e;">এটি দিলে আপনার আগের সব ডেটা ও ট্রেড হিস্ট্রি এই প্রোফাইলের সাথে যুক্ত হয়ে যাবে।</small>
-        </div>
       </div>
 
       <button type="button" class="btn-run" id="suSubmitBtn" onclick="handleSignUp()">📧 ভেরিফিকেশন লিংক পাঠান</button>
@@ -490,7 +464,7 @@
     <div class="brand-row">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1>SafeYield AI <span class="badge-v">v5.0.1 • ইমেইল লিংক + প্রোফাইল</span></h1>
+        <h1>SafeYield AI <span class="badge-v">v5.0.2 • প্রোফাইল + সিঙ্ক</span></h1>
         <p>AI মার্কেট রিসার্চ ও চ্যাট • Groww / Binance টু-ওয়ে সিঙ্ক • ট্যাক্স রিপোর্ট</p>
       </div>
     </div>
@@ -505,7 +479,7 @@
     </div>
     <div class="status-strip">
       <span class="chip-live" id="liveCount">● অটো-কম্পাউন্ডিং সক্রিয়</span>
-      <span class="chip-sync" id="syncBadge">☁️ সিঙ্ক (rafikul-2026)</span>
+      <span class="chip-sync" id="syncBadge">☁️ ক্লাউড সিঙ্ক</span>
       <span class="chip-timer" id="autoTimerBadge">⏱️ পরের আপডেট: ৬০ সে.</span>
       <span style="color:var(--muted)" id="lastUpdated">প্রস্তুত</span>
     </div>
@@ -920,20 +894,6 @@
     </div>
     <div id="profileDetailsBox">লোড হচ্ছে...</div>
 
-    <div id="profileOwnerLinkBox" class="owner-box" style="display:none;margin-top:12px;">
-      <div style="font-weight:700;color:#0f766e;margin-bottom:6px;">🔗 পুরোনো পোর্টফোলিও লিংক করুন (Owner Only)</div>
-      <div class="auth-field" style="margin-bottom:6px;">
-        <label>পুরোনো Sync ID</label>
-        <input id="profClaimSync" type="text" value="rafikul-2026" />
-      </div>
-      <div class="auth-field" style="margin-bottom:8px;">
-        <label>অ্যাডমিন PIN</label>
-        <input id="profClaimPin" type="password" inputmode="numeric" placeholder="2026" />
-      </div>
-      <button type="button" class="chat-sync-btn" style="width:100%;" onclick="handleLinkExistingFromProfile()">✅ পুরোনো পোর্টফোলিও লিংক করুন</button>
-      <div id="profClaimMsg" class="auth-msg"></div>
-    </div>
-
     <div style="margin-top:14px;">
       <button type="button" class="btn-danger" onclick="handleSignOut()">🚪 সাইন আউট (Sign Out)</button>
     </div>
@@ -965,7 +925,7 @@
     <label>Supabase Anon / Publishable Key</label>
     <input id="cfgKey" placeholder="sb_publishable_... বা eyJ..." />
     <label>Sync ID</label>
-    <input id="cfgSync" value="rafikul-2026" />
+    <input id="cfgSync" placeholder="অটো-সিঙ্ক (প্রোফাইল থেকে)" />
     <label>অ্যাডমিন PIN (ডিফল্ট: 2026)</label>
     <input id="cfgPin" type="password" inputmode="numeric" placeholder="যেমন: 2026" />
     <div style="display:flex;gap:8px;margin-top:14px;">
@@ -996,7 +956,7 @@
   let isAdminUnlocked = false;
   let authSession = null; // { access_token, refresh_token, user }
   let userProfile = null; // { id, username, email, phone, sync_id, initial_capital }
-  let pendingSignUp = null; // { username, email, phone, initial_capital, claim_sync_id, claim_pin }
+  let pendingSignUp = null; // { username, email, phone, initial_capital }
   let resendCooldown = 0;
   let pendingAdminAction = null;
   let countdownSec = AUTO_REFRESH_INTERVAL_SEC;
@@ -1046,7 +1006,7 @@
     const savedUrl = localStorage.getItem('sy_url') || localStorage.getItem('sb_url') || DEFAULT_URL;
     const activeSync = (userProfile && userProfile.sync_id)
       ? userProfile.sync_id
-      : (localStorage.getItem('sy_sync') || localStorage.getItem('sync_id') || 'rafikul-2026');
+      : (localStorage.getItem('sy_sync') || localStorage.getItem('sync_id') || '');
     return { url: savedUrl.trim(), key: savedKey.trim(), syncId: activeSync.trim() };
   }
 
@@ -1244,7 +1204,7 @@
   function saveSetup() {
     localStorage.setItem('sy_url', document.getElementById('cfgUrl').value.trim() || DEFAULT_URL);
     localStorage.setItem('sy_key', document.getElementById('cfgKey').value.trim());
-    localStorage.setItem('sy_sync', document.getElementById('cfgSync').value.trim() || 'rafikul-2026');
+    localStorage.setItem('sy_sync', document.getElementById('cfgSync').value.trim());
     const newPin = document.getElementById('cfgPin').value.trim();
     if (newPin.length >= 4) localStorage.setItem('sy_pin', newPin);
     closeSetup();
@@ -2315,12 +2275,6 @@
     if (btn) btn.classList.add('active');
   }
 
-  function toggleOwnerClaimFields() {
-    const checked = document.getElementById('suLinkOwner').checked;
-    document.getElementById('ownerClaimFields').style.display = checked ? 'block' : 'none';
-    document.getElementById('suCapitalWrap').style.opacity = checked ? '0.55' : '1';
-  }
-
   function setAuthMsg(elId, text, isErr) {
     const el = document.getElementById(elId);
     if (!el) return;
@@ -2351,9 +2305,6 @@
     const capital = Number(document.getElementById('suCapital').value || 10000);
     const password = document.getElementById('suPassword').value || '';
     const confirmPassword = document.getElementById('suConfirmPassword').value || '';
-    const linkOwner = document.getElementById('suLinkOwner').checked;
-    const claimSyncId = linkOwner ? (document.getElementById('suClaimSyncId').value || '').trim() : '';
-    const claimPin = linkOwner ? (document.getElementById('suClaimPin').value || '').trim() : '';
 
     if (!/^[a-z0-9_-]{3,20}$/.test(username)) {
       setAuthMsg('suMsg', '⚠️ ইউজারনেম ৩ থেকে ২০ অক্ষরের হতে হবে (শুধু ইংরেজি ছোট হাতের অক্ষর, সংখ্যা, _ বা -)।', true);
@@ -2367,7 +2318,7 @@
       setAuthMsg('suMsg', '⚠️ একটি সঠিক ১০-সংখ্যার ভারতীয় মোবাইল নম্বর দিন (৬, ৭, ৮ বা ৯ দিয়ে শুরু)।', true);
       return;
     }
-    if (!linkOwner && (isNaN(capital) || capital < 1000 || capital > 10000000)) {
+    if (isNaN(capital) || capital < 1000 || capital > 10000000) {
       setAuthMsg('suMsg', '⚠️ শুরুর মূলধন কমপক্ষে ₹1,000 থেকে ₹1,00,00,000-এর মধ্যে দিন।', true);
       return;
     }
@@ -2377,10 +2328,6 @@
     }
     if (password !== confirmPassword) {
       setAuthMsg('suMsg', '⚠️ Password এবং Confirm Password মেলেনি—আবার মিলিয়ে লিখুন।', true);
-      return;
-    }
-    if (linkOwner && (!claimSyncId || !claimPin)) {
-      setAuthMsg('suMsg', '⚠️ পুরোনো পোর্টফোলিও লিংক করতে Sync ID ও অ্যাডমিন PIN দিন।', true);
       return;
     }
 
@@ -2406,9 +2353,7 @@
 
       pendingSignUp = {
         username, email, phone: phoneFull,
-        initial_capital: capital,
-        claim_sync_id: claimSyncId,
-        claim_pin: claimPin
+        initial_capital: capital
       };
       try { localStorage.setItem('sy_pending_signup', JSON.stringify(pendingSignUp)); } catch (_) {}
 
@@ -2493,9 +2438,7 @@
       mode: 'init_user_profile',
       username: p.username || undefined,
       phone: p.phone || undefined,
-      initial_capital: p.initial_capital || undefined,
-      claim_sync_id: p.claim_sync_id || '',
-      claim_pin: p.claim_pin || ''
+      initial_capital: p.initial_capital || undefined
     }, 20000);
     userProfile = res.profile;
     pendingSignUp = null;
@@ -2530,23 +2473,9 @@
       if (!tRes.access_token) throw new Error('লগইন সফল হয়নি।');
       authSession = { access_token: tRes.access_token, refresh_token: tRes.refresh_token, user: tRes.user };
 
-      const savedPending = loadPendingSignUpLocal();
-      if (savedPending && savedPending.email === emailToUse && savedPending.claim_sync_id) {
-        const initRes = await callAutopilotApi({
-          mode: 'init_user_profile',
-          username: savedPending.username,
-          phone: savedPending.phone,
-          initial_capital: savedPending.initial_capital,
-          claim_sync_id: savedPending.claim_sync_id,
-          claim_pin: savedPending.claim_pin
-        }, 18000);
-        userProfile = initRes.profile;
-        pendingSignUp = null;
-        try { localStorage.removeItem('sy_pending_signup'); } catch (_) {}
-      } else {
-        const profRes = await callAutopilotApi({ mode: 'get_my_profile' }, 18000);
-        userProfile = profRes.profile;
-      }
+      const profRes = await callAutopilotApi({ mode: 'get_my_profile' }, 18000);
+      userProfile = profRes.profile;
+      try { localStorage.removeItem('sy_pending_signup'); } catch (_) {}
       saveAuthLocal();
       document.getElementById('siPassword').value = '';
       showAppShell();
@@ -2640,40 +2569,11 @@
       '<div class="profile-row"><span style="color:var(--muted);">শুরুর মূলধন</span><b>' + fmt(p.initial_capital || 10000) + '</b></div>' +
       '<div class="profile-row" style="border-bottom:none;"><span style="color:var(--muted);">পোর্টফোলিও Sync ID</span><span class="tag tag-cat">' + escapeHtml(p.sync_id) + '</span></div>';
 
-    const claimBox = document.getElementById('profileOwnerLinkBox');
-    if (claimBox) {
-      claimBox.style.display = (p.sync_id === 'rafikul-2026') ? 'none' : 'block';
-    }
-    document.getElementById('profClaimMsg').textContent = '';
     document.getElementById('profileModal').classList.add('open');
   }
 
   function closeProfileModal() {
     document.getElementById('profileModal').classList.remove('open');
-  }
-
-  async function handleLinkExistingFromProfile() {
-    const claimSync = (document.getElementById('profClaimSync').value || '').trim();
-    const claimPin = (document.getElementById('profClaimPin').value || '').trim();
-    if (!claimSync || !claimPin) {
-      setAuthMsg('profClaimMsg', '⚠️ Sync ID ও অ্যাডমিন PIN দিন।', true);
-      return;
-    }
-    try {
-      const res = await callAutopilotApi({
-        mode: 'link_existing_portfolio',
-        claim_sync_id: claimSync,
-        claim_pin: claimPin
-      }, 18000);
-      userProfile = res.profile;
-      saveAuthLocal();
-      updateProfileHeaderUI();
-      setAuthMsg('profClaimMsg', '✅ আপনার পুরোনো পোর্টফোলিও সফলভাবে লিংক হয়েছে!', false);
-      await refreshAll(true);
-      setTimeout(closeProfileModal, 900);
-    } catch (e) {
-      setAuthMsg('profClaimMsg', '❌ ' + e.message, true);
-    }
   }
 
   function handleSignOut() {
