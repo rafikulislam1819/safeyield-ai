@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SafeYield AI v4.9 — Groww ও Binance সিঙ্ক + AI চ্যাট</title>
+  <title>SafeYield AI v4.10 — ফাস্ট AI চ্যাট ও Groww/Binance সিঙ্ক</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
@@ -285,7 +285,7 @@
     <div class="brand-row">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1>SafeYield AI <span class="badge-v">v4.9 • Groww + Binance</span></h1>
+        <h1>SafeYield AI <span class="badge-v">v4.10 • ফাস্ট চ্যাট + Binance</span></h1>
         <p>AI মার্কেট রিসার্চ ও চ্যাট • Groww / Binance টু-ওয়ে সিঙ্ক • ট্যাক্স রিপোর্ট</p>
       </div>
     </div>
@@ -956,11 +956,14 @@
       return res;
     } catch (e) {
       clearTimeout(id);
+      if (e && e.name === 'AbortError') {
+        throw new Error('সার্ভার থেকে উত্তর আসতে নির্ধারিত সময়ের চেয়ে বেশি লেগেছে (Timeout) — আবার চেষ্টা করুন');
+      }
       throw e;
     }
   }
 
-  async function callAutopilotApi(payload, timeoutMs = 25000) {
+  async function callAutopilotApi(payload, timeoutMs = 45000) {
     const c = getCfg();
     if (!c.key) throw new Error('আগে ⚙️ সেটআপে Supabase Key দিন');
     const headers = { 'Content-Type': 'application/json', 'apikey': c.key };
@@ -968,7 +971,11 @@
     const r = await fetchWithTimeout(c.url + '/functions/v1/ai-autopilot', {
       method: 'POST', headers, body: JSON.stringify({ sync_id: c.syncId, ...payload })
     }, timeoutMs);
-    const data = await r.json();
+    const rawTxt = await r.text();
+    let data = {};
+    try { data = JSON.parse(rawTxt); } catch (_) {
+      throw new Error('সার্ভার রেসপন্স ত্রুটি (' + r.status + ') — একটু পর আবার চেষ্টা করুন');
+    }
     if (!r.ok || !data.ok) throw new Error(data.error || 'Server error (' + r.status + ')');
     return data;
   }
@@ -1079,7 +1086,7 @@
     btn.textContent = '⏳ লাইভ বাজার, RSI ও কম্পাউন্ডিং বিশ্লেষণ চলছে...';
     msg.textContent = '';
     try {
-      const data = await callAutopilotApi({}, 25000);
+      const data = await callAutopilotApi({}, 45000);
       liveMarketOverride = null;
       const lockNote = data.same_day_locked ? ' (আজকের দিন আগেই সম্পন্ন — তাই দিন বাড়ানো হয়নি)' : '';
       msg.innerHTML = '✅ <b>দিন ' + data.day_completed + ' সম্পন্ন</b> (' + (data.brain_mode === 'GEMINI_AI' ? 'Gemini AI' : 'Quant AI Engine') + ') — <b>' + data.strategy_used + '</b>' + lockNote;
@@ -1156,20 +1163,31 @@
       return;
     }
 
+    const compactHistory = chatHistory.filter(x => !x.loading).slice(-6).map(x => ({ role: x.role, text: x.text }));
+    const latestSnap = liveMarketOverride || ((logsData[0] && logsData[0].market_snapshot) ? logsData[0].market_snapshot : null);
+    const cachedMarket = (latestSnap && latestSnap.nifty && latestSnap.nifty.price && latestSnap.btc && latestSnap.btc.price) ? latestSnap : undefined;
+    let cachedNews = undefined;
+    if (liveNewsList.length) {
+      cachedNews = liveNewsList.slice(0, 8).map(n => n.title).filter(Boolean);
+    } else if (logsData[0] && Array.isArray(logsData[0].news_headlines) && logsData[0].news_headlines.length) {
+      cachedNews = logsData[0].news_headlines.slice(0, 8);
+    }
+
     input.value = '';
     chatHistory.push({ role: 'user', text: msgText });
-    chatHistory.push({ role: 'ai', text: '⏳ লাইভ মার্কেট রেট, RSI, নিউজ এবং আপনার পোর্টফোলিও বিশ্লেষণ করছি...', steps: [], suggested_sync: null, loading: true });
+    chatHistory.push({ role: 'ai', text: '⏳ লাইভ রেট ও আপনার পোর্টফোলিও বিশ্লেষণ করছি...', steps: [], suggested_sync: null, loading: true });
     renderChatMessages();
 
     isChatSending = true;
     btn.disabled = true;
     try {
-      const compactHistory = chatHistory.filter(x => !x.loading).slice(-6).map(x => ({ role: x.role, text: x.text }));
       const data = await callAutopilotApi({
         mode: 'chat_advisor',
         message: msgText,
-        history: compactHistory
-      }, 28000);
+        history: compactHistory,
+        cached_market: cachedMarket,
+        cached_news: cachedNews
+      }, 60000);
 
       chatHistory = chatHistory.filter(x => !x.loading);
       chatHistory.push({
@@ -1188,7 +1206,7 @@
       chatHistory = chatHistory.filter(x => !x.loading);
       chatHistory.push({
         role: 'ai',
-        text: '⚠️ চ্যাট রিস্পন্স আনতে সমস্যা হয়েছে: ' + e.message + ' (নিশ্চিত করুন Supabase Edge Function v4.9 ডিপ্লয় করা হয়েছে)।',
+        text: '⚠️ চ্যাট রিস্পন্স আনতে সমস্যা হয়েছে: ' + e.message,
         steps: [],
         suggested_sync: null
       });
