@@ -3048,9 +3048,8 @@ const DEFAULT_URL = 'https://pjacpgpysrdnotdezxrh.supabase.co';
     const reader = new FileReader();
     reader.onload = () => {
       try {
-        const text = String(reader.result || '').replace(/^﻿/, '');
-        const lines = text.split(/?
-/).map(l => l.trim()).filter(Boolean);
+        const text = String(reader.result || '').replace(/^\uFEFF/, '');
+        const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
         if (lines.length < 2) throw new Error('CSV ফাইলে কোনো ট্রেড ডেটা নেই।');
         const headers = parseCsvLine(lines[0]).map(h => h.toLowerCase());
         const findCol = (pats) => headers.findIndex(h => pats.some(p => h.includes(p)));
