@@ -3,426 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SafeYield AI v5.1.1 — AI ফিনটেক লগইন UI, ১২+ কাস্টম অ্যাসেট ও পোর্টফোলিও</title>
+  <title>SafeYield AI v6.0 Pro — Quant AI, ব্যাকটেস্ট, অ্যালার্ট ও পোর্টফোলিও</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css?v=6.0" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
-  <style>
-    :root {
-      --bg: #f1f5f9;
-      --card: #ffffff;
-      --text: #0f172a;
-      --muted: #64748b;
-      --border: #e2e8f0;
-      --primary: #0f766e;
-      --primary-dark: #064e3b;
-      --accent: #10b981;
-      --danger: #ef4444;
-      --warn: #f59e0b;
-      --blue: #2563eb;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    body {
-      font-family: 'Hind Siliguri', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      padding-bottom: 88px;
-      line-height: 1.5;
-    }
-    .container { max-width: 780px; margin: 0 auto; padding: 14px; }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 14px;
-      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
-    }
-    .header-card { display: flex; flex-direction: column; gap: 10px; }
-    .brand-row { display: flex; align-items: center; gap: 12px; }
-    .logo {
-      width: 44px; height: 44px; border-radius: 12px;
-      background: linear-gradient(135deg, #0d9488, #0284c7);
-      display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: 22px; font-weight: 700; flex-shrink: 0;
-    }
-    .title-wrap h1 { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .badge-v { background: #1e1b4b; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 99px; }
-    .title-wrap p { font-size: 13px; color: var(--muted); }
-    .controls-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-    .pill {
-      padding: 7px 13px; border-radius: 99px; border: 1px solid var(--border);
-      background: #f8fafc; color: var(--text); font-size: 13px; font-weight: 600;
-      cursor: pointer; display: inline-flex; align-items: center; gap: 5px; font-family: inherit;
-    }
-    .pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
-    .pill.auto-on { background: #ecfdf5; color: #065f46; border-color: #6ee7b7; }
-    .pill.auto-off { background: #fef2f2; color: #991b1b; border-color: #fca5a5; }
-    .status-strip { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: 12px; }
-    .chip-live { background: #dcfce7; color: #166534; padding: 3px 10px; border-radius: 99px; font-weight: 600; }
-    .chip-sync { background: #eff6ff; color: #1d4ed8; padding: 3px 10px; border-radius: 99px; font-weight: 600; }
-    .chip-timer { background: #fefce8; color: #854d0e; border: 1px solid #fde047; padding: 3px 10px; border-radius: 99px; font-weight: 600; }
-
-    /* Hero Portfolio Card */
-    .hero {
-      background: linear-gradient(145deg, #064e3b 0%, #0f292e 65%, #0f172a 100%);
-      color: #fff; border-radius: 20px; padding: 18px; margin-bottom: 14px;
-    }
-    .hero-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .hero-label { font-size: 13px; color: #a7f3d0; }
-    .brain-pill {
-      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
-      padding: 4px 10px; border-radius: 99px; font-size: 12px; font-weight: 600;
-    }
-    .portfolio-val { font-size: 34px; font-weight: 700; margin: 6px 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .pnl-badge { font-size: 13px; padding: 3px 10px; border-radius: 99px; background: rgba(16,185,129,0.2); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.35); }
-    .pnl-badge.neg { background: rgba(239,68,68,0.2); color: #fca5a5; border-color: rgba(239,68,68,0.35); }
-    .prog-row { display: flex; justify-content: space-between; font-size: 13px; color: #cbd5e1; margin-top: 8px; }
-    .prog-bar { height: 7px; background: rgba(255,255,255,0.15); border-radius: 99px; overflow: hidden; margin: 6px 0 14px; }
-    .prog-fill { height: 100%; background: #10b981; border-radius: 99px; transition: width 0.4s ease; }
-    .mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
-    .mini-box { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 10px; }
-    .mini-box small { display: block; font-size: 11px; color: #cbd5e1; }
-    .mini-box strong { font-size: 16px; }
-    .btn-run {
-      width: 100%; padding: 13px; border: none; border-radius: 12px;
-      background: #10b981; color: #052e16; font-size: 16px; font-weight: 700;
-      cursor: pointer; font-family: inherit;
-    }
-    .btn-run:disabled, .btn-sub:disabled { opacity: 0.6; cursor: not-allowed; }
-    .hero-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-    .btn-sub {
-      flex: 1; min-width: 140px; padding: 9px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.22);
-      background: rgba(255,255,255,0.09); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit;
-    }
-    .btn-sub.live-btn { background: rgba(14, 165, 233, 0.25); border-color: rgba(56, 189, 248, 0.45); color: #e0f2fe; }
-    .run-msg { margin-top: 10px; font-size: 13px; color: #a7f3d0; }
-
-    /* Chatbox & Real Sync Styles */
-    .chat-box {
-      background: #f8fafc; border: 1px solid var(--border); border-radius: 14px;
-      padding: 12px; height: 360px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
-      margin-bottom: 10px;
-    }
-    .chat-msg { max-width: 88%; padding: 10px 13px; border-radius: 14px; font-size: 13.5px; line-height: 1.5; word-wrap: break-word; }
-    .chat-msg.user {
-      align-self: flex-end; background: linear-gradient(135deg, #0f766e, #0d9488);
-      color: #fff; border-bottom-right-radius: 4px;
-    }
-    .chat-msg.ai {
-      align-self: flex-start; background: #ffffff; border: 1px solid var(--border);
-      color: var(--text); border-bottom-left-radius: 4px; box-shadow: 0 1px 4px rgba(15,23,42,0.04);
-    }
-    .chat-steps {
-      margin-top: 8px; padding-left: 18px; display: flex; flex-direction: column; gap: 4px;
-      font-size: 13px; color: #1e293b;
-    }
-    .chat-sync-card {
-      margin-top: 9px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 10px;
-      padding: 9px 11px; font-size: 12.5px; color: #065f46;
-    }
-    .chat-sync-btn {
-      margin-top: 7px; padding: 7px 12px; border: none; border-radius: 8px;
-      background: #0f766e; color: #fff; font-size: 12.5px; font-weight: 700;
-      cursor: pointer; font-family: inherit;
-    }
-    .chat-sync-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .chat-quick-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-    .chat-chip {
-      padding: 5px 10px; border-radius: 99px; border: 1px solid #cbd5e1; background: #fff;
-      color: #334155; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit;
-    }
-    .chat-chip:hover { border-color: var(--primary); color: var(--primary); background: #f0fdfa; }
-    .chat-input-row { display: flex; gap: 8px; align-items: center; }
-    .chat-input {
-      flex: 1; padding: 10px 13px; border-radius: 12px; border: 1px solid #cbd5e1;
-      font-size: 13.5px; font-family: inherit; outline: none; background: #fff;
-    }
-    .chat-input:focus { border-color: var(--primary); }
-    .chat-send {
-      padding: 10px 16px; border-radius: 12px; border: none; background: var(--primary);
-      color: #fff; font-size: 13.5px; font-weight: 700; cursor: pointer; font-family: inherit; flex-shrink: 0;
-    }
-    .chat-send:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    .sync-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
-    .sync-tab-btn {
-      flex: 1; padding: 9px; border-radius: 10px; border: 1px solid var(--border);
-      background: #f8fafc; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; color: var(--muted);
-    }
-    .sync-tab-btn.active { background: #0f766e; color: #fff; border-color: #0f766e; }
-    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 10px; }
-    .form-field label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
-    .form-field input, .form-field select {
-      width: 100%; padding: 9px 10px; border-radius: 10px; border: 1px solid var(--border);
-      font-size: 13px; font-family: inherit; background: #fff; color: var(--text);
-    }
-    .recon-row {
-      display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 8px; align-items: center;
-      padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 12.5px;
-    }
-    .recon-row input {
-      width: 100%; padding: 6px 8px; border: 1px solid var(--border); border-radius: 8px;
-      font-size: 12.5px; font-family: inherit;
-    }
-    .sync-feedback { margin-top: 8px; font-size: 12.5px; font-weight: 600; }
-
-    /* Report Banner & Tax Box */
-    .report-hero {
-      background: linear-gradient(135deg, #1e293b 0%, #0f766e 100%);
-      color: #fff; border-radius: 18px; padding: 18px; margin-bottom: 14px;
-    }
-    .report-hero.loss { background: linear-gradient(135deg, #450a0a 0%, #991b1b 100%); }
-    .verdict-pill {
-      display: inline-block; padding: 4px 12px; border-radius: 99px;
-      font-size: 12px; font-weight: 700; background: rgba(255,255,255,0.18); margin-bottom: 8px;
-    }
-    .rep-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
-    .rep-stat { background: rgba(255,255,255,0.1); border-radius: 12px; padding: 10px 12px; }
-    .rep-stat small { display: block; font-size: 11.5px; color: #cbd5e1; }
-    .rep-stat strong { font-size: 17px; }
-
-    .tax-summary-box {
-      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-      border: 1px solid #fcd34d; border-radius: 14px; padding: 13px; margin-bottom: 12px;
-    }
-    .tax-net-row {
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
-      padding-top: 8px; margin-top: 8px; border-top: 1px dashed #d97706;
-    }
-    .slab-select {
-      padding: 5px 10px; border-radius: 10px; border: 1px solid var(--border);
-      background: #fff; font-family: inherit; font-size: 12.5px; font-weight: 600; color: var(--text);
-    }
-
-    /* Section Headings & Grids */
-    .sec-title { font-size: 17px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
-    .sec-sub { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; }
-    .weight-item { background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; }
-    .weight-top { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
-    .w-bar { height: 7px; background: #e2e8f0; border-radius: 99px; overflow: hidden; }
-    .w-fill { height: 100%; background: linear-gradient(90deg, #0d9488, #2563eb); border-radius: 99px; }
-
-    /* Indicator Table */
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th, td { padding: 9px 8px; text-align: left; border-bottom: 1px solid var(--border); }
-    th { background: #f8fafc; color: var(--muted); font-weight: 600; font-size: 12px; }
-    .tag { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 700; }
-    .tag-buy { background: #dcfce7; color: #166534; }
-    .tag-sell { background: #fee2e2; color: #991b1b; }
-    .tag-hold { background: #fef3c7; color: #92400e; }
-    .tag-bull { background: #dcfce7; color: #15803d; }
-    .tag-bear { background: #fee2e2; color: #b91c1c; }
-    .tag-neut { background: #e0f2fe; color: #0369a1; }
-    .tag-high { background: #ffedd5; color: #c2410c; }
-    .tag-cat { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
-
-    /* Trade Log & News Cards */
-    .log-box { border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 10px; background: #f8fafc; }
-    .log-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
-    .action-row { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; margin-top: 6px; font-size: 13px; }
-    .lesson-box { margin-top: 8px; background: #ecfdf5; border-left: 3px solid #10b981; padding: 7px 10px; border-radius: 6px; font-size: 12.5px; color: #065f46; }
-
-    .news-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
-    .nf-btn {
-      padding: 5px 11px; border-radius: 99px; border: 1px solid var(--border);
-      background: #f8fafc; color: var(--text); font-size: 12px; font-weight: 600;
-      cursor: pointer; font-family: inherit;
-    }
-    .nf-btn.active { background: #0f766e; color: #fff; border-color: #0f766e; }
-
-    .news-card {
-      border: 1px solid var(--border); border-radius: 14px; padding: 13px;
-      margin-bottom: 10px; background: #fff;
-    }
-    .news-card.high-impact { border-left: 4px solid #f97316; }
-    .news-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 6px; }
-    .news-card h4 { font-size: 14.5px; margin: 2px 0 6px; color: var(--text); line-height: 1.4; }
-    .news-card h4 a { color: inherit; text-decoration: none; }
-    .news-card h4 a:hover { color: var(--primary); text-decoration: underline; }
-    .news-meta { font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
-    .news-impact-box {
-      background: #f8fafc; border-radius: 8px; padding: 7px 10px;
-      font-size: 12.5px; color: #334155; border: 1px solid #e2e8f0;
-    }
-    .pred-box { background: linear-gradient(135deg, #eff6ff, #f0fdf4); border: 1px solid #bfdbfe; border-radius: 14px; padding: 13px; margin-bottom: 10px; }
-
-    
-    /* Passbook / Trade History */
-    .pb-summary {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px;
-    }
-    .pb-stat {
-      background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 9px 10px;
-    }
-    .pb-stat small { display: block; font-size: 11px; color: var(--muted); }
-    .pb-stat strong { font-size: 14px; }
-    .pb-controls {
-      display: flex; gap: 6px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 10px;
-    }
-    .pb-filter-group { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-    .pb-table td { vertical-align: top; font-size: 12.5px; }
-    .pb-time { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
-    .pb-reason { font-size: 11px; color: var(--muted); margin-top: 2px; max-width: 210px; }
-
-    
-    /* Auth Screen (Sign In / Sign Up / Forgot Password) — Fullscreen Fintech AI Backdrop */
-    body.auth-active {
-      padding-bottom: 0;
-      background: #020d14;
-      overflow-x: hidden;
-    }
-    .auth-wrap {
-      position: relative;
-      min-height: 100vh;
-      width: 100%;
-      margin: 0;
-      padding: 24px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      background:
-        radial-gradient(ellipse 65% 55% at 15% 28%, rgba(20, 184, 166, 0.22), transparent 65%),
-        radial-gradient(ellipse 60% 55% at 86% 24%, rgba(16, 185, 129, 0.20), transparent 62%),
-        radial-gradient(ellipse 55% 55% at 82% 82%, rgba(6, 182, 212, 0.22), transparent 65%),
-        radial-gradient(ellipse 50% 45% at 18% 88%, rgba(16, 185, 129, 0.16), transparent 60%),
-        linear-gradient(135deg, #020b12 0%, #042029 46%, #032a2c 74%, #020f17 100%);
-    }
-    .auth-bg-canvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-    }
-    .auth-card {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      max-width: 440px;
-      background: rgba(255, 255, 255, 0.97);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(167, 243, 208, 0.35);
-      border-radius: 22px;
-      padding: 24px 20px;
-      box-shadow:
-        0 24px 60px rgba(0, 0, 0, 0.52),
-        0 0 0 1px rgba(16, 185, 129, 0.14),
-        0 0 38px rgba(16, 185, 129, 0.12);
-    }
-    .auth-head {
-      display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
-    }
-    .auth-tabs {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
-      background: #f1f5f9; padding: 4px; border-radius: 12px; margin-bottom: 16px;
-    }
-    .auth-tab {
-      border: none; background: transparent; padding: 9px; border-radius: 9px;
-      font-family: inherit; font-size: 13.5px; font-weight: 700; color: var(--muted); cursor: pointer;
-    }
-    .auth-tab.active {
-      background: #ffffff; color: var(--primary);
-      border: 1.5px solid #0f766e;
-      box-shadow: 0 2px 8px rgba(15, 118, 110, 0.14);
-    }
-    .auth-field { margin-bottom: 11px; }
-    .auth-field label {
-      display: block; font-size: 12.5px; font-weight: 600; color: #334155; margin-bottom: 4px;
-    }
-    .auth-field input {
-      width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 11px;
-      font-size: 13.5px; font-family: inherit; background: #fff; color: var(--text); outline: none;
-    }
-    .auth-field input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(15,118,110,0.12); }
-    .phone-row { display: flex; gap: 6px; align-items: center; }
-    .phone-prefix {
-      padding: 10px 11px; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 11px;
-      font-size: 13.5px; font-weight: 700; color: #334155; flex-shrink: 0;
-    }
-    .cap-presets { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 7px; }
-    .cap-chip {
-      padding: 5px 10px; border-radius: 99px; border: 1px solid #cbd5e1; background: #f8fafc;
-      font-size: 12px; font-weight: 700; color: #334155; cursor: pointer; font-family: inherit;
-    }
-    .cap-chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
-    .auth-msg {
-      margin-top: 10px; font-size: 12.5px; font-weight: 600; line-height: 1.45;
-    }
-    .auth-msg.err { color: #dc2626; }
-    .auth-msg.ok { color: #15803d; }
-    .otp-input {
-      text-align: center; font-size: 22px !important; letter-spacing: 8px; font-weight: 700;
-    }
-    .profile-pill {
-      background: #eef2ff; color: #3730a3; border-color: #c7d2fe;
-    }
-    .profile-row {
-      display: flex; justify-content: space-between; align-items: center; padding: 8px 0;
-      border-bottom: 1px solid var(--border); font-size: 13px; gap: 8px;
-    }
-    .forgot-row {
-      display: flex; justify-content: flex-end; margin: -4px 0 12px;
-    }
-    .link-btn {
-      border: none; background: none; color: var(--primary); font-family: inherit;
-      font-size: 12.5px; font-weight: 600; cursor: pointer; padding: 2px 0;
-    }
-    .link-btn:hover { text-decoration: underline; }
-    .pwd-change-box {
-      margin-top: 12px; padding: 11px 12px; border: 1px solid var(--border);
-      border-radius: 12px; background: #f8fafc;
-    }
-    .asset-del-btn {
-      border: 1px solid #fecaca; background: #fef2f2; color: #b91c1c;
-      border-radius: 6px; padding: 1px 6px; font-size: 10.5px; font-weight: 700;
-      cursor: pointer; margin-left: 5px; font-family: inherit;
-    }
-    .asset-del-btn:hover { background: #fee2e2; }
-    .tag-custom { background: #ede9fe; color: #5b21b6; font-size: 10px; margin-left: 4px; }
-    .custom-list-item {
-      display: flex; justify-content: space-between; align-items: center; gap: 8px;
-      padding: 7px 10px; border: 1px solid var(--border); border-radius: 10px;
-      background: #f8fafc; margin-bottom: 6px; font-size: 12.5px;
-    }
-    .btn-danger {
-      width: 100%; padding: 10px; border-radius: 11px; border: 1px solid #fecaca;
-      background: #fef2f2; color: #b91c1c; font-size: 13.5px; font-weight: 700;
-      cursor: pointer; font-family: inherit;
-    }
-
-    /* Bottom Nav (6 Tabs) */
-    .tab-pane { display: none; }
-    .tab-pane.active { display: block; }
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: #ffffff; border-top: 1px solid var(--border);
-      display: grid; grid-template-columns: repeat(6, 1fr);
-      padding: 6px 2px; z-index: 50;
-    }
-    .nav-btn {
-      border: none; background: none; display: flex; flex-direction: column;
-      align-items: center; gap: 2px; font-size: 10px; font-weight: 600;
-      color: var(--muted); cursor: pointer; font-family: inherit; padding: 4px 0;
-    }
-    .nav-btn.active { color: var(--primary); }
-    .nav-btn span.ico { font-size: 17px; }
-
-    /* Modal */
-    .modal-bg {
-      display: none; pointer-events: none; position: fixed; inset: 0;
-      background: rgba(15,23,42,0.55); z-index: 100; align-items: center; justify-content: center; padding: 16px;
-    }
-    .modal-bg.open { display: flex; pointer-events: auto; }
-    .modal { background: #fff; border-radius: 18px; max-width: 440px; width: 100%; padding: 18px; }
-    .modal label { display: block; font-size: 13px; font-weight: 600; margin: 10px 0 4px; }
-    .modal input { width: 100%; padding: 9px 11px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; }
-  </style>
 </head>
 <body class="auth-active">
 
@@ -433,7 +18,7 @@
     <div class="auth-head">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1 style="font-size:19px;">SafeYield AI <span class="badge-v">v5.1.1</span></h1>
+        <h1 style="font-size:19px;">SafeYield AI <span class="badge-v">v6.0 Pro</span></h1>
         <p style="font-size:12.5px;">আপনার নিজস্ব AI পোর্টফোলিও অ্যাকাউন্ট তৈরি বা সাইন-ইন করুন</p>
       </div>
     </div>
@@ -557,6 +142,9 @@
       <span id="authServerStatus" style="font-size:12px;color:#15803d;font-weight:600;">✅ সার্ভার সংযুক্ত (Supabase Auth প্রস্তুত)</span>
       <button type="button" id="authSetupFallbackBtn" class="pill" style="display:none;font-size:11.5px;padding:4px 10px;" onclick="openSetupPublic()">⚙️ সার্ভার সেটআপ</button>
     </div>
+    <div class="auth-disclaimer">
+      🛡️ <b>গোপনীয়তা ও ডিসক্লেমার:</b> SafeYield AI একটি ব্যক্তিগত পোর্টফোলিও ট্র্যাকিং ও এডুকেশনাল রিসার্চ টুল—এটি SEBI-রেজিস্টার্ড বিনিয়োগ পরামর্শ নয়। আপনার ডেটা আপনার নিজস্ব অ্যাকাউন্টে সুরক্ষিত থাকে।
+    </div>
   </div>
 </div>
 
@@ -569,13 +157,16 @@
     <div class="brand-row">
       <div class="logo">🛡️</div>
       <div class="title-wrap">
-        <h1>SafeYield AI <span class="badge-v">v5.1.1 • ১২+ কাস্টম অ্যাসেট</span></h1>
+        <h1>SafeYield AI <span class="badge-v">v6.0 Pro • Quant AI + ব্যাকটেস্ট</span></h1>
         <p>AI মার্কেট রিসার্চ ও চ্যাট • Groww / Binance টু-ওয়ে সিঙ্ক • ট্যাক্স রিপোর্ট</p>
       </div>
     </div>
     <div class="controls-row">
       <button type="button" class="pill active" id="btnINR" onclick="setCurrency('INR')">₹ INR</button>
       <button type="button" class="pill" id="btnUSD" onclick="setCurrency('USD')">$ USD</button>
+      <button type="button" class="pill" id="themeToggleBtn" onclick="toggleDarkMode()">🌙 ডার্ক</button>
+      <button type="button" class="pill mode-paper" id="portfolioModeBtn" onclick="togglePortfolioMode()">🧪 Paper Mode</button>
+      <button type="button" class="pill" id="alertsBtn" onclick="openAlertsModal()">🔔 অ্যালার্ট</button>
       <button type="button" class="pill profile-pill" id="profilePillBtn" onclick="openProfileModal()">👤 প্রোফাইল</button>
       <button type="button" class="pill" onclick="openSetup()">⚙️ সেটআপ</button>
       <button type="button" class="pill" onclick="fetchLiveRatesOnly(false)">📡 লাইভ রেট</button>
@@ -600,6 +191,7 @@
       <div class="portfolio-val">
         <span id="heroTotal">₹10,000</span>
         <span class="pnl-badge" id="heroPnl">+₹0 (+0.00%)</span>
+        <span class="xirr-badge" id="heroXirr" title="বার্ষিকায়িত রিটার্ন (Annualized XIRR)">XIRR: 0.0%</span>
       </div>
       <div class="prog-row">
         <span id="dayLabel">দিন 1 / ৩০</span>
@@ -620,11 +212,40 @@
       <div class="run-msg" id="runStatus"></div>
     </div>
 
-    <!-- Growth Chart -->
+    <!-- Growth Chart + Benchmark Comparison -->
     <div class="card">
-      <div class="sec-title">📈 ৩০-দিনের লাভ-লস ও গ্রোথ চার্ট</div>
-      <div class="sec-sub">প্রতিদিনের পোর্টফোলিও ভ্যালু ও কম্পাউন্ডিং ফলাফল</div>
-      <div style="height:210px;"><canvas id="growthChart"></canvas></div>
+      <div class="sec-title">
+        <span>📈 লাভ-লস গ্রোথ ও বেঞ্চমার্ক তুলনা</span>
+        <div class="bench-toggle">
+          <button type="button" class="bench-btn active" id="benchBtnVal" onclick="setChartMode('value')">₹ মূল্য</button>
+          <button type="button" class="bench-btn" id="benchBtnPct" onclick="setChartMode('benchmark')">vs Nifty ও FD</button>
+        </div>
+      </div>
+      <div class="sec-sub" id="growthChartSub">প্রতিদিনের পোর্টফোলিও ভ্যালু ও কম্পাউন্ডিং ফলাফল</div>
+      <div style="height:225px;"><canvas id="growthChart"></canvas></div>
+    </div>
+
+    <!-- Asset Allocation Donut + Risk Meter + AI Health Score -->
+    <div class="card">
+      <div class="sec-title">
+        <span>🥧 অ্যাসেট অ্যালোকেশন ও রিস্ক মিটার</span>
+        <span class="health-pill" id="aiHealthBadge">🤖 AI হেলথ স্কোর: —/100</span>
+      </div>
+      <div class="sec-sub">ইক্যুইটি, গোল্ড/সিলভার, ক্রিপ্টো ও ক্যাশের ভারসাম্য এবং AI রিব্যালেন্স সতর্কতা</div>
+      <div class="alloc-grid">
+        <div class="alloc-chart-wrap"><canvas id="allocationChart"></canvas></div>
+        <div>
+          <div id="allocBreakdownList" style="font-size:12.5px;display:flex;flex-direction:column;gap:5px;"></div>
+          <div class="risk-meter-wrap">
+            <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;">
+              <span>🛡️ রিস্ক মিটার</span>
+              <span id="riskMeterLabel">নিরাপদ (Low Risk)</span>
+            </div>
+            <div class="risk-track"><div class="risk-marker" id="riskMeterMarker" style="left:15%;"></div></div>
+            <div id="allocWarningBox" style="font-size:12px;color:var(--muted);line-height:1.45;">পোর্টফোলিও ব্যালেন্স বিশ্লেষণ হচ্ছে...</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Latest AI Decision Breakdown -->
@@ -645,9 +266,9 @@
       <div class="sec-sub">লাইভ রেট, RSI, নিউজ ও আপনার পোর্টফোলিও দেখে স্টেপ-বাই-স্টেপ গাইড নিন—অথবা আপনার রিয়েল ট্রেডের কথা লিখে সিঙ্ক করুন</div>
 
       <div class="chat-quick-row">
-        <button type="button" class="chat-chip" onclick="sendQuickChat('আজ আমার পোর্টফোলিওর জন্য কোনটা কিনবো ও কোনটা বেচবো? প্রতিটির পরিমাণসহ স্টেপ বলো।')">📊 আজ কী কিনবো/বেচবো?</button>
-        <button type="button" class="chat-chip" onclick="sendQuickChat('আমার বর্তমান ক্যাশ ও হোল্ডিংস দেখে Groww আর Binance-এ কীভাবে টাকা ভাগ করবো?')">💰 টাকা ভাগ করার প্ল্যান</button>
-        <button type="button" class="chat-chip" onclick="sendQuickChat('এখন মার্কেট নিউজ ও RSI অনুযায়ী কোন অ্যাসেটে সবচেয়ে বেশি ঝুঁকি আছে?')">🛡️ ঝুঁকি বিশ্লেষণ</button>
+        <button type="button" class="chat-chip" onclick="sendQuickChat('আজ MACD, Bollinger, RSI ও AI Score দেখে আমার পোর্টফোলিওর জন্য কোনটা কিনবো ও কোনটা বেচবো? Target ও Stop-Loss সহ বলো।')">📊 ডিপ AI প্ল্যান</button>
+        <button type="button" class="chat-chip" onclick="sendQuickChat('আমার বর্তমান অ্যাসেট অ্যালোকেশন ও রিস্ক মিটার দেখে কীভাবে পোর্টফোলিও রিব্যালেন্স করবো?')">⚖️ রিব্যালেন্স গাইড</button>
+        <button type="button" class="chat-chip" onclick="sendQuickChat('আমার XIRR ও বর্তমান লাভ-লস দেখে ট্যাক্স বাঁচানোর সেরা উপায় কী?')">🏛️ ট্যাক্স ও XIRR</button>
         <button type="button" class="chat-chip" onclick="sendQuickChat('আমি আজ Groww-এ Nifty ETF ₹500 কিনেছি, পোর্টফোলিওতে সিঙ্ক করো')">🔄 ট্রেড সিঙ্ক উদাহরণ</button>
       </div>
 
@@ -664,9 +285,11 @@
       <div class="sec-title">🔄 Groww / Binance ↔ SafeYield পোর্টফোলিও সিঙ্ক</div>
       <div class="sec-sub">বাস্তবে অর্ডার দেওয়ার পর এখানে তথ্য দিন—দিনের শেষে আপনার আসল পোর্টফোলিও আর SafeYield ১০০% এক থাকবে</div>
 
-      <div class="sync-tabs">
-        <button type="button" class="sync-tab-btn active" id="syncTabTrade" onclick="switchSyncMode('trade')">⚡ ট্রেড লগ (BUY / SELL)</button>
-        <button type="button" class="sync-tab-btn" id="syncTabRecon" onclick="switchSyncMode('reconcile')">⚖️ এন্ড-অফ-ডে রিকনসাইল</button>
+      <div class="sync-tabs" style="flex-wrap:wrap;">
+        <button type="button" class="sync-tab-btn active" id="syncTabTrade" onclick="switchSyncMode('trade')">⚡ ট্রেড লগ</button>
+        <button type="button" class="sync-tab-btn" id="syncTabRecon" onclick="switchSyncMode('reconcile')">⚖️ রিকনসাইল</button>
+        <button type="button" class="sync-tab-btn" id="syncTabCsv" onclick="switchSyncMode('csv')">📄 CSV ইমপোর্ট</button>
+        <button type="button" class="sync-tab-btn" id="syncTabBinance" onclick="switchSyncMode('binance')">🔗 Binance API</button>
       </div>
 
       <!-- Mode A: Quick Trade Log -->
@@ -736,6 +359,61 @@
         <button type="button" class="btn-run" style="margin-top:12px;" id="reconSaveBtn" onclick="submitReconcilePortfolio()">⚖️ এন্ড-অফ-ডে পোর্টফোলিও মিলিয়ে সেভ করুন (PIN)</button>
         <div class="sync-feedback" id="reconMsg"></div>
       </div>
+
+      <!-- Mode C: Groww / Binance CSV Auto-Import -->
+      <div id="syncPanelCsv" style="display:none;">
+        <p style="font-size:12.5px;color:var(--muted);margin-bottom:10px;">
+          Groww বা Binance থেকে ডাউনলোড করা অর্ডার/ট্রেড <b>.CSV</b> ফাইল আপলোড করুন—সিস্টেম স্বয়ংক্রিয়ভাবে BUY/SELL, অ্যাসেট, দাম ও পরিমাণ পড়ে প্রিভিউ দেখাবে।
+        </p>
+        <div class="form-grid" style="margin-bottom:8px;">
+          <div class="form-field">
+            <label>ব্রোকার ফরম্যাট</label>
+            <select id="csvBrokerType">
+              <option value="AUTO">অটো-ডিটেক্ট (Groww / Binance)</option>
+              <option value="Groww">Groww Tradebook CSV</option>
+              <option value="Binance">Binance Spot Trade CSV</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>CSV ফাইল নির্বাচন করুন</label>
+            <input id="csvFileInput" type="file" accept=".csv,text/csv" onchange="handleCsvFileSelect(event)" />
+          </div>
+        </div>
+        <div id="csvPreviewWrap" style="display:none;margin-top:8px;">
+          <div style="font-size:12.5px;font-weight:700;margin-bottom:6px;" id="csvPreviewCount"></div>
+          <div class="table-wrap" style="max-height:220px;overflow-y:auto;margin-bottom:10px;">
+            <table>
+              <thead><tr><th>ব্রোকার</th><th>ধরন</th><th>অ্যাসেট</th><th>পরিমাণ</th><th>মোট টাকা (₹)</th></tr></thead>
+              <tbody id="csvPreviewBody"></tbody>
+            </table>
+          </div>
+          <button type="button" class="btn-run" id="csvImportBtn" onclick="submitBulkCsvImport()">📥 সব ট্রেড SafeYield-এ ইমপোর্ট করুন</button>
+        </div>
+        <div class="sync-feedback" id="csvMsg"></div>
+      </div>
+
+      <!-- Mode D: Binance Read-Only API Sync -->
+      <div id="syncPanelBinance" style="display:none;">
+        <div class="binance-warn">
+          🔐 <b>নিরাপত্তা নিয়ম (Read-Only Only):</b> Binance → API Management-এ গিয়ে নতুন API তৈরি করার সময় <b>শুধুমাত্র "Enable Reading"</b> অন রাখবেন। কখনোই Spot Trading বা Withdrawals অন করবেন না।
+        </div>
+        <div id="binanceRoStatus" style="font-size:12.5px;font-weight:700;margin-bottom:10px;color:var(--muted);">স্ট্যাটাস: কনফিগার করা নেই</div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Binance Read-Only API Key</label>
+            <input id="binApiKey" type="text" placeholder="API Key দিন" />
+          </div>
+          <div class="form-field">
+            <label>Binance Secret Key</label>
+            <input id="binApiSecret" type="password" placeholder="Secret Key দিন" />
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
+          <button type="button" class="pill active" style="padding:9px 14px;" id="binSaveBtn" onclick="saveBinanceReadOnly()">💾 Read-Only Key সেভ করুন</button>
+          <button type="button" class="btn-run" style="flex:1;padding:10px;font-size:14px;" id="binSyncBtn" onclick="syncBinanceReadOnlyNow()">🔄 Binance স্পট ব্যালেন্স অটো-সিঙ্ক করুন</button>
+        </div>
+        <div class="sync-feedback" id="binSyncMsg"></div>
+      </div>
     </div>
   </div>
 
@@ -778,7 +456,7 @@
           <button type="button" class="pill" style="font-size:11.5px;padding:4px 10px;" onclick="fetchLiveRatesOnly(false)">📡 রেট রিফ্রেশ</button>
         </div>
       </div>
-      <div class="sec-sub">প্রতিটি অ্যাসেটের বর্তমান দাম, RSI (14), ১৪-দিনের গড় (SMA14) ও ডিসকাউন্ট %</div>
+      <div class="sec-sub">লাইভ দাম, RSI (14), MACD (12,26,9), Bollinger Bands, EMA20 ও মাল্টি-ফ্যাক্টর AI স্কোর (০–১০০)</div>
       <div class="table-wrap">
         <table>
           <thead>
@@ -787,12 +465,14 @@
               <th>বর্তমান দাম</th>
               <th>১-দিন %</th>
               <th>RSI (14)</th>
+              <th>MACD ও ট্রেন্ড</th>
+              <th>AI স্কোর</th>
               <th>হাই থেকে নিচে</th>
               <th>AI সিগন্যাল</th>
             </tr>
           </thead>
           <tbody id="indicatorBody">
-            <tr><td colspan="6">ডেটা লোড হচ্ছে...</td></tr>
+            <tr><td colspan="8">ডেটা লোড হচ্ছে...</td></tr>
           </tbody>
         </table>
       </div>
@@ -917,6 +597,61 @@
       <div class="sec-sub">৩০ দিনের মিশনে AI-এর স্ট্র্যাটেজি ও সাফল্যের হার</div>
       <div id="reportStrategyBox">লোড হচ্ছে...</div>
     </div>
+
+    <!-- Strategy Backtesting Lab -->
+    <div class="card">
+      <div class="sec-title">🔬 স্ট্র্যাটেজি ব্যাকটেস্টিং ল্যাব (Historical Test)</div>
+      <div class="sec-sub">গত ৩ মাস, ৬ মাস বা ১ বছরের আসল মার্কেট ডেটায় Buy on Dip + Profit Lock বনাম Smart SIP বনাম Buy &amp; Hold পরীক্ষা করুন</div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label>অ্যাসেট বেছে নিন</label>
+          <select id="btAsset"></select>
+        </div>
+        <div class="form-field">
+          <label>সময়কাল (Timeframe)</label>
+          <select id="btRange">
+            <option value="3mo">গত ৩ মাস (3M)</option>
+            <option value="6mo" selected>গত ৬ মাস (6M)</option>
+            <option value="1y">গত ১ বছর (1Y)</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>টেস্ট মূলধন (₹)</label>
+          <input id="btCapital" type="number" min="1000" max="10000000" step="1000" value="10000" />
+        </div>
+      </div>
+      <button type="button" class="btn-run" id="btRunBtn" style="padding:11px;font-size:14.5px;" onclick="runStrategyBacktest()">▶️ আসল হিস্টোরিক্যাল ডেটায় ব্যাকটেস্ট চালাও</button>
+      <div id="btStatusMsg" class="sync-feedback"></div>
+      <div id="btResultsWrap" style="display:none;margin-top:12px;">
+        <div class="bt-metrics-grid" id="btMetricsGrid"></div>
+        <div style="height:220px;margin-top:8px;"><canvas id="backtestChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Goal & SIP Calculator -->
+    <div class="card">
+      <div class="sec-title">🎯 গোল ও SIP ক্যালকুলেটর (Wealth Planner)</div>
+      <div class="sec-sub">আপনার আর্থিক লক্ষ্যে পৌঁছাতে মাসে কত টাকা SIP করতে হবে তা হিসাব করুন</div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label>লক্ষ্যমাত্রা (Target Amount ₹)</label>
+          <input id="goalTarget" type="number" value="100000" step="5000" oninput="calculateGoalSip()" />
+        </div>
+        <div class="form-field">
+          <label>সময়কাল (বছর / Years)</label>
+          <input id="goalYears" type="number" value="2" min="0.5" max="30" step="0.5" oninput="calculateGoalSip()" />
+        </div>
+        <div class="form-field">
+          <label>আনুমানিক বার্ষিক রিটার্ন (%)</label>
+          <input id="goalReturn" type="number" value="14" min="4" max="40" step="0.5" oninput="calculateGoalSip()" />
+        </div>
+        <div class="form-field">
+          <label>বর্তমান পোর্টফোলিও (₹)</label>
+          <input id="goalCurrent" type="number" value="10000" step="500" oninput="calculateGoalSip()" />
+        </div>
+      </div>
+      <div id="goalSipOutput" class="tax-summary-box" style="margin-bottom:0;">হিসাব হচ্ছে...</div>
+    </div>
   </div>
 
   <!-- TAB 6: WALLET -->
@@ -928,6 +663,35 @@
       </div>
       <div class="sec-sub" id="walletCapSub">কম্পাউন্ডিং সীমা: প্রতি স্টক/ETF ২৫% • প্রতি ক্রিপ্টো ৮% • ন্যূনতম ক্যাশ ₹500</div>
       <div id="walletList">লোড হচ্ছে...</div>
+    </div>
+
+    <!-- Capital Deposit / Withdraw + XIRR Card -->
+    <div class="card">
+      <div class="sec-title">
+        <span>💵 ক্যাপিটাল ডিপোজিট / উইথড্র ও XIRR</span>
+        <span class="tag tag-neut" id="walletXirrTag">XIRR: 0.0%</span>
+      </div>
+      <div class="sec-sub">মাসে মাসে নতুন SIP টাকা যোগ করলে বা লাভ তুললে এখানে এন্ট্রি দিন—সঠিক XIRR ও মূলধন হিসাব থাকবে</div>
+      <div class="cf-grid">
+        <div class="form-field">
+          <label>ধরন</label>
+          <select id="cfType">
+            <option value="DEPOSIT">➕ ডিপোজিট (টাকা যোগ)</option>
+            <option value="WITHDRAW">➖ উইথড্র (টাকা তোলা)</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>পরিমাণ (₹ INR)</label>
+          <input id="cfAmount" type="number" min="100" step="100" placeholder="যেমন: 2000" />
+        </div>
+        <div class="form-field">
+          <label>নোট (ঐচ্ছিক)</label>
+          <input id="cfNote" type="text" placeholder="যেমন: মাসিক SIP জমা" />
+        </div>
+      </div>
+      <button type="button" class="btn-run" id="cfSubmitBtn" style="padding:10px;font-size:14px;" onclick="submitCapitalFlow()">💾 ক্যাপিটাল এন্ট্রি সেভ করুন</button>
+      <div id="cfMsg" class="sync-feedback"></div>
+      <div id="cfHistoryBox" style="margin-top:10px;font-size:12.5px;"></div>
     </div>
 
     <!-- Trade History / Passbook Card -->
@@ -979,6 +743,9 @@
         </table>
       </div>
     </div>
+  </div>
+  <div class="disclaimer-footer">
+    🛡️ <b>SafeYield AI v6.0 — ডিসক্লেমার ও প্রাইভেসি নোট:</b> এটি একটি ব্যক্তিগত পোর্টফোলিও ট্র্যাকিং, ব্যাকটেস্টিং ও এডুকেশনাল AI রিসার্চ টুল। এটি কোনো SEBI-রেজিস্টার্ড বিনিয়োগ বা ট্যাক্স উপদেষ্টা নয়। শেয়ার ও ক্রিপ্টো বাজার ঝুঁকিপূর্ণ—রিয়েল অর্ডার দেওয়ার আগে নিজস্ব যাচাই করুন।
   </div>
 </div>
 
@@ -1099,6 +866,60 @@
   </div>
 </div>
 
+<!-- Telegram Alerts Modal -->
+<div class="modal-bg" id="alertsModal">
+  <div class="modal" style="max-width:460px;max-height:90vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <h3>🔔 টেলিগ্রাম Dip ও Profit-Lock অ্যালার্ট</h3>
+      <button type="button" class="pill" style="padding:4px 10px;font-size:12px;" onclick="closeAlertsModal()">✕</button>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:10px;">
+      মার্কেটে বড় ডিপ, কম RSI বা আপনার হোল্ডিংসে +১০% লাভ হলে সরাসরি আপনার Telegram-এ নোটিফিকেশন পাবেন।
+    </p>
+
+    <div class="binance-warn" style="background:#eff6ff;border-color:#bfdbfe;color:#1e40af;">
+      <b>📌 ৩ ধাপে Telegram Bot সেটআপ:</b><br>
+      ১. Telegram-এ <b>@BotFather</b> খুলে <code>/newbot</code> দিয়ে নতুন বট বানান ও <b>Bot Token</b> কপি করুন।<br>
+      ২. আপনার বটে গিয়ে <b>Start</b> চাপুন।<br>
+      ৩. <b>@userinfobot</b>-এ গিয়ে আপনার <b>Chat ID</b> (সংখ্যা) কপি করে নিচে বসান।
+    </div>
+
+    <div class="auth-field" style="margin-bottom:8px;">
+      <label>Telegram Bot Token</label>
+      <input id="tgBotToken" type="password" placeholder="যেমন: 7123456:AAH..." />
+    </div>
+    <div class="auth-field" style="margin-bottom:8px;">
+      <label>Telegram Chat ID</label>
+      <input id="tgChatId" type="text" placeholder="যেমন: 123456789" />
+    </div>
+    <div class="form-grid" style="margin-bottom:8px;">
+      <div class="form-field">
+        <label>RSI নিচে নামলে (&lt;)</label>
+        <input id="tgRsiBelow" type="number" value="40" min="15" max="60" />
+      </div>
+      <div class="form-field">
+        <label>ডিপ অ্যালার্ট (≥ %)</label>
+        <input id="tgDipPct" type="number" value="3" min="1" max="20" step="0.5" />
+      </div>
+      <div class="form-field">
+        <label>প্রফিট-লক (≥ %)</label>
+        <input id="tgProfitPct" type="number" value="10" min="3" max="50" />
+      </div>
+    </div>
+    <label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;margin-bottom:10px;cursor:pointer;">
+      <input id="tgEnabled" type="checkbox" style="width:auto;accent-color:#0f766e;" checked />
+      <span>টেলিগ্রাম অ্যালার্ট চালু রাখুন (Active)</span>
+    </label>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button type="button" class="btn-run" style="flex:1;padding:10px;font-size:13.5px;" id="tgSaveBtn" onclick="saveTelegramAlerts()">💾 অ্যালার্ট সেভ করুন</button>
+      <button type="button" class="pill active" style="padding:9px 12px;" id="tgTestBtn" onclick="testTelegramAlert()">📩 টেস্ট মেসেজ</button>
+      <button type="button" class="pill" style="padding:9px 12px;" id="tgCheckNowBtn" onclick="checkTelegramAlertsNow()">🔍 এখনই চেক</button>
+    </div>
+    <div id="tgMsg" class="auth-msg"></div>
+  </div>
+</div>
+
 <!-- Setup Modal -->
 <div class="modal-bg" id="setupModal">
   <div class="modal">
@@ -1120,2507 +941,6 @@
 </div>
 
 <script src="./config.js"></script>
-<script>
-  const DEFAULT_URL = 'https://pjacpgpysrdnotdezxrh.supabase.co';
-  // নিচে আপনার Supabase Anon / Publishable Key বসালে নতুন ইউজাররা সেটআপ ছাড়াই সরাসরি সাইন-আপ করতে পারবে:
-  const DEFAULT_ANON_KEY = '';
-  const AUTO_REFRESH_INTERVAL_SEC = 60;
-  const DEFAULT_ASSETS = {
-    nifty:    { name: 'Nifty 50 ETF',   type: 'ইক্যুইটি সূচক',        taxCat: 'EQUITY', isCrypto: false, broker: 'Groww',   isCustom: false },
-    gold:     { name: 'Gold ETF',       type: 'নিরাপদ হেজ',          taxCat: 'GOLD',   isCrypto: false, broker: 'Groww',   isCustom: false },
-    silver:   { name: 'Silver ETF',     type: 'কমোডিটি হেজ',        taxCat: 'GOLD',   isCrypto: false, broker: 'Groww',   isCustom: false },
-    tcs:      { name: 'TCS',            type: 'আইটি লার্জ-ক্যাপ',    taxCat: 'EQUITY', isCrypto: false, broker: 'Groww',   isCustom: false },
-    hdfc:     { name: 'HDFC Bank',      type: 'ব্যাংকিং লিডার',      taxCat: 'EQUITY', isCrypto: false, broker: 'Groww',   isCustom: false },
-    reliance: { name: 'Reliance Ind.',  type: 'ব্লু-চিপ লার্জ-ক্যাপ', taxCat: 'EQUITY', isCrypto: false, broker: 'Groww',   isCustom: false },
-    infy:     { name: 'Infosys',        type: 'আইটি লার্জ-ক্যাপ',    taxCat: 'EQUITY', isCrypto: false, broker: 'Groww',   isCustom: false },
-    icici:    { name: 'ICICI Bank',     type: 'ব্যাংকিং লিডার',      taxCat: 'EQUITY', isCrypto: false, broker: 'Groww',   isCustom: false },
-    sbi:      { name: 'SBI',            type: 'পিএসইউ ব্যাংক',       taxCat: 'EQUITY', isCrypto: false, broker: 'Groww',   isCustom: false },
-    btc:      { name: 'Bitcoin (BTC)',  type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', taxCat: 'CRYPTO', isCrypto: true,  broker: 'Binance', isCustom: false },
-    eth:      { name: 'Ethereum (ETH)', type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', taxCat: 'CRYPTO', isCrypto: true,  broker: 'Binance', isCustom: false },
-    sol:      { name: 'Solana (SOL)',   type: 'ক্রিপ্টো (উচ্চ ঝুঁকি)', taxCat: 'CRYPTO', isCrypto: true,  broker: 'Binance', isCustom: false }
-  };
-  let customAssetsList = [];
-  let ASSETS = { ...DEFAULT_ASSETS };
-
-  function syncAssetsFromState() {
-    const raw = (stateData && stateData.profile && Array.isArray(stateData.profile.custom_assets))
-      ? stateData.profile.custom_assets
-      : [];
-    customAssetsList = raw;
-    const merged = { ...DEFAULT_ASSETS };
-    for (const item of raw) {
-      if (!item || !item.id) continue;
-      const id = String(item.id).toLowerCase();
-      if (merged[id]) continue;
-      const isCrypto = item.type === 'CRYPTO';
-      merged[id] = {
-        name: String(item.name || item.symbol || id),
-        type: isCrypto ? 'কাস্টম ক্রিপ্টো' : 'কাস্টম স্টক / ETF',
-        taxCat: isCrypto ? 'CRYPTO' : (item.taxCat === 'GOLD' ? 'GOLD' : 'EQUITY'),
-        isCrypto,
-        broker: isCrypto ? 'Binance' : 'Groww',
-        symbol: item.symbol || '',
-        isCustom: true
-      };
-    }
-    ASSETS = merged;
-    refreshAssetDropdowns();
-  }
-
-  function refreshAssetDropdowns() {
-    const syncSel = document.getElementById('syncAsset');
-    if (syncSel) {
-      const prev = syncSel.value;
-      syncSel.innerHTML = Object.entries(ASSETS).map(([id, info]) =>
-        '<option value="' + escapeHtml(id) + '">' + escapeHtml(info.name) + ' (' + escapeHtml(info.broker) + ')</option>'
-      ).join('');
-      if (prev && ASSETS[prev]) syncSel.value = prev;
-    }
-    const pbSel = document.getElementById('pbAssetFilter');
-    if (pbSel) {
-      const prevPb = pbSel.value || 'ALL';
-      pbSel.innerHTML = '<option value="ALL">সব অ্যাসেট</option>' + Object.entries(ASSETS).map(([id, info]) =>
-        '<option value="' + escapeHtml(id) + '">' + escapeHtml(info.name) + '</option>'
-      ).join('');
-      pbSel.value = (prevPb === 'ALL' || ASSETS[prevPb]) ? prevPb : 'ALL';
-    }
-  }
-
-  let currency = 'INR';
-  let USD_RATE = 85.0;
-  let goldTaxSlab = Number(localStorage.getItem('sy_tax_slab') ?? 10);
-  let autoLiveEnabled = localStorage.getItem('sy_auto_live') !== 'off';
-  let isAdminUnlocked = false;
-  let authSession = null; // { access_token, refresh_token, user }
-  let userProfile = null; // { id, username, email, phone, sync_id, initial_capital }
-  let pendingSignUp = null; // { username, email, phone, initial_capital }
-  let resendCooldown = 0;
-  let forgotCooldown = 0;
-  let recoveryAccessToken = '';
-  let pendingAdminAction = null;
-  let countdownSec = AUTO_REFRESH_INTERVAL_SEC;
-  let isFetchingRates = false;
-  let isChatSending = false;
-  let timerHandle = null;
-
-  let stateData = { cash: 10000, practice_day: 1, holdings: {} };
-  let memoryData = { initial_capital: 10000, win_count: 0, loss_count: 0, total_trades: 0, strategy_weights: { dip_buying: 1, smart_sip: 1, gold_hedge: 1, profit_lock: 1 }, lessons: [] };
-  let logsData = [];
-  let liveMarketOverride = null;
-  let liveNewsList = [];
-  let newsLoadedOnce = false;
-  let activeNewsFilter = 'ALL';
-  let activePassbookType = 'ALL';
-  let activePassbookAsset = 'ALL';
-  let chartInstance = null;
-  let chatHistory = [];
-
-  try {
-    const savedChat = JSON.parse(localStorage.getItem('sy_chat_history') || '[]');
-    if (Array.isArray(savedChat) && savedChat.length) chatHistory = savedChat.slice(-20);
-  } catch (_) {}
-
-  if (!chatHistory.length) {
-    chatHistory = [{
-      role: 'ai',
-      text: 'নমস্কার! আমি আপনার SafeYield AI অ্যাডভাইজার। লাইভ মার্কেট রেট, RSI, নিউজ ও আপনার পোর্টফোলিও দেখে কোনটা কিনবেন বা বেচবেন—সব স্টেপ-বাই-স্টেপ বলে দেব। আপনি বাস্তবে Groww বা Binance-এ ট্রেড করে এখানে লিখলেই আমি পোর্টফোলিও সিঙ্ক করে দেব।',
-      steps: [
-        'জিজ্ঞাসা করুন: "আজ কী কিনবো ও বেচবো?"',
-        'রিয়েল ট্রেড সিঙ্ক করতে লিখুন: "Groww-এ Nifty ETF ₹650 কিনেছি" বা নিচের সিঙ্ক ফর্ম ব্যবহার করুন।'
-      ],
-      suggested_sync: null
-    }];
-  }
-
-  function escapeHtml(str) {
-    return String(str || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-
-  function getCfg() {
-    const ext = (typeof window !== 'undefined' && window.SAFEYIELD_CONFIG && typeof window.SAFEYIELD_CONFIG === 'object') ? window.SAFEYIELD_CONFIG : {};
-    const extKey = String(ext.SUPABASE_ANON_KEY || ext.key || '').trim();
-    const extUrl = String(ext.SUPABASE_URL || ext.url || '').trim();
-    const savedKey = localStorage.getItem('sy_key') || localStorage.getItem('sb_key') || localStorage.getItem('supabase_key') || extKey || DEFAULT_ANON_KEY || '';
-    const savedUrl = localStorage.getItem('sy_url') || localStorage.getItem('sb_url') || extUrl || DEFAULT_URL;
-    const activeSync = (userProfile && userProfile.sync_id)
-      ? userProfile.sync_id
-      : (localStorage.getItem('sy_sync') || localStorage.getItem('sync_id') || '');
-    return { url: savedUrl.trim(), key: savedKey.trim(), syncId: activeSync.trim() };
-  }
-
-  function getAuthToken() {
-    return (authSession && authSession.access_token) ? authSession.access_token : '';
-  }
-
-  function fmt(inr) {
-    const val = Number(inr || 0);
-    if (currency === 'USD') return '$' + (val / USD_RATE).toFixed(2);
-    return '₹' + val.toLocaleString('en-IN', { maximumFractionDigits: 2 });
-  }
-
-  function toBnNum(n) {
-    const d = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
-    return String(n).replace(/\d/g, x => d[Number(x)]);
-  }
-
-  function setCurrency(c) {
-    currency = c;
-    document.getElementById('btnINR').classList.toggle('active', c === 'INR');
-    document.getElementById('btnUSD').classList.toggle('active', c === 'USD');
-    renderAll();
-  }
-
-  function changeTaxSlab(val) {
-    goldTaxSlab = Number(val || 0);
-    localStorage.setItem('sy_tax_slab', String(goldTaxSlab));
-    renderAll();
-  }
-
-  function updateAutoLiveUI() {
-    const btn = document.getElementById('autoLiveBtn');
-    const badge = document.getElementById('autoTimerBadge');
-    if (btn) {
-      btn.textContent = autoLiveEnabled ? '⏱️ অটো-লাইভ: ON' : '⏸️ অটো-লাইভ: OFF';
-      btn.classList.toggle('auto-on', autoLiveEnabled);
-      btn.classList.toggle('auto-off', !autoLiveEnabled);
-    }
-    if (badge) {
-      if (!autoLiveEnabled) badge.textContent = '⏸️ অটো-আপডেট বন্ধ';
-      else if (isFetchingRates) badge.textContent = '📡 লাইভ রেট আপডেট হচ্ছে...';
-      else badge.textContent = '⏱️ পরের আপডেট: ' + toBnNum(countdownSec) + ' সে.';
-    }
-  }
-
-  function toggleAutoLive() {
-    autoLiveEnabled = !autoLiveEnabled;
-    localStorage.setItem('sy_auto_live', autoLiveEnabled ? 'on' : 'off');
-    if (autoLiveEnabled) {
-      countdownSec = AUTO_REFRESH_INTERVAL_SEC;
-      fetchLiveRatesOnly(true);
-    }
-    updateAutoLiveUI();
-  }
-
-  function startAutoLiveTimer() {
-    if (timerHandle) clearInterval(timerHandle);
-    updateAutoLiveUI();
-    timerHandle = setInterval(() => {
-      if (!autoLiveEnabled || document.hidden || !authSession || !userProfile) return;
-      const c = getCfg();
-      if (!c.key || isFetchingRates) return;
-      countdownSec--;
-      if (countdownSec <= 0) {
-        countdownSec = AUTO_REFRESH_INTERVAL_SEC;
-        fetchLiveRatesOnly(true);
-      }
-      updateAutoLiveUI();
-    }, 1000);
-  }
-
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && autoLiveEnabled && authSession && userProfile && getCfg().key) {
-      countdownSec = AUTO_REFRESH_INTERVAL_SEC;
-      fetchLiveRatesOnly(true);
-    }
-  });
-
-  function switchTab(id, btn) {
-    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    const target = document.getElementById('tab-' + id);
-    if (target) target.classList.add('active');
-    const navBtn = btn || document.getElementById('nav-' + id);
-    if (navBtn) navBtn.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (id === 'news' && !newsLoadedOnce) fetchLiveNewsOnly();
-    if (id === 'chat') {
-      renderChatMessages();
-      populateReconcileForm();
-    }
-  }
-
-  function openChatTab(scrollToSync = false) {
-    switchTab('chat', document.getElementById('nav-chat'));
-    if (scrollToSync) {
-      setTimeout(() => {
-        const el = document.getElementById('syncPanelTrade');
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 150);
-    }
-  }
-
-  function switchSyncMode(mode) {
-    const isTrade = mode === 'trade';
-    document.getElementById('syncTabTrade').classList.toggle('active', isTrade);
-    document.getElementById('syncTabRecon').classList.toggle('active', !isTrade);
-    document.getElementById('syncPanelTrade').style.display = isTrade ? 'block' : 'none';
-    document.getElementById('syncPanelRecon').style.display = isTrade ? 'none' : 'block';
-    if (!isTrade) populateReconcileForm();
-  }
-
-  function autoMatchBroker() {
-    const asset = document.getElementById('syncAsset').value;
-    const brokerEl = document.getElementById('syncBroker');
-    if (ASSETS[asset] && brokerEl) brokerEl.value = ASSETS[asset].broker;
-  }
-
-  function setNewsFilter(cat, btn) {
-    activeNewsFilter = cat;
-    document.querySelectorAll('.nf-btn').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    renderNewsList();
-  }
-
-  function getAdminPin() { return (localStorage.getItem('sy_pin') || '2026').trim(); }
-
-  function updateLockUI() {
-    const btn = document.getElementById('lockBtn');
-    if (!btn) return;
-    if (isAdminUnlocked) {
-      btn.textContent = '🔓 আনলকড';
-      btn.classList.remove('auto-off');
-      btn.classList.add('auto-on');
-    } else {
-      btn.textContent = '🔒 View-Only';
-      btn.classList.remove('auto-on');
-      btn.classList.add('auto-off');
-    }
-  }
-
-  function toggleAdminLock() {
-    if (isAdminUnlocked) {
-      isAdminUnlocked = false;
-      updateLockUI();
-    } else {
-      requireAdmin(() => {});
-    }
-  }
-
-  function requireAdmin(callback) {
-    if (isAdminUnlocked) { callback(); return; }
-    pendingAdminAction = callback;
-    document.getElementById('pinInput').value = '';
-    document.getElementById('pinErr').textContent = '';
-    document.getElementById('pinModal').classList.add('open');
-    setTimeout(() => document.getElementById('pinInput').focus(), 100);
-  }
-
-  function closePinModal() {
-    document.getElementById('pinModal').classList.remove('open');
-    pendingAdminAction = null;
-  }
-
-  function verifyPin() {
-    const entered = document.getElementById('pinInput').value.trim();
-    if (entered === getAdminPin()) {
-      isAdminUnlocked = true;
-      updateLockUI();
-      document.getElementById('pinModal').classList.remove('open');
-      const act = pendingAdminAction;
-      pendingAdminAction = null;
-      if (typeof act === 'function') act();
-    } else {
-      document.getElementById('pinErr').textContent = '❌ ভুল PIN! আবার চেষ্টা করুন।';
-    }
-  }
-
-  function openSetupPublic() {
-    const c = getCfg();
-    document.getElementById('cfgUrl').value = c.url;
-    document.getElementById('cfgKey').value = c.key;
-    document.getElementById('cfgSync').value = c.syncId;
-    document.getElementById('cfgPin').value = getAdminPin();
-    document.getElementById('setupModal').classList.add('open');
-  }
-
-  function openSetup() {
-    requireAdmin(() => {
-      openSetupPublic();
-    });
-  }
-  function closeSetup() { document.getElementById('setupModal').classList.remove('open'); }
-  function saveSetup() {
-    localStorage.setItem('sy_url', document.getElementById('cfgUrl').value.trim() || DEFAULT_URL);
-    localStorage.setItem('sy_key', document.getElementById('cfgKey').value.trim());
-    localStorage.setItem('sy_sync', document.getElementById('cfgSync').value.trim());
-    const newPin = document.getElementById('cfgPin').value.trim();
-    if (newPin.length >= 4) localStorage.setItem('sy_pin', newPin);
-    closeSetup();
-    updateAuthServerStatus();
-    if (authSession && userProfile) refreshAll(true);
-  }
-
-  async function fetchWithTimeout(url, options, ms = 15000) {
-    const ctrl = new AbortController();
-    const id = setTimeout(() => ctrl.abort(), ms);
-    try {
-      const res = await fetch(url, { ...options, signal: ctrl.signal });
-      clearTimeout(id);
-      return res;
-    } catch (e) {
-      clearTimeout(id);
-      if (e && e.name === 'AbortError') {
-        throw new Error('সার্ভার থেকে উত্তর আসতে নির্ধারিত সময়ের চেয়ে বেশি লেগেছে (Timeout) — আবার চেষ্টা করুন');
-      }
-      throw e;
-    }
-  }
-
-  async function callAutopilotApi(payload, timeoutMs = 45000) {
-    const c = getCfg();
-    if (!c.key) throw new Error('আগে ⚙️ সার্ভার সেটআপে Supabase Key দিন');
-    const jwt = getAuthToken();
-    const headers = { 'Content-Type': 'application/json', 'apikey': c.key };
-    if (jwt) headers['Authorization'] = 'Bearer ' + jwt;
-    else if (c.key.startsWith('eyJ')) headers['Authorization'] = 'Bearer ' + c.key;
-    const bodyObj = { sync_id: c.syncId, ...payload };
-    if (jwt && !bodyObj.user_jwt) bodyObj.user_jwt = jwt;
-    const r = await fetchWithTimeout(c.url + '/functions/v1/ai-autopilot', {
-      method: 'POST', headers, body: JSON.stringify(bodyObj)
-    }, timeoutMs);
-    const rawTxt = await r.text();
-    let data = {};
-    try { data = JSON.parse(rawTxt); } catch (_) {
-      throw new Error('সার্ভার রেসপন্স ত্রুটি (' + r.status + ') — একটু পর আবার চেষ্টা করুন');
-    }
-    if (!r.ok || !data.ok) throw new Error(data.error || 'Server error (' + r.status + ')');
-    return data;
-  }
-
-  async function sbGet(path) {
-    const c = getCfg();
-    if (!c.key) return { ok: false, status: 401, data: [] };
-    const headers = { 'apikey': c.key, 'Content-Type': 'application/json' };
-    if (c.key.startsWith('eyJ')) headers['Authorization'] = 'Bearer ' + c.key;
-    const r = await fetchWithTimeout(c.url + path, { headers }, 8000);
-    if (!r.ok) return { ok: false, status: r.status, data: [] };
-    return { ok: true, status: r.status, data: await r.json() };
-  }
-
-  async function refreshAll(alsoFetchLive = false) {
-    const c = getCfg();
-    if (!authSession || !userProfile) return;
-    document.getElementById('syncBadge').textContent = '☁️ @' + userProfile.username + ' (' + userProfile.sync_id + ')';
-    if (!c.key) {
-      document.getElementById('lastUpdated').textContent = '⚠️ ⚙️ সেটআপে Supabase Key দিন';
-      renderAll();
-      return;
-    }
-    document.getElementById('lastUpdated').textContent = 'ডেটা সিঙ্ক হচ্ছে...';
-    try {
-      const dash = await callAutopilotApi({ mode: 'get_dashboard' }, 18000);
-      if (dash.profile) {
-        userProfile = dash.profile;
-        saveAuthLocal();
-        updateProfileHeaderUI();
-      }
-      const defCap = Number((userProfile && userProfile.initial_capital) || 10000);
-      stateData = dash.state || { cash: defCap, practice_day: 1, holdings: {} };
-      syncAssetsFromState();
-      memoryData = dash.memory || { initial_capital: defCap, win_count: 0, loss_count: 0, total_trades: 0, strategy_weights: { dip_buying: 1, smart_sip: 1, gold_hedge: 1, profit_lock: 1 }, lessons: [] };
-      logsData = Array.isArray(dash.logs) ? dash.logs : [];
-      document.getElementById('lastUpdated').textContent = 'সিঙ্ক: ' + new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      renderAll();
-      if (alsoFetchLive) fetchLiveRatesOnly(true);
-    } catch (e) {
-      document.getElementById('lastUpdated').textContent = '⚠️ ' + (e.message || 'নেটওয়ার্ক ধীর');
-      renderAll();
-    }
-  }
-
-  async function fetchLiveRatesOnly(silent = false) {
-    const c = getCfg();
-    const msg = document.getElementById('runStatus');
-    const liveBtn = document.getElementById('liveRateBtn');
-    if (!c.key) { if (!silent) openSetup(); return; }
-    if (isFetchingRates) return;
-    isFetchingRates = true;
-    updateAutoLiveUI();
-    if (!silent && liveBtn) { liveBtn.disabled = true; liveBtn.textContent = '⏳ আসছে...'; }
-    try {
-      const data = await callAutopilotApi({ mode: 'rates_only' }, 15000);
-      if (!data.market) throw new Error('লাইভ রেট পাওয়া যায়নি');
-      liveMarketOverride = data.market;
-      const t = new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      document.getElementById('lastUpdated').textContent = '📡 লাইভ রেট আপডেট: ' + t;
-      if (!silent && msg) msg.innerHTML = '📡 <b>সর্বশেষ লাইভ মার্কেট রেট আপডেট হয়েছে (' + t + ')</b> — কোনো ট্রেড বা দিন পরিবর্তন হয়নি।';
-      countdownSec = AUTO_REFRESH_INTERVAL_SEC;
-      renderAll();
-    } catch (e) {
-      if (!silent && msg) msg.innerHTML = '<span style="color:#fca5a5;">⚠️ লাইভ রেট এরর: ' + e.message + '</span>';
-    } finally {
-      isFetchingRates = false;
-      if (liveBtn) { liveBtn.disabled = false; liveBtn.textContent = '📡 লাইভ রেট'; }
-      updateAutoLiveUI();
-    }
-  }
-
-  async function fetchLiveNewsOnly() {
-    const c = getCfg();
-    const btn = document.getElementById('refreshNewsBtn');
-    const sub = document.getElementById('newsUpdatedText');
-    if (!c.key) { renderNewsList(); return; }
-    if (btn) { btn.disabled = true; btn.textContent = '⏳ নিউজ আসছে...'; }
-    if (sub) sub.textContent = 'লাইভ ফিন্যান্স ও মার্কেট নিউজ লোড হচ্ছে...';
-    try {
-      const data = await callAutopilotApi({ mode: 'news_only' }, 15000);
-      if (!Array.isArray(data.news)) throw new Error('লাইভ নিউজ পাওয়া যায়নি');
-      liveNewsList = data.news;
-      newsLoadedOnce = true;
-      const t = new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
-      if (sub) sub.textContent = '✅ লাইভ ফিন্যান্স নিউজ আপডেট হয়েছে (' + t + ') — মোট ' + liveNewsList.length + 'টি খবর';
-      renderNewsList();
-    } catch (e) {
-      if (sub) sub.textContent = '⚠️ আগের সেভ করা নিউজ দেখাচ্ছে।';
-      renderNewsList();
-    } finally {
-      if (btn) { btn.disabled = false; btn.textContent = '🔄 লাইভ নিউজ আনো'; }
-    }
-  }
-
-  async function runAutopilot() {
-    if (!isAdminUnlocked) { requireAdmin(() => runAutopilot()); return; }
-    const btn = document.getElementById('runBtn');
-    const msg = document.getElementById('runStatus');
-    const c = getCfg();
-    if (!c.key) {
-      msg.innerHTML = '<span style="color:#fde68a;">⚠️ আগে উপরে <b>⚙️ সেটআপ</b> বাটনে গিয়ে Supabase Key সেভ করুন।</span>';
-      openSetup();
-      return;
-    }
-    btn.disabled = true;
-    btn.textContent = '⏳ লাইভ বাজার, RSI ও কম্পাউন্ডিং বিশ্লেষণ চলছে...';
-    msg.textContent = '';
-    try {
-      const data = await callAutopilotApi({}, 45000);
-      liveMarketOverride = null;
-      const lockNote = data.same_day_locked ? ' (আজকের দিন আগেই সম্পন্ন — তাই দিন বাড়ানো হয়নি)' : '';
-      msg.innerHTML = '✅ <b>দিন ' + data.day_completed + ' সম্পন্ন</b> (' + (data.brain_mode === 'GEMINI_AI' ? 'Gemini AI' : 'Quant AI Engine') + ') — <b>' + data.strategy_used + '</b>' + lockNote;
-      await refreshAll(false);
-    } catch (e) {
-      msg.innerHTML = '<span style="color:#fca5a5;">⚠️ এরর: ' + e.message + '</span>';
-    } finally {
-      btn.disabled = false;
-      btn.textContent = '🚀 এখনই AI রিসার্চ ও ট্রেড চালাও';
-    }
-  }
-
-  // ===== CHATBOX FUNCTIONS =====
-  function saveChatHistory() {
-    try { localStorage.setItem('sy_chat_history', JSON.stringify(chatHistory.slice(-20))); } catch (_) {}
-  }
-
-  function clearChatHistory() {
-    chatHistory = [{
-      role: 'ai',
-      text: 'চ্যাট পরিষ্কার করা হয়েছে। লাইভ মার্কেট রিসার্চ, কিনবেন-বেচবেন পরামর্শ বা রিয়েল পোর্টফোলিও সিঙ্ক নিয়ে যেকোনো প্রশ্ন করুন।',
-      steps: [],
-      suggested_sync: null
-    }];
-    saveChatHistory();
-    renderChatMessages();
-  }
-
-  function renderChatMessages() {
-    const box = document.getElementById('chatMessages');
-    if (!box) return;
-    box.innerHTML = chatHistory.map((m, idx) => {
-      if (m.role === 'user') {
-        return '<div class="chat-msg user">' + escapeHtml(m.text) + '</div>';
-      }
-      const stepsHtml = (Array.isArray(m.steps) && m.steps.length)
-        ? '<ol class="chat-steps">' + m.steps.map(s => '<li>' + escapeHtml(s) + '</li>').join('') + '</ol>'
-        : '';
-      let syncHtml = '';
-      if (m.suggested_sync && m.suggested_sync.asset_id && m.suggested_sync.amount_inr > 0) {
-        const s = m.suggested_sync;
-        const aName = (ASSETS[s.asset_id] && ASSETS[s.asset_id].name) || s.asset_id;
-        const actBn = s.action === 'SELL' ? 'বিক্রি (SELL)' : 'কেনা (BUY)';
-        if (m.synced_done) {
-          syncHtml = '<div class="chat-sync-card">✅ <b>SafeYield পোর্টফোলিওতে সফলভাবে সিঙ্ক হয়েছে!</b> (' + escapeHtml(s.broker || 'Broker') + ' • ' + actBn + ' • ' + escapeHtml(aName) + ' • ' + fmt(s.amount_inr) + ')</div>';
-        } else {
-          syncHtml = '<div class="chat-sync-card">' +
-            '<div><b>🔄 রিয়েল ট্রেড শনাক্ত হয়েছে:</b> ' + escapeHtml(s.broker || 'Groww/Binance') + ' — <b>' + actBn + ' ' + escapeHtml(aName) + '</b> (' + fmt(s.amount_inr) + ')</div>' +
-            '<button type="button" class="chat-sync-btn" onclick="confirmChatSync(' + idx + ')">✅ SafeYield পোর্টফোলিওতে সিঙ্ক করুন (PIN)</button>' +
-          '</div>';
-        }
-      }
-      const modeTag = m.brain_mode ? '<div style="font-size:10.5px;color:var(--muted);margin-bottom:3px;">🤖 ' + (m.brain_mode === 'GEMINI_AI' ? 'Gemini AI Advisor' : 'Quant AI Advisor') + '</div>' : '';
-      return '<div class="chat-msg ai">' + modeTag + '<div>' + escapeHtml(m.text).replace(/\n/g, '<br>') + '</div>' + stepsHtml + syncHtml + '</div>';
-    }).join('');
-    box.scrollTop = box.scrollHeight;
-  }
-
-  function sendQuickChat(text) {
-    document.getElementById('chatInput').value = text;
-    sendChatMessage();
-  }
-
-  async function sendChatMessage() {
-    if (isChatSending) return;
-    const input = document.getElementById('chatInput');
-    const btn = document.getElementById('chatSendBtn');
-    const msgText = (input.value || '').trim();
-    if (!msgText) return;
-
-    const c = getCfg();
-    if (!c.key) {
-      openSetup();
-      return;
-    }
-
-    const compactHistory = chatHistory.filter(x => !x.loading).slice(-6).map(x => ({ role: x.role, text: x.text }));
-    const latestSnap = liveMarketOverride || ((logsData[0] && logsData[0].market_snapshot) ? logsData[0].market_snapshot : null);
-    const cachedMarket = (latestSnap && Object.keys(ASSETS).every(k => latestSnap[k] && latestSnap[k].price)) ? latestSnap : undefined;
-    let cachedNews = undefined;
-    if (liveNewsList.length) {
-      cachedNews = liveNewsList.slice(0, 8).map(n => n.title).filter(Boolean);
-    } else if (logsData[0] && Array.isArray(logsData[0].news_headlines) && logsData[0].news_headlines.length) {
-      cachedNews = logsData[0].news_headlines.slice(0, 8);
-    }
-
-    input.value = '';
-    chatHistory.push({ role: 'user', text: msgText });
-    chatHistory.push({ role: 'ai', text: '⏳ লাইভ রেট ও আপনার পোর্টফোলিও বিশ্লেষণ করছি...', steps: [], suggested_sync: null, loading: true });
-    renderChatMessages();
-
-    isChatSending = true;
-    btn.disabled = true;
-    try {
-      const data = await callAutopilotApi({
-        mode: 'chat_advisor',
-        message: msgText,
-        history: compactHistory,
-        cached_market: cachedMarket,
-        cached_news: cachedNews
-      }, 60000);
-
-      chatHistory = chatHistory.filter(x => !x.loading);
-      chatHistory.push({
-        role: 'ai',
-        brain_mode: data.brain_mode || 'QUANT_ENGINE',
-        text: data.reply_bn || 'বিশ্লেষণ সম্পন্ন হয়েছে।',
-        steps: Array.isArray(data.steps) ? data.steps : [],
-        suggested_sync: data.suggested_sync || null,
-        synced_done: false
-      });
-      if (data.market) liveMarketOverride = data.market;
-      saveChatHistory();
-      renderChatMessages();
-      renderAll();
-    } catch (e) {
-      chatHistory = chatHistory.filter(x => !x.loading);
-      chatHistory.push({
-        role: 'ai',
-        text: '⚠️ চ্যাট রিস্পন্স আনতে সমস্যা হয়েছে: ' + e.message,
-        steps: [],
-        suggested_sync: null
-      });
-      saveChatHistory();
-      renderChatMessages();
-    } finally {
-      isChatSending = false;
-      btn.disabled = false;
-    }
-  }
-
-  function confirmChatSync(chatIdx) {
-    const item = chatHistory[chatIdx];
-    if (!item || !item.suggested_sync) return;
-    requireAdmin(async () => {
-      const s = item.suggested_sync;
-      try {
-        await callAutopilotApi({
-          mode: 'manual_sync',
-          broker: s.broker || (ASSETS[s.asset_id]?.broker || 'Groww'),
-          action: s.action || 'BUY',
-          asset_id: s.asset_id,
-          amount_inr: Number(s.amount_inr || 0),
-          actual_price: Number(s.price || 0) || undefined,
-          note: s.note || 'চ্যাটবক্স থেকে রিয়েল ট্রেড সিঙ্ক'
-        }, 20000);
-        chatHistory[chatIdx].synced_done = true;
-        saveChatHistory();
-        renderChatMessages();
-        await refreshAll(true);
-      } catch (e) {
-        alert('সিঙ্ক এরর: ' + e.message);
-      }
-    });
-  }
-
-  // ===== REAL PORTFOLIO SYNC FUNCTIONS =====
-  function submitManualTradeSync() {
-    const broker = document.getElementById('syncBroker').value;
-    const action = document.getElementById('syncAction').value;
-    const asset_id = document.getElementById('syncAsset').value;
-    const amount_inr = Number(document.getElementById('syncAmount').value || 0);
-    const actual_price = Number(document.getElementById('syncPrice').value || 0);
-    const actual_qty = Number(document.getElementById('syncQty').value || 0);
-    const note = (document.getElementById('syncNote').value || '').trim();
-    const msgEl = document.getElementById('syncTradeMsg');
-
-    if (amount_inr <= 0) {
-      msgEl.style.color = '#dc2626';
-      msgEl.textContent = '⚠️ সঠিক টাকার পরিমাণ (₹) দিন।';
-      return;
-    }
-
-    requireAdmin(async () => {
-      const btn = document.getElementById('syncTradeBtn');
-      btn.disabled = true;
-      btn.textContent = '⏳ পোর্টফোলিও সিঙ্ক হচ্ছে...';
-      msgEl.style.color = '#0f766e';
-      msgEl.textContent = 'Supabase-এ আপডেট হচ্ছে...';
-      try {
-        const data = await callAutopilotApi({
-          mode: 'manual_sync',
-          broker, action, asset_id, amount_inr,
-          actual_price: actual_price > 0 ? actual_price : undefined,
-          actual_qty: actual_qty > 0 ? actual_qty : undefined,
-          note: note || (broker + ' রিয়েল ট্রেড সিঙ্ক')
-        }, 20000);
-        msgEl.style.color = '#15803d';
-        msgEl.textContent = '✅ সফলভাবে সিঙ্ক হয়েছে! নতুন ক্যাশ: ' + fmt(data.cash) + ' • মোট পোর্টফোলিও: ' + fmt(data.portfolio_value);
-        document.getElementById('syncAmount').value = '';
-        document.getElementById('syncPrice').value = '';
-        document.getElementById('syncQty').value = '';
-        document.getElementById('syncNote').value = '';
-        await refreshAll(true);
-      } catch (e) {
-        msgEl.style.color = '#dc2626';
-        msgEl.textContent = '⚠️ এরর: ' + e.message;
-      } finally {
-        btn.disabled = false;
-        btn.textContent = '✅ রিয়েল ট্রেড SafeYield-এ সিঙ্ক করুন (PIN)';
-      }
-    });
-  }
-
-  function populateReconcileForm() {
-    const cashInput = document.getElementById('reconCash');
-    const container = document.getElementById('reconAssetRows');
-    if (!cashInput || !container) return;
-    cashInput.value = Number(stateData.cash ?? 10000).toFixed(2);
-    const hold = stateData.holdings || {};
-    container.innerHTML = Object.entries(ASSETS).map(([id, info]) => {
-      const h = hold[id] || { investedINR: 0, qty: 0 };
-      return '<div class="recon-row">' +
-        '<div><b>' + info.name + '</b><br><small style="color:var(--muted);">' + info.broker + '</small></div>' +
-        '<input id="recon_inv_' + id + '" type="number" step="0.01" value="' + Number(h.investedINR || 0).toFixed(2) + '" />' +
-        '<input id="recon_qty_' + id + '" type="number" step="0.000001" value="' + (h.qty ? Number(h.qty).toFixed(6) : '') + '" placeholder="অটো" />' +
-      '</div>';
-    }).join('');
-  }
-
-  function submitReconcilePortfolio() {
-    const cash = Number(document.getElementById('reconCash').value || 0);
-    const msgEl = document.getElementById('reconMsg');
-    if (cash < 0) {
-      msgEl.style.color = '#dc2626';
-      msgEl.textContent = '⚠️ ক্যাশ ০-এর কম হতে পারবে না।';
-      return;
-    }
-    const holdingsPayload = {};
-    for (const id of Object.keys(ASSETS)) {
-      const inv = Number(document.getElementById('recon_inv_' + id)?.value || 0);
-      const qtyRaw = document.getElementById('recon_qty_' + id)?.value;
-      const qty = qtyRaw ? Number(qtyRaw) : 0;
-      if (inv > 0 || qty > 0) {
-        holdingsPayload[id] = { investedINR: inv, qty };
-      }
-    }
-
-    requireAdmin(async () => {
-      const btn = document.getElementById('reconSaveBtn');
-      btn.disabled = true;
-      btn.textContent = '⏳ পোর্টফোলিও মিলানো হচ্ছে...';
-      msgEl.style.color = '#0f766e';
-      msgEl.textContent = 'ডেটা সেভ হচ্ছে...';
-      try {
-        const data = await callAutopilotApi({
-          mode: 'reconcile_portfolio',
-          cash,
-          holdings: holdingsPayload
-        }, 20000);
-        msgEl.style.color = '#15803d';
-        msgEl.textContent = '✅ এন্ড-অফ-ডে রিকনসাইল সম্পন্ন! SafeYield এখন আপনার Groww ও Binance-এর সাথে মিলে গেছে। মোট মূল্য: ' + fmt(data.portfolio_value);
-        await refreshAll(true);
-      } catch (e) {
-        msgEl.style.color = '#dc2626';
-        msgEl.textContent = '⚠️ এরর: ' + e.message;
-      } finally {
-        btn.disabled = false;
-        btn.textContent = '⚖️ এন্ড-অফ-ডে পোর্টফোলিও মিলিয়ে সেভ করুন (PIN)';
-      }
-    });
-  }
-
-  // ===== PORTFOLIO & TAX ENGINE =====
-  function computePortfolioStats() {
-    const latest = logsData[0] || null;
-    const snap = liveMarketOverride || ((latest && latest.market_snapshot) ? latest.market_snapshot : {});
-    if (snap.btc && snap.btc.usdInr > 50) USD_RATE = Number(snap.btc.usdInr);
-    const cash = Number(stateData.cash ?? 10000);
-    const hold = stateData.holdings || {};
-    let invVal = 0, invCost = 0;
-
-    let equityNetPnl = 0;
-    let goldNetPnl = 0;
-    let cryptoTaxableGain = 0;
-    let cryptoSellTurnover = 0;
-    let stockTurnover = 0;
-    let cryptoTurnover = 0;
-    let realizedPnl = 0;
-
-    for (const l of logsData) {
-      for (const a of (l.actions_taken || [])) {
-        const id = String(a.asset_id || '').toLowerCase();
-        const info = ASSETS[id];
-        if (!info) continue;
-        const amt = Number(a.amount_inr || 0);
-        if (a.action === 'BUY' || a.action === 'SELL') {
-          if (info.isCrypto) cryptoTurnover += amt;
-          else stockTurnover += amt;
-        }
-        if (a.action === 'SELL') {
-          const pnl = Number(a.pnl_inr || 0);
-          realizedPnl += pnl;
-          if (info.taxCat === 'EQUITY') equityNetPnl += pnl;
-          else if (info.taxCat === 'GOLD') goldNetPnl += pnl;
-          else if (info.taxCat === 'CRYPTO') {
-            cryptoSellTurnover += amt;
-            if (pnl > 0) cryptoTaxableGain += pnl;
-          }
-        }
-      }
-    }
-
-    for (const [id, h] of Object.entries(hold)) {
-      if (!h || !h.qty) continue;
-      const info = ASSETS[id] || { taxCat: 'EQUITY', isCrypto: false };
-      const p = snap[id] && snap[id].price;
-      const cost = Number(h.investedINR || 0);
-      const val = p ? h.qty * p : cost;
-      const pnl = val - cost;
-      invCost += cost;
-      invVal += val;
-
-      if (info.isCrypto) {
-        cryptoTurnover += val;
-        cryptoSellTurnover += val;
-        if (pnl > 0) cryptoTaxableGain += pnl;
-      } else {
-        stockTurnover += val;
-        if (info.taxCat === 'EQUITY') equityNetPnl += pnl;
-        else if (info.taxCat === 'GOLD') goldNetPnl += pnl;
-      }
-    }
-
-    const total = cash + invVal;
-    const initCap = Number(memoryData.initial_capital || (userProfile && userProfile.initial_capital) || 10000);
-    const diff = total - initCap;
-    const diffPct = (diff / initCap) * 100;
-    const unrealizedPnl = invVal - invCost;
-
-    const equityTax = equityNetPnl > 0 ? equityNetPnl * 0.20 : 0;
-    const goldTax = goldNetPnl > 0 ? goldNetPnl * (goldTaxSlab / 100) : 0;
-    const cryptoTax = cryptoTaxableGain * 0.30;
-    const baseTax = equityTax + goldTax + cryptoTax;
-    const cess = baseTax * 0.04;
-    const cryptoTds = cryptoSellTurnover * 0.01;
-    const brokerageStt = (stockTurnover * 0.0015) + (cryptoTurnover * 0.002);
-
-    const totalTaxAndCharges = baseTax + cess + cryptoTds + brokerageStt;
-    const netTotalAfterTax = total - totalTaxAndCharges;
-    const netProfitAfterTax = netTotalAfterTax - initCap;
-    const netProfitPct = (netProfitAfterTax / initCap) * 100;
-
-    const stockCap = Math.max(500, Math.round(total * 0.25));
-    const cryptoCap = Math.max(200, Math.round(total * 0.08));
-    const cashBuffer = Math.max(250, Math.min(2000, Math.round(total * 0.05)));
-
-    return {
-      latest, snap, cash, hold, invVal, invCost, total, initCap, diff, diffPct,
-      unrealizedPnl, realizedPnl, stockCap, cryptoCap, cashBuffer,
-      tax: {
-        equityNetPnl, equityTax, goldNetPnl, goldTax,
-        cryptoTaxableGain, cryptoTax, cryptoTds, cess, brokerageStt,
-        totalTaxAndCharges, netTotalAfterTax, netProfitAfterTax, netProfitPct
-      }
-    };
-  }
-
-  function renderAll() {
-    const st = computePortfolioStats();
-    const day = Number(stateData.practice_day || 1);
-    const slabEl = document.getElementById('taxSlabSelect');
-    if (slabEl) slabEl.value = String(goldTaxSlab);
-
-    document.getElementById('heroTotal').textContent = fmt(st.total);
-    const pnlEl = document.getElementById('heroPnl');
-    pnlEl.textContent = (st.diff >= 0 ? '+' : '') + fmt(st.diff) + ' (' + (st.diffPct >= 0 ? '+' : '') + st.diffPct.toFixed(2) + '%)';
-    pnlEl.classList.toggle('neg', st.diff < 0);
-
-    document.getElementById('dayLabel').textContent = 'দিন ' + day + ' / ৩০';
-    const pct = Math.min(100, Math.round((day / 30) * 100));
-    document.getElementById('pctLabel').textContent = pct + '% সম্পন্ন';
-    document.getElementById('progFill').style.width = pct + '%';
-
-    document.getElementById('heroInvested').textContent = fmt(st.invVal);
-    document.getElementById('heroCash').textContent = fmt(st.cash);
-    document.getElementById('heroTrades').textContent = (memoryData.total_trades || 0) + ' (' + (memoryData.win_count || 0) + '/' + (memoryData.loss_count || 0) + ')';
-    const bMode = st.latest && st.latest.brain_mode;
-    document.getElementById('brainBadge').textContent = bMode === 'GEMINI_AI' ? '🧠 Gemini AI সক্রিয়' : (bMode === 'REAL_SYNC' ? '🔄 রিয়েল সিঙ্ক সক্রিয়' : '⚙️ Quant AI Engine সক্রিয়');
-
-    renderLatestDecision(st.latest);
-    renderBrainTab(st.snap);
-    renderNewsAndPredictions(st.latest, st.snap);
-    renderMonthlyReport(st, day);
-    renderWallet(st);
-    renderChart();
-  }
-
-  function renderMonthlyReport(st, day) {
-    const hero = document.getElementById('reportHeroCard');
-    hero.classList.toggle('loss', st.tax.netProfitAfterTax < 0);
-    const isDone = day >= 30;
-    document.getElementById('reportStatusPill').textContent = isDone
-      ? '🎉 ৩০-দিনের মিশন সম্পন্ন • চূড়ান্ত মাসিক রিপোর্ট'
-      : '📊 লাইভ মাসিক রিপোর্ট • দিন ' + day + ' / ৩০ চলছে';
-
-    const dirText = st.tax.netProfitAfterTax >= 0 ? 'নেট লাভ' : 'নেট লোকসান';
-    document.getElementById('reportVerdictTitle').textContent =
-      'ট্যাক্স বাদে হাতে: ' + fmt(st.tax.netTotalAfterTax) + ' (' + dirText + ')';
-    document.getElementById('reportVerdictSub').textContent =
-      'গ্রস লাভ/লস: ' + (st.diff >= 0 ? '+' : '') + fmt(st.diff) + ' • ট্যাক্স ও চার্জ বাদে: ' + (st.tax.netProfitAfterTax >= 0 ? '+' : '') + fmt(st.tax.netProfitAfterTax) + ' (' + (st.tax.netProfitPct >= 0 ? '+' : '') + st.tax.netProfitPct.toFixed(2) + '%)';
-
-    document.getElementById('repInitCap').textContent = fmt(st.initCap);
-    document.getElementById('repCurrVal').textContent = fmt(st.total);
-    document.getElementById('repTotalTax').textContent = '-' + fmt(st.tax.totalTaxAndCharges);
-    document.getElementById('repNetVal').textContent = fmt(st.tax.netTotalAfterTax);
-
-    document.getElementById('taxSummaryBox').innerHTML =
-      '<div style="display:flex;justify-content:space-between;font-size:13.5px;"><span>গ্রস লাভ/লোকসান (Before Tax):</span><b>' + (st.diff >= 0 ? '+' : '') + fmt(st.diff) + '</b></div>' +
-      '<div style="display:flex;justify-content:space-between;font-size:13.5px;margin-top:4px;color:#b45309;"><span>মোট আনুমানিক ট্যাক্স, TDS ও ব্রোকারেজ:</span><b>-' + fmt(st.tax.totalTaxAndCharges) + '</b></div>' +
-      '<div class="tax-net-row">' +
-        '<span style="font-weight:700;font-size:14.5px;color:#0f172a;">✅ আসল নেট লাভ (ট্যাক্স বাদে):</span>' +
-        '<strong style="font-size:17px;color:' + (st.tax.netProfitAfterTax >= 0 ? '#15803d' : '#b91c1c') + ';">' + (st.tax.netProfitAfterTax >= 0 ? '+' : '') + fmt(st.tax.netProfitAfterTax) + ' (' + (st.tax.netProfitPct >= 0 ? '+' : '') + st.tax.netProfitPct.toFixed(2) + '%)</strong>' +
-      '</div>';
-
-    document.getElementById('taxBreakdownBody').innerHTML =
-      '<tr><td><b>Equity STCG Tax</b><br><small style="color:var(--muted);">ইক্যুইটি ও স্টক লাভ: ' + fmt(st.tax.equityNetPnl) + '</small></td><td>২০% (Sec 111A)</td><td>' + fmt(st.tax.equityTax) + '</td></tr>' +
-      '<tr><td><b>Gold / Silver ETF Tax</b><br><small style="color:var(--muted);">Gold / Silver ETF লাভ: ' + fmt(st.tax.goldNetPnl) + '</small></td><td>স্ল্যাব ' + goldTaxSlab + '%</td><td>' + fmt(st.tax.goldTax) + '</td></tr>' +
-      '<tr><td><b>Crypto VDA Tax</b><br><small style="color:var(--muted);">করযোগ্য লাভ: ' + fmt(st.tax.cryptoTaxableGain) + '</small></td><td>ফ্ল্যাট ৩০% (No Set-Off)</td><td>' + fmt(st.tax.cryptoTax) + '</td></tr>' +
-      '<tr><td><b>Crypto 1% TDS</b></td><td>বিক্রির ওপর ১%</td><td>' + fmt(st.tax.cryptoTds) + '</td></tr>' +
-      '<tr><td><b>Health &amp; Edu Cess</b></td><td>ট্যাক্সের ওপর ৪%</td><td>' + fmt(st.tax.cess) + '</td></tr>' +
-      '<tr><td><b>STT ও ব্রোকারেজ চার্জ</b></td><td>~০.১৫% স্টক / ০.২% ক্রিপ্টো</td><td>' + fmt(st.tax.brokerageStt) + '</td></tr>' +
-      '<tr style="background:#fef3c7;"><td><b>মোট আনুমানিক কাটা যাবে</b></td><td>—</td><td><b>' + fmt(st.tax.totalTaxAndCharges) + '</b></td></tr>';
-
-    const reinvestedPower = Math.max(0, st.total - st.initCap);
-    document.getElementById('compoundingSummaryGrid').innerHTML =
-      '<div class="weight-item">' +
-        '<strong>💰 লাভ পুনঃবিনিয়োগ (Compounding)</strong>' +
-        '<p style="font-size:12.5px;color:var(--muted);margin-top:4px;">মূলধন <b>' + fmt(st.initCap) + '</b> থেকে বেড়ে <b>' + fmt(st.total) + '</b> হয়েছে। বাড়তি <b>' + fmt(reinvestedPower) + '</b> এখন নিজের মূলধন হিসেবেই পরবর্তী ট্রেডে যুক্ত হচ্ছে।</p>' +
-      '</div>' +
-      '<div class="weight-item">' +
-        '<strong>📈 অটো-লিমিট বৃদ্ধি (Dynamic Cap)</strong>' +
-        '<p style="font-size:12.5px;color:var(--muted);margin-top:4px;">বর্তমান পোর্টফোলিও অনুযায়ী প্রতি স্টক/ETF-এর সীমা <b>' + fmt(st.stockCap) + '</b> (২৫%) এবং প্রতি ক্রিপ্টো সীমা <b>' + fmt(st.cryptoCap) + '</b> (৮%)।</p>' +
-      '</div>';
-
-    const tbody = document.getElementById('reportAssetBody');
-    const rows = [];
-    for (const [id, info] of Object.entries(ASSETS)) {
-      const h = st.hold[id];
-      if (!h || !h.qty) continue;
-      const p = st.snap[id] && st.snap[id].price;
-      const curVal = p ? h.qty * p : h.investedINR;
-      const pnl = curVal - h.investedINR;
-      const pnlPct = h.investedINR ? (pnl / h.investedINR) * 100 : 0;
-      rows.push('<tr>' +
-        '<td><b>' + info.name + '</b></td>' +
-        '<td>' + fmt(h.investedINR) + '</td>' +
-        '<td><b>' + fmt(curVal) + '</b></td>' +
-        '<td style="color:' + (pnl >= 0 ? '#15803d' : '#b91c1c') + ';font-weight:700;">' + (pnl >= 0 ? '+' : '') + fmt(pnl) + ' (' + (pnlPct >= 0 ? '+' : '') + pnlPct.toFixed(1) + '%)</td>' +
-      '</tr>');
-    }
-    rows.push('<tr style="background:#ecfdf5;"><td><b>💵 হাতে নগদ (Cash)</b></td><td>—</td><td><b>' + fmt(st.cash) + '</b></td><td>সুরক্ষিত</td></tr>');
-    tbody.innerHTML = rows.join('');
-
-    const counts = { 'Buy on Dip': 0, 'Smart SIP': 0, 'Gold Hedge': 0, 'Profit Lock': 0, 'Real Sync': 0 };
-    for (const l of logsData) {
-      const s = String(l.strategy_used || '');
-      for (const k of Object.keys(counts)) {
-        if (s.includes(k)) counts[k]++;
-      }
-    }
-    const stratHtml = Object.entries(counts).map(([k, v]) =>
-      '<div class="weight-item" style="display:flex;justify-content:space-between;align-items:center;"><span><b>' + k + '</b></span><span class="tag tag-neut">' + v + ' বার</span></div>'
-    ).join('');
-    document.getElementById('reportStrategyBox').innerHTML = '<div class="grid-2">' + stratHtml + '</div>';
-  }
-
-  function copyMonthlyReport() {
-    const st = computePortfolioStats();
-    const day = Number(stateData.practice_day || 1);
-    const text = `SafeYield AI মাসিক রিপোর্ট (দিন ${day}/30)
-শুরুর মূলধন: ₹${st.initCap}
-মোট গ্রস মূল্য: ₹${st.total.toFixed(2)} (${st.diff >= 0 ? '+' : ''}₹${st.diff.toFixed(2)})
-আনুমানিক সরকারি ট্যাক্স ও চার্জ: -₹${st.tax.totalTaxAndCharges.toFixed(2)}
-ট্যাক্স বাদে আসল নেট মূল্য: ₹${st.tax.netTotalAfterTax.toFixed(2)}
-আসল নেট লাভ/লস: ${st.tax.netProfitAfterTax >= 0 ? '+' : ''}₹${st.tax.netProfitAfterTax.toFixed(2)} (${st.tax.netProfitPct >= 0 ? '+' : ''}${st.tax.netProfitPct.toFixed(2)}%)
-মোট ট্রেড: ${memoryData.total_trades || 0} (লাভ: ${memoryData.win_count || 0}, লস: ${memoryData.loss_count || 0})`;
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(text).then(() => alert('ট্যাক্সসহ মাসিক রিপোর্ট কপি হয়ে গেছে!'));
-    } else {
-      alert(text);
-    }
-  }
-
-  function renderLatestDecision(latest) {
-    const box = document.getElementById('latestDecisionBox');
-    if (!latest) {
-      box.innerHTML = '<p style="color:var(--muted);font-size:13px;">এখনও কোনো ট্রেড ডেটা লোড হয়নি। উপরে <b>⚙️ সেটআপ</b>-এ Supabase Key দিয়ে <b>আপডেট</b> চাপুন।</p>';
-      return;
-    }
-    const actionsHtml = (latest.actions_taken || []).map(a => {
-      const cls = a.action === 'BUY' ? 'tag-buy' : (a.action === 'SELL' ? 'tag-sell' : 'tag-hold');
-      return '<div class="action-row">' +
-        '<div style="display:flex;justify-content:space-between;align-items:center;">' +
-          '<span><span class="tag ' + cls + '">' + escapeHtml(a.action) + '</span> <b>' + escapeHtml(a.asset_name || a.asset_id) + '</b></span>' +
-          '<b>' + (a.amount_inr ? fmt(a.amount_inr) : 'হোল্ড/সিঙ্ক') + '</b>' +
-        '</div>' +
-        '<div style="color:var(--muted);font-size:12.5px;margin-top:4px;">📌 <b>কারণ:</b> ' + escapeHtml(a.reason_bn || '') + '</div>' +
-      '</div>';
-    }).join('');
-
-    box.innerHTML = '<div class="log-box" style="margin-bottom:0;">' +
-      '<div class="log-head">' +
-        '<b>দিন ' + latest.day_number + ' • স্ট্র্যাটেজি: <span style="color:var(--primary);">' + escapeHtml(latest.strategy_used || 'Multi-Strategy') + '</span></b>' +
-        '<span style="font-size:12px;color:var(--muted);">' + new Date(latest.created_at).toLocaleString('bn-BD') + '</span>' +
-      '</div>' +
-      '<p style="font-size:13.5px;margin-bottom:6px;">' + escapeHtml(latest.summary_bn || '') + '</p>' +
-      actionsHtml +
-      (latest.lesson_bn ? '<div class="lesson-box">💡 <b>AI-এর শিক্ষা:</b> ' + escapeHtml(latest.lesson_bn) + '</div>' : '') +
-    '</div>';
-  }
-
-  function renderBrainTab(snap) {
-    const w = memoryData.strategy_weights || { dip_buying: 1, smart_sip: 1, gold_hedge: 1, profit_lock: 1 };
-    const wMap = [
-      { k: 'dip_buying', label: '📉 Buy on Dip (ডিসকাউন্টে কেনা)' },
-      { k: 'smart_sip', label: '📅 Smart SIP (ধাপে ধাপে বিনিয়োগ)' },
-      { k: 'gold_hedge', label: '🥇 Gold Hedge (সুরক্ষা ব্যালেন্স)' },
-      { k: 'profit_lock', label: '🔒 Profit Lock (মুনাফা সুরক্ষা)' }
-    ];
-    document.getElementById('weightsGrid').innerHTML = wMap.map(item => {
-      const val = Number(w[item.k] || 1);
-      const pct = Math.min(100, Math.round((val / 1.8) * 100));
-      return '<div class="weight-item">' +
-        '<div class="weight-top"><span>' + item.label + '</span><span>' + val.toFixed(2) + 'x গুরুত্ব</span></div>' +
-        '<div class="w-bar"><div class="w-fill" style="width:' + pct + '%"></div></div>' +
-      '</div>';
-    }).join('');
-
-    const tbody = document.getElementById('indicatorBody');
-    const keys = Object.keys(ASSETS);
-    if (!Object.keys(snap).length) {
-      tbody.innerHTML = '<tr><td colspan="6" style="color:var(--muted);">ডেটা সিঙ্ক হলে লাইভ RSI ও ট্রেন্ড দেখা যাবে।</td></tr>';
-    } else {
-      tbody.innerHTML = keys.map(id => {
-        const m = snap[id] || {};
-        const rsi = Number(m.rsi14 || 50);
-        const dip = Number(m.dipFromHighPct || 0);
-        let sig = '<span class="tag tag-neut">নিরপেক্ষ (Hold)</span>';
-        if (dip >= 2.5 || rsi < 48) sig = '<span class="tag tag-buy">কেনার সুযোগ (Buy)</span>';
-        else if (rsi > 68) sig = '<span class="tag tag-sell">অতিরিক্ত দাম (Profit Lock)</span>';
-        const chg = Number(m.changePct || 0);
-        const customCtrl = ASSETS[id].isCustom
-          ? '<span class="tag tag-custom">কাস্টম</span><button type="button" class="asset-del-btn" title="মুছে ফেলুন" onclick="handleRemoveCustomAsset(\'' + escapeHtml(id) + '\')">✕</button>'
-          : '';
-        return '<tr>' +
-          '<td><b>' + escapeHtml(ASSETS[id].name) + '</b>' + customCtrl + '<br><small style="color:var(--muted);">' + escapeHtml(ASSETS[id].type) + (m.source ? ' • ' + escapeHtml(m.source) : '') + '</small></td>' +
-          '<td>' + (m.price ? fmt(m.price) : '—') + (m.usdtPrice ? '<br><small style="color:var(--muted);">$' + Number(m.usdtPrice).toLocaleString('en-US', {maximumFractionDigits: 2}) + ' USDT</small>' : '') + '</td>' +
-          '<td style="color:' + (chg >= 0 ? '#15803d' : '#b91c1c') + ';font-weight:600;">' + (chg >= 0 ? '+' : '') + chg + '%</td>' +
-          '<td><b>' + rsi + '</b></td>' +
-          '<td>' + dip + '% নিচে</td>' +
-          '<td>' + sig + '</td>' +
-        '</tr>';
-      }).join('');
-    }
-
-    const allBox = document.getElementById('allLogsBox');
-    if (!logsData.length) {
-      allBox.innerHTML = '<p style="color:var(--muted);font-size:13px;">এখনও কোনো লগ লোড হয়নি।</p>';
-    } else {
-      allBox.innerHTML = logsData.slice(0, 15).map(l => {
-        const dtStr = l.created_at ? new Date(l.created_at).toLocaleString('bn-BD', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
-        const acts = (l.actions_taken || []).map(a => {
-          const amtTxt = a.amount_inr ? ' (' + fmt(a.amount_inr) + (a.price ? ' @ ' + fmt(a.price) : '') + ')' : '';
-          const pnlTxt = (a.action === 'SELL' && typeof a.pnl_inr === 'number') ? ' • লাভ/লস: ' + (a.pnl_inr >= 0 ? '+' : '') + fmt(a.pnl_inr) : '';
-          return '<div style="font-size:12.5px;margin-top:4px;">• <b>' + escapeHtml(a.action) + ' ' + escapeHtml(a.asset_name || a.asset_id) + amtTxt + pnlTxt + ':</b> ' + escapeHtml(a.reason_bn || '') + '</div>';
-        }).join('');
-        return '<div class="log-box">' +
-          '<div class="log-head"><span><b>দিন ' + l.day_number + ' — ' + escapeHtml(l.strategy_used || '') + '</b> <small style="color:var(--muted);">(' + dtStr + ')</small></span><span class="tag tag-neut">মোট মূল্য: ' + fmt(l.portfolio_value) + '</span></div>' +
-          '<p style="font-size:13px;">' + escapeHtml(l.summary_bn || '') + '</p>' + acts +
-        '</div>';
-      }).join('');
-    }
-  }
-
-  function renderNewsAndPredictions(latest, snap) {
-    const niftyChg = Number((snap.nifty && snap.nifty.changePct) || 0);
-    const niftyRsi = Number((snap.nifty && snap.nifty.rsi14) || 50);
-    const goldChg = Number((snap.gold && snap.gold.changePct) || 0);
-    const btcChg = Number((snap.btc && snap.btc.changePct) || 0);
-
-    const sTag = document.getElementById('sentimentTag');
-    if (niftyChg > 0.4 && niftyRsi < 65) {
-      sTag.className = 'tag tag-bull'; sTag.textContent = 'Bullish (ইতিবাচক বাজার)';
-    } else if (niftyChg < -0.5) {
-      sTag.className = 'tag tag-bear'; sTag.textContent = 'Cautious / Bearish (সতর্ক অবস্থান)';
-    } else {
-      sTag.className = 'tag tag-neut'; sTag.textContent = 'Consolidation (স্থিতিশীল)';
-    }
-
-    document.getElementById('predictionContainer').innerHTML =
-      '<div class="pred-box">' +
-        '<div style="font-weight:700;font-size:14.5px;margin-bottom:6px;">🎯 AI স্বল্পমেয়াদী পূর্বাভাস ও কৌশলগত দিকনির্দেশনা</div>' +
-        '<ul style="padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:6px;">' +
-          '<li><b>ভারতীয় ইক্যুইটি (Nifty 50):</b> বর্তমান RSI <b>' + niftyRsi + '</b>। বড় পতনে <b>Buy on Dip</b> কার্যকর থাকবে।</li>' +
-          '<li><b>সোনা (Gold ETF):</b> অস্থির বাজারে সেরা সুরক্ষা কবচ (পরিবর্তন: ' + (goldChg >= 0 ? '+' : '') + goldChg + '%)।</li>' +
-          '<li><b>ক্রিপ্টো মার্কেট (BTC &amp; ETH):</b> উচ্চ অস্থিরতা (BTC: ' + (btcChg >= 0 ? '+' : '') + btcChg + '%)—মোট মূলধনের ৮% সীমা ও <b>-৭% Stop-Loss</b> চালু।</li>' +
-        '</ul>' +
-      '</div>';
-
-    renderNewsList();
-  }
-
-  function classifyFallbackTitle(title) {
-    const low = String(title).toLowerCase();
-    let cat = 'MARKET';
-    if (low.includes('rbi') || low.includes('inflation') || low.includes('gdp') || low.includes('rupee') || low.includes('repo') || low.includes('economy')) cat = 'MACRO';
-    else if (low.includes('gold') || low.includes('fed') || low.includes('oil') || low.includes('crude') || low.includes('tariff') || low.includes('war') || low.includes('us ')) cat = 'GLOBAL';
-    else if (low.includes('bitcoin') || low.includes('btc') || low.includes('eth') || low.includes('crypto')) cat = 'CRYPTO';
-    const isBear = /fall|drop|crash|slump|war|loss|selloff|plunge|weak|tariff|hike|fear|crisis/.test(low);
-    const isBull = /rally|gain|surge|jump|rise|high|record|cut|inflow|boost|strong|profit/.test(low);
-    const isHigh = /rbi|fed|nifty|sensex|crash|rally|oil|crude|inflation|repo|fii|tariff|war|gold|bitcoin/.test(low);
-    return {
-      title, link: 'https://news.google.com/search?q=' + encodeURIComponent(title) + '&hl=en-IN&gl=IN',
-      source: 'Market Feed', pubDate: '', category: cat,
-      sentiment: isBear ? 'BEARISH' : (isBull ? 'BULLISH' : 'NEUTRAL'),
-      impact: isHigh ? 'HIGH' : 'MEDIUM'
-    };
-  }
-
-  function renderNewsList() {
-    const box = document.getElementById('newsFeedBox');
-    if (!box) return;
-    const latest = logsData[0] || null;
-    let items = [];
-    if (liveNewsList.length) items = liveNewsList;
-    else if (latest && Array.isArray(latest.news_headlines) && latest.news_headlines.length) items = latest.news_headlines.map(t => typeof t === 'string' ? classifyFallbackTitle(t) : t);
-    else items = ['Indian equity benchmarks eye FII inflows and crude oil movement', 'RBI policy outlook and inflation trend remain key triggers', 'Gold ETFs remain preferred portfolio hedge amid global cues'].map(classifyFallbackTitle);
-
-    const filtered = items.filter(it => activeNewsFilter === 'ALL' ? true : (activeNewsFilter === 'HIGH' ? it.impact === 'HIGH' : it.category === activeNewsFilter));
-    if (!filtered.length) {
-      box.innerHTML = '<p style="color:var(--muted);font-size:13px;">এই ক্যাটাগরিতে এখন কোনো খবর নেই। উপরে <b>সব খবর</b> বা <b>🔄 লাইভ নিউজ আনো</b> চাপুন।</p>';
-      return;
-    }
-    const catLabel = { MARKET: '📈 শেয়ার বাজার', MACRO: '🏛️ RBI ও অর্থনীতি', GLOBAL: '🌍 গ্লোবাল ও গোল্ড', CRYPTO: '₿ ক্রিপ্টো' };
-    box.innerHTML = filtered.map(it => {
-      const sentBadge = it.sentiment === 'BEARISH' ? '<span class="tag tag-bear">▼ চাপ / সতর্কতা</span>' : (it.sentiment === 'BULLISH' ? '<span class="tag tag-bull">▲ ইতিবাচক</span>' : '<span class="tag tag-neut">● নিরপেক্ষ</span>');
-      const impBadge = it.impact === 'HIGH' ? '<span class="tag tag-high">🔥 হাই ইমপ্যাক্ট</span>' : '';
-      const catBadge = '<span class="tag tag-cat">' + (catLabel[it.category] || '📊 ফিন্যান্স') + '</span>';
-      const impactNote = it.sentiment === 'BEARISH' ? 'মার্কেট প্রভাব: অস্থিরতা বাড়তে পারে—ডিসকাউন্ট ও Gold Hedge জরুরি।' : (it.sentiment === 'BULLISH' ? 'মার্কেট প্রভাব: ইতিবাচক মোমেন্টাম—আগের পজিশনে লাভ বাড়ার সম্ভাবনা।' : 'মার্কেট প্রভাব: স্বাভাবিক গতি—Smart SIP ও RSI দেখে ট্রেড চলবে।');
-      const timeStr = it.pubDate ? new Date(it.pubDate).toLocaleString('bn-BD', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
-      return '<div class="news-card ' + (it.impact === 'HIGH' ? 'high-impact' : '') + '">' +
-        '<div class="news-badges">' + catBadge + impBadge + sentBadge + '</div>' +
-        '<h4><a href="' + escapeHtml(it.link || '#') + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(it.title) + ' ↗</a></h4>' +
-        '<div class="news-meta"><span>📰 ' + escapeHtml(it.source || 'Finance News') + '</span><span>' + timeStr + '</span></div>' +
-        '<div class="news-impact-box">' + impactNote + '</div>' +
-      '</div>';
-    }).join('');
-  }
-
-  function renderWallet(st) {
-    document.getElementById('walletCapSub').textContent = 'কম্পাউন্ডিং সীমা: প্রতি স্টক/ETF সর্বোচ্চ ' + fmt(st.stockCap) + ' (২৫%) • প্রতি ক্রিপ্টো সর্বোচ্চ ' + fmt(st.cryptoCap) + ' (৮%) • ন্যূনতম ক্যাশ ' + fmt(st.cashBuffer);
-    const entries = Object.entries(st.hold).filter(([, h]) => h && h.qty > 0);
-    let html = '<div class="weight-item" style="margin-bottom:10px;background:#ecfdf5;">' +
-      '<div style="display:flex;justify-content:space-between;"><b>💵 হাতে নগদ (Cash Buffer)</b><b>' + fmt(st.cash) + '</b></div>' +
-      '<small style="color:var(--muted);">Groww + Binance মিলিয়ে হাতে থাকা মোট নগদ টাকা</small>' +
-    '</div>';
-
-    if (!entries.length) {
-      html += '<p style="color:var(--muted);font-size:13px;">বর্তমানে কোনো অ্যাসেট কেনা নেই।</p>';
-    } else {
-      html += entries.map(([id, h]) => {
-        const info = ASSETS[id] || { name: id, isCrypto: false, broker: 'Broker' };
-        const cap = info.isCrypto ? st.cryptoCap : st.stockCap;
-        const curPrice = st.snap[id] && st.snap[id].price;
-        const curVal = curPrice ? h.qty * curPrice : h.investedINR;
-        const pnl = curVal - h.investedINR;
-        const pnlPct = h.investedINR ? (pnl / h.investedINR) * 100 : 0;
-        return '<div class="weight-item" style="margin-bottom:8px;">' +
-          '<div style="display:flex;justify-content:space-between;align-items:center;">' +
-            '<span><b>' + info.name + '</b> <span class="tag tag-cat" style="font-size:10px;">' + info.broker + '</span></span>' +
-            '<b style="color:' + (pnl >= 0 ? '#15803d' : '#b91c1c') + ';">' + fmt(curVal) + ' (' + (pnl >= 0 ? '+' : '') + pnlPct.toFixed(2) + '%)</b>' +
-          '</div>' +
-          '<div style="font-size:12.5px;color:var(--muted);margin-top:4px;">বিনিয়োগ: ' + fmt(h.investedINR) + ' / কম্পাউন্ড সীমা ' + fmt(cap) + ' • পরিমাণ: ' + Number(h.qty).toFixed(4) + ' ইউনিট</div>' +
-        '</div>';
-      }).join('');
-    }
-    document.getElementById('walletList').innerHTML = html;
-    renderTradePassbook();
-  }
-
-  function buildTradeHistoryList() {
-    const rows = [];
-    for (const l of logsData) {
-      const ts = l.created_at || '';
-      const dayNum = l.day_number || 1;
-      const isReal = l.brain_mode === 'REAL_SYNC';
-      const sourceLabel = isReal ? 'রিয়েল সিঙ্ক' : (l.brain_mode === 'GEMINI_AI' ? 'Gemini AI' : 'Quant AI');
-      for (const a of (l.actions_taken || [])) {
-        const act = String(a.action || '').toUpperCase();
-        if (act !== 'BUY' && act !== 'SELL') continue;
-        const id = String(a.asset_id || '').toLowerCase();
-        const info = ASSETS[id] || { name: a.asset_name || id, broker: 'Broker' };
-        const amt = Number(a.amount_inr || 0);
-        const price = Number(a.price || 0);
-        const qty = (amt > 0 && price > 0) ? (amt / price) : 0;
-        const pnl = (act === 'SELL' && typeof a.pnl_inr === 'number') ? Number(a.pnl_inr) : null;
-        rows.push({
-          created_at: ts,
-          day_number: dayNum,
-          action: act,
-          asset_id: id,
-          asset_name: a.asset_name || info.name,
-          broker: info.broker,
-          source: sourceLabel,
-          isReal,
-          amount_inr: amt,
-          price,
-          qty,
-          pnl_inr: pnl,
-          reason_bn: a.reason_bn || ''
-        });
-      }
-    }
-    return rows;
-  }
-
-  function setPassbookFilter(type, btn) {
-    activePassbookType = type;
-    ['pbAllBtn', 'pbBuyBtn', 'pbSellBtn'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.classList.remove('active');
-    });
-    if (btn) btn.classList.add('active');
-    renderTradePassbook();
-  }
-
-  function setPassbookAssetFilter(assetId) {
-    activePassbookAsset = assetId || 'ALL';
-    renderTradePassbook();
-  }
-
-  function renderTradePassbook() {
-    const body = document.getElementById('tradePassbookBody');
-    const sumBox = document.getElementById('passbookSummary');
-    if (!body || !sumBox) return;
-
-    const allTrades = buildTradeHistoryList();
-    let buySum = 0, buyCnt = 0, sellSum = 0, sellCnt = 0, realizedSum = 0;
-    for (const t of allTrades) {
-      if (t.action === 'BUY') { buySum += t.amount_inr; buyCnt++; }
-      else if (t.action === 'SELL') {
-        sellSum += t.amount_inr; sellCnt++;
-        if (t.pnl_inr !== null) realizedSum += t.pnl_inr;
-      }
-    }
-
-    sumBox.innerHTML =
-      '<div class="pb-stat" style="background:#f0fdf4;border-color:#bbf7d0;"><small>মোট কেনা (BUY)</small><strong style="color:#166534;">' + fmt(buySum) + ' (' + toBnNum(buyCnt) + 'টি)</strong></div>' +
-      '<div class="pb-stat" style="background:#fef2f2;border-color:#fecaca;"><small>মোট বিক্রি (SELL)</small><strong style="color:#991b1b;">' + fmt(sellSum) + ' (' + toBnNum(sellCnt) + 'টি)</strong></div>' +
-      '<div class="pb-stat" style="background:#eff6ff;border-color:#bfdbfe;"><small>বুক করা লাভ/লস</small><strong style="color:' + (realizedSum >= 0 ? '#15803d' : '#b91c1c') + ';">' + (realizedSum >= 0 ? '+' : '') + fmt(realizedSum) + '</strong></div>';
-
-    const filtered = allTrades.filter(t => {
-      if (activePassbookType !== 'ALL' && t.action !== activePassbookType) return false;
-      if (activePassbookAsset !== 'ALL' && t.asset_id !== activePassbookAsset) return false;
-      return true;
-    });
-
-    if (!filtered.length) {
-      body.innerHTML = '<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:16px;">এই ফিল্টারে কোনো BUY বা SELL ট্রেড পাওয়া যায়নি।</td></tr>';
-      return;
-    }
-
-    body.innerHTML = filtered.map(t => {
-      const d = t.created_at ? new Date(t.created_at) : null;
-      const datePart = d ? d.toLocaleDateString('bn-BD', { day: 'numeric', month: 'short', year: '2-digit' }) : '—';
-      const timePart = d ? d.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' }) : '';
-      const actTag = t.action === 'BUY'
-        ? '<span class="tag tag-buy">কেনা (BUY)</span>'
-        : '<span class="tag tag-sell">বিক্রি (SELL)</span>';
-      const srcTag = '<div style="margin-top:3px;"><span class="tag ' + (t.isReal ? 'tag-neut' : 'tag-cat') + '" style="font-size:10px;">' + escapeHtml(t.source) + '</span></div>';
-      const qtyStr = t.qty > 0 ? (t.qty < 0.01 ? t.qty.toFixed(6) : t.qty.toFixed(4)) + ' ইউনিট' : '—';
-      const priceStr = t.price > 0 ? fmt(t.price) : '—';
-      let pnlCell = '<span style="color:var(--muted);">—</span>';
-      if (t.action === 'SELL' && t.pnl_inr !== null) {
-        const col = t.pnl_inr >= 0 ? '#15803d' : '#b91c1c';
-        pnlCell = '<b style="color:' + col + ';">' + (t.pnl_inr >= 0 ? '+' : '') + fmt(t.pnl_inr) + '</b>';
-      }
-      return '<tr>' +
-        '<td class="pb-time"><b>' + datePart + '</b><br>' + timePart + '<br><span style="color:#0f766e;">দিন ' + toBnNum(t.day_number) + '</span></td>' +
-        '<td>' + actTag + srcTag + '</td>' +
-        '<td><b>' + escapeHtml(t.asset_name) + '</b><br><span class="tag tag-cat" style="font-size:10px;">' + escapeHtml(t.broker) + '</span><div class="pb-reason">' + escapeHtml(t.reason_bn) + '</div></td>' +
-        '<td style="white-space:nowrap;"><b>' + priceStr + '</b><br><small style="color:var(--muted);">' + qtyStr + '</small></td>' +
-        '<td style="white-space:nowrap;"><b>' + fmt(t.amount_inr) + '</b></td>' +
-        '<td style="white-space:nowrap;">' + pnlCell + '</td>' +
-      '</tr>';
-    }).join('');
-  }
-
-  function exportTradePassbookCSV() {
-    const trades = buildTradeHistoryList();
-    if (!trades.length) { alert('এখনও কোনো ট্রেড হিস্ট্রি নেই।'); return; }
-    const esc = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
-    const header = ['Date_Time_IST', 'Day', 'Type', 'Source', 'Broker', 'Asset', 'Unit_Price_INR', 'Quantity', 'Total_Amount_INR', 'Realized_PnL_INR', 'Reason'];
-    const lines = [header.join(',')];
-    for (const t of trades) {
-      const dt = t.created_at ? new Date(t.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : '';
-      lines.push([
-        esc(dt), t.day_number, t.action, esc(t.source), esc(t.broker), esc(t.asset_name),
-        t.price || '', t.qty ? t.qty.toFixed(6) : '', t.amount_inr,
-        t.pnl_inr !== null ? t.pnl_inr : '', esc(t.reason_bn)
-      ].join(','));
-    }
-    const blob = new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'safeyield-trade-passbook.csv';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
-
-
-  function renderChart() {
-    if (typeof Chart === 'undefined') return;
-    const ctx = document.getElementById('growthChart');
-    if (!ctx) return;
-    const rev = [...logsData].reverse();
-    const labels = ['শুরু (দিন ০)', ...rev.map(l => 'দিন ' + l.day_number)];
-    const values = [Number(memoryData.initial_capital || 10000), ...rev.map(l => Number(l.portfolio_value || 10000))];
-    if (chartInstance) chartInstance.destroy();
-    chartInstance = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [{
-          label: 'মোট পোর্টফোলিও মূল্য (₹)',
-          data: values,
-          borderColor: '#0f766e',
-          backgroundColor: 'rgba(16, 185, 129, 0.14)',
-          borderWidth: 2.5,
-          fill: true,
-          tension: 0.3,
-          pointRadius: 4,
-          pointBackgroundColor: '#0f766e'
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: { y: { ticks: { callback: v => '₹' + v.toLocaleString('en-IN') } } }
-      }
-    });
-  }
-
-
-  // ===== AUTHENTICATION, PROFILE & EMAIL OTP =====
-  function saveAuthLocal() {
-    try {
-      if (authSession) localStorage.setItem('sy_auth_session', JSON.stringify(authSession));
-      else localStorage.removeItem('sy_auth_session');
-      if (userProfile) localStorage.setItem('sy_user_profile', JSON.stringify(userProfile));
-      else localStorage.removeItem('sy_user_profile');
-    } catch (_) {}
-  }
-
-  function loadAuthLocal() {
-    try {
-      const s = JSON.parse(localStorage.getItem('sy_auth_session') || 'null');
-      const p = JSON.parse(localStorage.getItem('sy_user_profile') || 'null');
-      if (s && s.access_token) authSession = s;
-      if (p && p.sync_id) userProfile = p;
-    } catch (_) {}
-  }
-
-  function updateAuthServerStatus() {
-    const el = document.getElementById('authServerStatus');
-    const fbBtn = document.getElementById('authSetupFallbackBtn');
-    if (!el) return;
-    const c = getCfg();
-    if (c.key) {
-      el.style.color = '#15803d';
-      el.textContent = '✅ সার্ভার সংযুক্ত (Supabase Auth প্রস্তুত)';
-      if (fbBtn) fbBtn.style.display = 'none';
-    } else {
-      el.style.color = '#b45309';
-      el.textContent = '⚠️ সার্ভার কনফিগ পাওয়া যায়নি';
-      if (fbBtn) fbBtn.style.display = 'inline-flex';
-    }
-  }
-
-  function updateProfileHeaderUI() {
-    const pill = document.getElementById('profilePillBtn');
-    if (pill && userProfile) {
-      pill.textContent = '👤 @' + userProfile.username;
-    }
-    const syncB = document.getElementById('syncBadge');
-    if (syncB && userProfile) {
-      syncB.textContent = '☁️ @' + userProfile.username + ' (' + userProfile.sync_id + ')';
-    }
-  }
-
-  function showAuthScreen() {
-    document.body.classList.add('auth-active');
-    document.getElementById('authShell').style.display = 'flex';
-    document.getElementById('appShell').style.display = 'none';
-    updateAuthServerStatus();
-    startAuthBgAnimation();
-  }
-
-  function showAppShell() {
-    document.body.classList.remove('auth-active');
-    stopAuthBgAnimation();
-    document.getElementById('authShell').style.display = 'none';
-    document.getElementById('appShell').style.display = 'block';
-    isAdminUnlocked = true; // Logged-in user owns their own account
-    updateLockUI();
-    updateProfileHeaderUI();
-  }
-
-  function switchAuthTab(tab) {
-    const isSi = tab === 'signin';
-    document.getElementById('authTabsBar').style.display = 'grid';
-    document.getElementById('tabBtnSignin').classList.toggle('active', isSi);
-    document.getElementById('tabBtnSignup').classList.toggle('active', !isSi);
-    document.getElementById('authSigninPane').style.display = isSi ? 'block' : 'none';
-    document.getElementById('authSignupPane').style.display = isSi ? 'none' : 'block';
-    document.getElementById('authOtpPane').style.display = 'none';
-    document.getElementById('authForgotPane').style.display = 'none';
-    document.getElementById('authResetPane').style.display = 'none';
-    document.getElementById('siMsg').textContent = '';
-    document.getElementById('suMsg').textContent = '';
-    document.getElementById('fpMsg').textContent = '';
-    document.getElementById('rpMsg').textContent = '';
-  }
-
-  function selectCapitalPreset(val, btn) {
-    document.getElementById('suCapital').value = String(val);
-    document.querySelectorAll('.cap-chip').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-  }
-
-  function setAuthMsg(elId, text, isErr) {
-    const el = document.getElementById(elId);
-    if (!el) return;
-    el.className = 'auth-msg ' + (isErr ? 'err' : 'ok');
-    el.textContent = text;
-  }
-
-  async function sbAuthCall(path, bodyObj) {
-    const c = getCfg();
-    if (!c.key) throw new Error('আগে ⚙️ সার্ভার সেটআপে Supabase Key সেভ করুন।');
-    const r = await fetchWithTimeout(c.url + path, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'apikey': c.key },
-      body: JSON.stringify(bodyObj)
-    }, 18000);
-    const data = await r.json().catch(() => ({}));
-    if (!r.ok) {
-      const m = data.msg || data.error_description || data.message || data.error || ('Auth error ' + r.status);
-      throw new Error(m);
-    }
-    return data;
-  }
-
-  async function sbUpdatePasswordWithToken(token, newPassword) {
-    const c = getCfg();
-    if (!c.key) throw new Error('আগে ⚙️ সার্ভার সেটআপে Supabase Key সেভ করুন।');
-    if (!token) throw new Error('ভেরিফিকেশন টোকেন পাওয়া যায়নি—আবার চেষ্টা করুন।');
-    const r = await fetchWithTimeout(c.url + '/auth/v1/user', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': c.key,
-        'Authorization': 'Bearer ' + token
-      },
-      body: JSON.stringify({ password: newPassword })
-    }, 18000);
-    const data = await r.json().catch(() => ({}));
-    if (!r.ok) {
-      const m = data.msg || data.error_description || data.message || data.error || ('Update error ' + r.status);
-      throw new Error(m);
-    }
-    return data;
-  }
-
-  function openForgotPasswordPane() {
-    const prefill = (document.getElementById('siIdentifier').value || '').trim();
-    document.getElementById('authTabsBar').style.display = 'none';
-    document.getElementById('authSigninPane').style.display = 'none';
-    document.getElementById('authSignupPane').style.display = 'none';
-    document.getElementById('authOtpPane').style.display = 'none';
-    document.getElementById('authResetPane').style.display = 'none';
-    document.getElementById('authForgotPane').style.display = 'block';
-    document.getElementById('fpIdentifier').value = prefill;
-    document.getElementById('fpMsg').textContent = '';
-    setTimeout(() => document.getElementById('fpIdentifier').focus(), 100);
-  }
-
-  function startForgotCooldown() {
-    forgotCooldown = 45;
-    const btn = document.getElementById('fpSubmitBtn');
-    const tick = setInterval(() => {
-      forgotCooldown--;
-      if (!btn || forgotCooldown <= 0) {
-        clearInterval(tick);
-        if (btn) { btn.disabled = false; btn.textContent = '📧 পাসওয়ার্ড রিসেট লিংক পাঠান'; }
-        return;
-      }
-      btn.disabled = true;
-      btn.textContent = '⏳ অপেক্ষা করুন (' + toBnNum(forgotCooldown) + ' সে.)';
-    }, 1000);
-  }
-
-  async function handleForgotPassword() {
-    const rawId = (document.getElementById('fpIdentifier').value || '').trim().toLowerCase();
-    if (!rawId) {
-      setAuthMsg('fpMsg', '⚠️ আপনার ইউজারনেম বা ইমেইল আইডি দিন।', true);
-      return;
-    }
-    const btn = document.getElementById('fpSubmitBtn');
-    btn.disabled = true;
-    btn.textContent = '⏳ লিংক পাঠানো হচ্ছে...';
-    setAuthMsg('fpMsg', '', false);
-    try {
-      let emailToUse = rawId;
-      if (!rawId.includes('@')) {
-        const resolved = await callAutopilotApi({ mode: 'resolve_login', username: rawId }, 15000);
-        if (!resolved.email) throw new Error('এই ইউজারনেম খুঁজে পাওয়া যায়নি।');
-        emailToUse = resolved.email;
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailToUse)) {
-        throw new Error('একটি সঠিক ইমেইল আইডি দিন।');
-      }
-
-      const redirectUrl = window.location.origin + window.location.pathname;
-      await sbAuthCall('/auth/v1/recover?redirect_to=' + encodeURIComponent(redirectUrl), {
-        email: emailToUse
-      });
-      setAuthMsg('fpMsg', '✅ ' + emailToUse + ' ঠিকানায় পাসওয়ার্ড রিসেট লিংক পাঠানো হয়েছে। ইনবক্স (বা Spam ফোল্ডার) খুলে "Reset Password" লিংকে ক্লিক করে নতুন পাসওয়ার্ড দিন।', false);
-      startForgotCooldown();
-    } catch (e) {
-      let m = e.message || 'লিংক পাঠাতে সমস্যা হয়েছে';
-      if (/rate limit|too many/i.test(m)) m = 'কিছুক্ষণ আগে লিংক পাঠানো হয়েছে—১ মিনিট পর আবার চেষ্টা করুন।';
-      setAuthMsg('fpMsg', '❌ ' + m, true);
-      btn.disabled = false;
-      btn.textContent = '📧 পাসওয়ার্ড রিসেট লিংক পাঠান';
-    }
-  }
-
-  function openResetPasswordPane() {
-    showAuthScreen();
-    document.getElementById('authTabsBar').style.display = 'none';
-    document.getElementById('authSigninPane').style.display = 'none';
-    document.getElementById('authSignupPane').style.display = 'none';
-    document.getElementById('authOtpPane').style.display = 'none';
-    document.getElementById('authForgotPane').style.display = 'none';
-    document.getElementById('authResetPane').style.display = 'block';
-    document.getElementById('rpNewPassword').value = '';
-    document.getElementById('rpConfirmPassword').value = '';
-    document.getElementById('rpMsg').textContent = '';
-    setTimeout(() => document.getElementById('rpNewPassword').focus(), 100);
-  }
-
-  function cancelPasswordReset() {
-    recoveryAccessToken = '';
-    switchAuthTab('signin');
-  }
-
-  async function handleConfirmPasswordReset() {
-    const p1 = document.getElementById('rpNewPassword').value || '';
-    const p2 = document.getElementById('rpConfirmPassword').value || '';
-    if (p1.length < 8) {
-      setAuthMsg('rpMsg', '⚠️ নতুন পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।', true);
-      return;
-    }
-    if (p1 !== p2) {
-      setAuthMsg('rpMsg', '⚠️ নতুন পাসওয়ার্ড এবং কনফার্ম পাসওয়ার্ড মেলেনি।', true);
-      return;
-    }
-    if (!recoveryAccessToken) {
-      setAuthMsg('rpMsg', '⚠️ রিসেট সেশনের মেয়াদ শেষ হয়েছে—আবার Forgot Password থেকে লিংক নিন।', true);
-      return;
-    }
-    const btn = document.getElementById('rpSubmitBtn');
-    btn.disabled = true;
-    btn.textContent = '⏳ পাসওয়ার্ড সেভ হচ্ছে...';
-    setAuthMsg('rpMsg', '', false);
-    try {
-      const uRes = await sbUpdatePasswordWithToken(recoveryAccessToken, p1);
-      recoveryAccessToken = '';
-      document.getElementById('rpNewPassword').value = '';
-      document.getElementById('rpConfirmPassword').value = '';
-      switchAuthTab('signin');
-      if (uRes && uRes.email) document.getElementById('siIdentifier').value = uRes.email;
-      setAuthMsg('siMsg', '✅ পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে! এখন নতুন পাসওয়ার্ড দিয়ে সাইন ইন করুন।', false);
-      setTimeout(() => document.getElementById('siPassword').focus(), 100);
-    } catch (e) {
-      let m = e.message || 'পাসওয়ার্ড আপডেট ব্যর্থ হয়েছে';
-      if (/different from the old password/i.test(m)) m = 'নতুন পাসওয়ার্ডটি পুরোনো পাসওয়ার্ডের চেয়ে আলাদা হতে হবে।';
-      setAuthMsg('rpMsg', '❌ ' + m, true);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = '✅ নতুন পাসওয়ার্ড সেভ করুন';
-    }
-  }
-
-  function toggleProfilePwdForm() {
-    const f = document.getElementById('profilePwdForm');
-    if (!f) return;
-    const isHidden = f.style.display === 'none';
-    f.style.display = isHidden ? 'block' : 'none';
-    document.getElementById('profNewPwd').value = '';
-    document.getElementById('profConfirmPwd').value = '';
-    document.getElementById('profPwdMsg').textContent = '';
-  }
-
-  async function handleChangePasswordLoggedIn() {
-    const p1 = document.getElementById('profNewPwd').value || '';
-    const p2 = document.getElementById('profConfirmPwd').value || '';
-    if (p1.length < 8) {
-      setAuthMsg('profPwdMsg', '⚠️ নতুন পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।', true);
-      return;
-    }
-    if (p1 !== p2) {
-      setAuthMsg('profPwdMsg', '⚠️ দুটি পাসওয়ার্ড মেলেনি।', true);
-      return;
-    }
-    const token = getAuthToken();
-    if (!token) {
-      setAuthMsg('profPwdMsg', '⚠️ সেশন পাওয়া যায়নি—আবার সাইন ইন করুন।', true);
-      return;
-    }
-    const btn = document.getElementById('profPwdBtn');
-    btn.disabled = true;
-    btn.textContent = '⏳ আপডেট হচ্ছে...';
-    setAuthMsg('profPwdMsg', '', false);
-    try {
-      await sbUpdatePasswordWithToken(token, p1);
-      document.getElementById('profNewPwd').value = '';
-      document.getElementById('profConfirmPwd').value = '';
-      setAuthMsg('profPwdMsg', '✅ পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে!', false);
-    } catch (e) {
-      let m = e.message || 'সমস্যা হয়েছে';
-      if (/different from the old password/i.test(m)) m = 'নতুন পাসওয়ার্ডটি পুরোনো পাসওয়ার্ডের চেয়ে আলাদা হতে হবে।';
-      setAuthMsg('profPwdMsg', '❌ ' + m, true);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = '✅ পাসওয়ার্ড আপডেট করুন';
-    }
-  }
-
-  async function handleSignUp() {
-    const username = (document.getElementById('suUsername').value || '').trim().toLowerCase();
-    const email = (document.getElementById('suEmail').value || '').trim().toLowerCase();
-    const phoneDigits = (document.getElementById('suPhone').value || '').replace(/\D/g, '');
-    const capital = Number(document.getElementById('suCapital').value || 10000);
-    const password = document.getElementById('suPassword').value || '';
-    const confirmPassword = document.getElementById('suConfirmPassword').value || '';
-
-    if (!/^[a-z0-9_-]{3,20}$/.test(username)) {
-      setAuthMsg('suMsg', '⚠️ ইউজারনেম ৩ থেকে ২০ অক্ষরের হতে হবে (শুধু ইংরেজি ছোট হাতের অক্ষর, সংখ্যা, _ বা -)।', true);
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-      setAuthMsg('suMsg', '⚠️ একটি সঠিক (Valid) ইমেইল আইডি দিন।', true);
-      return;
-    }
-    if (!/^[6-9]\d{9}$/.test(phoneDigits)) {
-      setAuthMsg('suMsg', '⚠️ একটি সঠিক ১০-সংখ্যার ভারতীয় মোবাইল নম্বর দিন (৬, ৭, ৮ বা ৯ দিয়ে শুরু)।', true);
-      return;
-    }
-    if (isNaN(capital) || capital < 1000 || capital > 10000000) {
-      setAuthMsg('suMsg', '⚠️ শুরুর মূলধন কমপক্ষে ₹1,000 থেকে ₹1,00,00,000-এর মধ্যে দিন।', true);
-      return;
-    }
-    if (password.length < 8) {
-      setAuthMsg('suMsg', '⚠️ পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের (Minimum 8 characters) হতে হবে।', true);
-      return;
-    }
-    if (password !== confirmPassword) {
-      setAuthMsg('suMsg', '⚠️ Password এবং Confirm Password মেলেনি—আবার মিলিয়ে লিখুন।', true);
-      return;
-    }
-
-    const btn = document.getElementById('suSubmitBtn');
-    btn.disabled = true;
-    btn.textContent = '⏳ যাচাই করা হচ্ছে...';
-    setAuthMsg('suMsg', '', false);
-    try {
-      // 1. Check username uniqueness
-      const chk = await callAutopilotApi({ mode: 'check_username', username, email }, 15000);
-      if (!chk.available) {
-        throw new Error(chk.reason || 'এই ইউজারনেম বা ইমেইল ইতিমধ্যেই ব্যবহৃত হয়েছে।');
-      }
-
-      // 2. Call Supabase Auth SignUp with redirect_to back to this exact page (Default Email Confirm Link)
-      const phoneFull = '+91' + phoneDigits;
-      const redirectUrl = window.location.origin + window.location.pathname;
-      const suRes = await sbAuthCall('/auth/v1/signup?redirect_to=' + encodeURIComponent(redirectUrl), {
-        email,
-        password,
-        data: { username, phone: phoneFull, initial_capital: capital }
-      });
-
-      pendingSignUp = {
-        username, email, phone: phoneFull,
-        initial_capital: capital
-      };
-      try { localStorage.setItem('sy_pending_signup', JSON.stringify(pendingSignUp)); } catch (_) {}
-
-      // If Supabase returned an active session directly, finalize right away
-      if (suRes.access_token) {
-        authSession = { access_token: suRes.access_token, refresh_token: suRes.refresh_token, user: suRes.user };
-        await finalizeVerifiedProfile();
-        return;
-      }
-
-      // Show Email Confirm Link instruction screen
-      document.getElementById('otpTargetEmail').textContent = email;
-      document.getElementById('otpMsg').textContent = '';
-      document.getElementById('authTabsBar').style.display = 'none';
-      document.getElementById('authSignupPane').style.display = 'none';
-      document.getElementById('authOtpPane').style.display = 'block';
-      startResendCooldown();
-    } catch (e) {
-      setAuthMsg('suMsg', '❌ ' + e.message, true);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = '📧 ভেরিফিকেশন লিংক পাঠান';
-    }
-  }
-
-  function backToSignUp() {
-    document.getElementById('authTabsBar').style.display = 'grid';
-    document.getElementById('authOtpPane').style.display = 'none';
-    document.getElementById('authSignupPane').style.display = 'block';
-  }
-
-  function startResendCooldown() {
-    resendCooldown = 45;
-    const btn = document.getElementById('resendOtpBtn');
-    const tick = setInterval(() => {
-      resendCooldown--;
-      if (!btn || resendCooldown <= 0) {
-        clearInterval(tick);
-        if (btn) { btn.disabled = false; btn.textContent = '🔄 আবার লিংক পাঠান'; }
-        return;
-      }
-      btn.disabled = true;
-      btn.textContent = '⏳ অপেক্ষা করুন (' + toBnNum(resendCooldown) + ' সে.)';
-    }, 1000);
-  }
-
-  async function handleResendOtp() {
-    if (!pendingSignUp || !pendingSignUp.email) return;
-    try {
-      const redirectUrl = window.location.origin + window.location.pathname;
-      await sbAuthCall('/auth/v1/resend?redirect_to=' + encodeURIComponent(redirectUrl), {
-        type: 'signup',
-        email: pendingSignUp.email
-      });
-      setAuthMsg('otpMsg', '✅ আপনার ইমেইলে নতুন ভেরিফিকেশন লিংক পাঠানো হয়েছে।', false);
-      startResendCooldown();
-    } catch (e) {
-      setAuthMsg('otpMsg', '❌ লিংক পাঠাতে সমস্যা: ' + e.message, true);
-    }
-  }
-
-  function goToSignInAfterLink() {
-    const emailPrefill = (pendingSignUp && pendingSignUp.email) ? pendingSignUp.email : '';
-    switchAuthTab('signin');
-    if (emailPrefill) document.getElementById('siIdentifier').value = emailPrefill;
-    setAuthMsg('siMsg', '✅ ইমেইল লিংক ক্লিক করা হয়ে থাকলে এখন পাসওয়ার্ড দিয়ে সাইন ইন করুন।', false);
-    setTimeout(() => document.getElementById('siPassword').focus(), 100);
-  }
-
-  function loadPendingSignUpLocal() {
-    if (pendingSignUp) return pendingSignUp;
-    try {
-      const saved = JSON.parse(localStorage.getItem('sy_pending_signup') || 'null');
-      if (saved && saved.email) return saved;
-    } catch (_) {}
-    return null;
-  }
-
-  async function finalizeVerifiedProfile() {
-    const p = loadPendingSignUpLocal() || {};
-    const res = await callAutopilotApi({
-      mode: 'init_user_profile',
-      username: p.username || undefined,
-      phone: p.phone || undefined,
-      initial_capital: p.initial_capital || undefined
-    }, 20000);
-    userProfile = res.profile;
-    pendingSignUp = null;
-    try { localStorage.removeItem('sy_pending_signup'); } catch (_) {}
-    saveAuthLocal();
-    showAppShell();
-    await refreshAll(true);
-  }
-
-  async function handleSignIn() {
-    const rawId = (document.getElementById('siIdentifier').value || '').trim().toLowerCase();
-    const password = document.getElementById('siPassword').value || '';
-    if (!rawId) { setAuthMsg('siMsg', '⚠️ আপনার ইউজারনেম বা ইমেইল আইডি দিন।', true); return; }
-    if (password.length < 8) { setAuthMsg('siMsg', '⚠️ কমপক্ষে ৮ অক্ষরের পাসওয়ার্ড দিন।', true); return; }
-
-    const btn = document.getElementById('siSubmitBtn');
-    btn.disabled = true;
-    btn.textContent = '⏳ সাইন ইন হচ্ছে...';
-    setAuthMsg('siMsg', '', false);
-    try {
-      let emailToUse = rawId;
-      if (!rawId.includes('@')) {
-        const resolved = await callAutopilotApi({ mode: 'resolve_login', username: rawId }, 15000);
-        if (!resolved.email) throw new Error('এই ইউজারনেম খুঁজে পাওয়া যায়নি।');
-        emailToUse = resolved.email;
-      }
-
-      const tRes = await sbAuthCall('/auth/v1/token?grant_type=password', {
-        email: emailToUse,
-        password
-      });
-      if (!tRes.access_token) throw new Error('লগইন সফল হয়নি।');
-      authSession = { access_token: tRes.access_token, refresh_token: tRes.refresh_token, user: tRes.user };
-
-      const profRes = await callAutopilotApi({ mode: 'get_my_profile' }, 18000);
-      userProfile = profRes.profile;
-      try { localStorage.removeItem('sy_pending_signup'); } catch (_) {}
-      saveAuthLocal();
-      document.getElementById('siPassword').value = '';
-      showAppShell();
-      await refreshAll(true);
-    } catch (e) {
-      let m = e.message || 'লগইন ব্যর্থ হয়েছে';
-      if (/email not confirmed/i.test(m)) m = 'আপনার ইমেইলের ভেরিফিকেশন লিংকে এখনো ক্লিক করা হয়নি। ইনবক্স বা Spam ফোল্ডার চেক করুন।';
-      else if (/invalid login credentials/i.test(m)) m = 'ইউজারনেম/ইমেইল বা পাসওয়ার্ড ভুল হয়েছে।';
-      setAuthMsg('siMsg', '❌ ' + m, true);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = '🔓 সাইন ইন করুন';
-    }
-  }
-
-  async function restoreSessionOnBoot() {
-    // 1. Check if returning from Supabase Email Confirm Link (#access_token=... or #error=...)
-    const hashStr = (window.location.hash || '').replace(/^#/, '');
-    if (hashStr && (hashStr.includes('access_token=') || hashStr.includes('error='))) {
-      const params = new URLSearchParams(hashStr);
-      try { window.history.replaceState(null, '', window.location.pathname + window.location.search); } catch (_) {}
-
-      const errDesc = params.get('error_description') || params.get('error');
-      if (errDesc) {
-        showAuthScreen();
-        switchAuthTab('signin');
-        setAuthMsg('siMsg', '⚠️ ইমেইল লিংকটির মেয়াদ শেষ হয়েছে বা আগে ব্যবহৃত হয়েছে (' + errDesc + ')। ইতিমধ্যে ভেরিফাই হয়ে থাকলে সরাসরি সাইন ইন করুন।', true);
-        return;
-      }
-
-      const accessToken = params.get('access_token');
-      const refreshToken = params.get('refresh_token') || '';
-      const authType = (params.get('type') || '').toLowerCase();
-
-      if (accessToken && authType === 'recovery') {
-        recoveryAccessToken = accessToken;
-        openResetPasswordPane();
-        return;
-      }
-
-      if (accessToken) {
-        authSession = { access_token: accessToken, refresh_token: refreshToken, user: null };
-        try {
-          await finalizeVerifiedProfile();
-          return;
-        } catch (e) {
-          showAuthScreen();
-          switchAuthTab('signin');
-          setAuthMsg('siMsg', '⚠️ ইমেইল ভেরিফাই হয়েছে, তবে প্রোফাইল লোডে সমস্যা: ' + e.message + ' — অনুগ্রহ করে সাইন ইন করুন।', true);
-          return;
-        }
-      }
-    }
-
-    // 2. Normal saved session restore
-    loadAuthLocal();
-    if (!authSession || !authSession.access_token) {
-      showAuthScreen();
-      return;
-    }
-    try {
-      const profRes = await callAutopilotApi({ mode: 'get_my_profile' }, 15000);
-      userProfile = profRes.profile;
-      saveAuthLocal();
-      showAppShell();
-      await refreshAll(true);
-    } catch (e) {
-      // Try refreshing expired JWT token using refresh_token
-      if (authSession && authSession.refresh_token) {
-        try {
-          const refRes = await sbAuthCall('/auth/v1/token?grant_type=refresh_token', {
-            refresh_token: authSession.refresh_token
-          });
-          if (refRes.access_token) {
-            authSession = { access_token: refRes.access_token, refresh_token: refRes.refresh_token, user: refRes.user };
-            const profRes2 = await callAutopilotApi({ mode: 'get_my_profile' }, 15000);
-            userProfile = profRes2.profile;
-            saveAuthLocal();
-            showAppShell();
-            await refreshAll(true);
-            return;
-          }
-        } catch (_) {}
-      }
-      authSession = null;
-      userProfile = null;
-      saveAuthLocal();
-      showAuthScreen();
-    }
-  }
-
-  function openProfileModal() {
-    if (!userProfile) return;
-    const p = userProfile;
-    document.getElementById('profileDetailsBox').innerHTML =
-      '<div class="profile-row"><span style="color:var(--muted);">ইউজারনেম</span><b>@' + escapeHtml(p.username) + '</b></div>' +
-      '<div class="profile-row"><span style="color:var(--muted);">ইমেইল</span><span><b>' + escapeHtml(p.email) + '</b> <span class="tag tag-buy">✓ ভেরিফায়েড</span></span></div>' +
-      '<div class="profile-row"><span style="color:var(--muted);">মোবাইল নম্বর</span><span><b>' + escapeHtml(p.phone || '—') + '</b> <span class="tag tag-neut">সেভড</span></span></div>' +
-      '<div class="profile-row"><span style="color:var(--muted);">শুরুর মূলধন</span><b>' + fmt(p.initial_capital || 10000) + '</b></div>' +
-      '<div class="profile-row" style="border-bottom:none;"><span style="color:var(--muted);">পোর্টফোলিও Sync ID</span><span class="tag tag-cat">' + escapeHtml(p.sync_id) + '</span></div>';
-
-    const pf = document.getElementById('profilePwdForm');
-    if (pf) pf.style.display = 'none';
-    const pm = document.getElementById('profPwdMsg');
-    if (pm) pm.textContent = '';
-    document.getElementById('profileModal').classList.add('open');
-  }
-
-  function closeProfileModal() {
-    document.getElementById('profileModal').classList.remove('open');
-  }
-
-  function handleSignOut() {
-    closeProfileModal();
-    authSession = null;
-    userProfile = null;
-    liveMarketOverride = null;
-    logsData = [];
-    stateData = { cash: 10000, practice_day: 1, holdings: {} };
-    syncAssetsFromState();
-    memoryData = { initial_capital: 10000, win_count: 0, loss_count: 0, total_trades: 0, strategy_weights: { dip_buying: 1, smart_sip: 1, gold_hedge: 1, profit_lock: 1 }, lessons: [] };
-    saveAuthLocal();
-    switchAuthTab('signin');
-    showAuthScreen();
-  }
-
-
-  // ===== CUSTOM ASSETS (+ ADD / REMOVE) =====
-  function onCustomAssetTypeChange() {
-    const t = document.getElementById('caType').value;
-    const isCrypto = t === 'CRYPTO';
-    document.getElementById('caTaxWrap').style.display = isCrypto ? 'none' : 'block';
-    document.getElementById('caSymbolLabel').textContent = isCrypto
-      ? 'Binance কয়েন সিম্বল (যেমন: BNB, XRP, DOGE, ADA)'
-      : 'NSE সিম্বল (যেমন: ITC, WIPRO, ZOMATO, BANKBEES)';
-    document.getElementById('caSymbol').placeholder = isCrypto ? 'যেমন: BNB বা XRP' : 'যেমন: ITC বা TATAMOTORS';
-  }
-
-  function prefillCustomAsset(type, sym, name, taxCat) {
-    document.getElementById('caType').value = type;
-    onCustomAssetTypeChange();
-    if (type !== 'CRYPTO' && taxCat) document.getElementById('caTaxCat').value = taxCat;
-    document.getElementById('caSymbol').value = sym;
-    document.getElementById('caName').value = name;
-    setAuthMsg('caMsg', '', false);
-  }
-
-  function renderCustomAssetsListInModal() {
-    const wrap = document.getElementById('caListWrap');
-    const box = document.getElementById('caCustomList');
-    if (!wrap || !box) return;
-    if (!customAssetsList.length) {
-      wrap.style.display = 'none';
-      box.innerHTML = '';
-      return;
-    }
-    wrap.style.display = 'block';
-    box.innerHTML = customAssetsList.map(item =>
-      '<div class="custom-list-item">' +
-        '<div><b>' + escapeHtml(item.name || item.id) + '</b> <span class="tag tag-cat" style="font-size:10px;">' + escapeHtml(item.broker || (item.type === 'CRYPTO' ? 'Binance' : 'Groww')) + '</span><br><small style="color:var(--muted);">' + escapeHtml(item.binanceSymbol || item.symbol || item.id) + '</small></div>' +
-        '<button type="button" class="asset-del-btn" style="padding:4px 9px;font-size:11.5px;" onclick="handleRemoveCustomAsset(\'' + escapeHtml(item.id) + '\')">🗑️ মুছুন</button>' +
-      '</div>'
-    ).join('');
-  }
-
-  function openAddAssetModal() {
-    document.getElementById('caType').value = 'STOCK';
-    onCustomAssetTypeChange();
-    document.getElementById('caSymbol').value = '';
-    document.getElementById('caName').value = '';
-    setAuthMsg('caMsg', '', false);
-    renderCustomAssetsListInModal();
-    document.getElementById('addAssetModal').classList.add('open');
-    setTimeout(() => document.getElementById('caSymbol').focus(), 100);
-  }
-
-  function closeAddAssetModal() {
-    document.getElementById('addAssetModal').classList.remove('open');
-  }
-
-  async function handleAddCustomAsset() {
-    const type = document.getElementById('caType').value;
-    const rawSym = (document.getElementById('caSymbol').value || '').trim().toUpperCase();
-    const name = (document.getElementById('caName').value || '').trim();
-    const taxCat = type === 'CRYPTO' ? 'CRYPTO' : (document.getElementById('caTaxCat').value || 'EQUITY');
-
-    if (!rawSym || rawSym.length < 2 || rawSym.length > 20) {
-      setAuthMsg('caMsg', '⚠️ সঠিক সিম্বল দিন (যেমন: ITC, TATAMOTORS, BANKBEES, BNB, XRP)।', true);
-      return;
-    }
-
-    const btn = document.getElementById('caSubmitBtn');
-    btn.disabled = true;
-    btn.textContent = '⏳ লাইভ দাম যাচাই হচ্ছে...';
-    setAuthMsg('caMsg', '', false);
-    try {
-      const data = await callAutopilotApi({
-        mode: 'add_custom_asset',
-        asset_type: type,
-        symbol: rawSym,
-        name,
-        tax_cat: taxCat
-      }, 22000);
-
-      if (!stateData.profile || typeof stateData.profile !== 'object') stateData.profile = {};
-      stateData.profile.custom_assets = Array.isArray(data.custom_assets) ? data.custom_assets : [];
-      if (data.market) liveMarketOverride = data.market;
-      syncAssetsFromState();
-      renderCustomAssetsListInModal();
-      renderAll();
-      document.getElementById('caSymbol').value = '';
-      document.getElementById('caName').value = '';
-      const addedInfo = data.added || {};
-      const liveP = addedInfo.live_price ? ' (বর্তমান দাম: ' + fmt(addedInfo.live_price) + ')' : '';
-      setAuthMsg('caMsg', '✅ ' + (addedInfo.name || rawSym) + ' সফলভাবে যোগ হয়েছে!' + liveP, false);
-    } catch (e) {
-      setAuthMsg('caMsg', '❌ ' + e.message, true);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = '✅ লাইভ রেট যাচাই করে যোগ করুন';
-    }
-  }
-
-  async function handleRemoveCustomAsset(assetId) {
-    const info = ASSETS[assetId];
-    const label = info ? info.name : assetId;
-    if (!confirm('আপনি কি "' + label + '" তালিকা থেকে মুছে ফেলতে চান?')) return;
-    try {
-      const data = await callAutopilotApi({
-        mode: 'remove_custom_asset',
-        asset_id: assetId
-      }, 18000);
-      if (!stateData.profile || typeof stateData.profile !== 'object') stateData.profile = {};
-      stateData.profile.custom_assets = Array.isArray(data.custom_assets) ? data.custom_assets : [];
-      if (liveMarketOverride && liveMarketOverride[assetId]) delete liveMarketOverride[assetId];
-      syncAssetsFromState();
-      renderCustomAssetsListInModal();
-      renderAll();
-      setAuthMsg('caMsg', '✅ "' + label + '" তালিকা থেকে মুছে ফেলা হয়েছে।', false);
-    } catch (e) {
-      alert('মুছে ফেলতে সমস্যা: ' + e.message);
-    }
-  }
-
-
-  // ===== LOGIN SCREEN ANIMATED AI FINTECH CANVAS BACKGROUND =====
-  let authBgRaf = null;
-  let authBgNodes = [];
-  let authBgParticles = [];
-  let authBgResizeBound = false;
-
-  function initAuthBgScene(w, h) {
-    authBgNodes = [];
-    const nodeCount = w < 720 ? 22 : 38;
-    const regionW = w < 720 ? w * 0.95 : w * 0.42;
-    const regionH = w < 720 ? h * 0.42 : h * 0.56;
-    for (let i = 0; i < nodeCount; i++) {
-      authBgNodes.push({
-        x: Math.random() * regionW,
-        y: Math.random() * regionH + h * 0.04,
-        vx: (Math.random() - 0.5) * 0.28,
-        vy: (Math.random() - 0.5) * 0.24,
-        r: 1.8 + Math.random() * 2.6,
-        phase: Math.random() * Math.PI * 2
-      });
-    }
-    authBgParticles = [];
-    for (let i = 0; i < 42; i++) {
-      authBgParticles.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vy: -0.15 - Math.random() * 0.35,
-        r: 0.9 + Math.random() * 1.9,
-        alpha: 0.18 + Math.random() * 0.55,
-        phase: Math.random() * Math.PI * 2
-      });
-    }
-  }
-
-  function drawGlowingShield(ctx, cx, cy, scale, t) {
-    ctx.save();
-    ctx.translate(cx, cy);
-
-    // 3D Isometric Digital Radar / Circuit Rings beneath shield
-    ctx.save();
-    ctx.translate(0, 74 * scale);
-    ctx.scale(1, 0.36);
-    for (let ring = 1; ring <= 4; ring++) {
-      const rad = (44 + ring * 26) * scale;
-      ctx.beginPath();
-      ctx.arc(0, 0, rad, 0, Math.PI * 2);
-      ctx.strokeStyle = ring % 2 === 0
-        ? 'rgba(45, 212, 191, ' + (0.34 - ring * 0.05) + ')'
-        : 'rgba(16, 185, 129, ' + (0.42 - ring * 0.07) + ')';
-      ctx.lineWidth = ring === 1 ? 2.2 : 1.3;
-      if (ring === 3) ctx.setLineDash([10 * scale, 8 * scale]);
-      else ctx.setLineDash([]);
-      ctx.stroke();
-    }
-    ctx.setLineDash([]);
-    // Rotating radar sweep arc
-    const sweep = (t * 0.55) % (Math.PI * 2);
-    ctx.beginPath();
-    ctx.arc(0, 0, 122 * scale, sweep, sweep + 1.15);
-    ctx.strokeStyle = 'rgba(110, 231, 183, 0.72)';
-    ctx.lineWidth = 3;
-    ctx.stroke();
-
-    // Radial spokes
-    for (let a = 0; a < 12; a++) {
-      const ang = (a * Math.PI) / 6 + t * 0.08;
-      ctx.beginPath();
-      ctx.moveTo(Math.cos(ang) * 46 * scale, Math.sin(ang) * 46 * scale);
-      ctx.lineTo(Math.cos(ang) * 148 * scale, Math.sin(ang) * 148 * scale);
-      ctx.strokeStyle = 'rgba(45, 212, 191, 0.14)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
-    }
-    ctx.restore();
-
-    // Ambient halo behind shield
-    const halo = ctx.createRadialGradient(0, -4 * scale, 10 * scale, 0, -4 * scale, 96 * scale);
-    halo.addColorStop(0, 'rgba(45, 212, 191, 0.36)');
-    halo.addColorStop(0.55, 'rgba(16, 185, 129, 0.14)');
-    halo.addColorStop(1, 'rgba(16, 185, 129, 0)');
-    ctx.fillStyle = halo;
-    ctx.beginPath();
-    ctx.arc(0, -4 * scale, 96 * scale, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Shield Path
-    const bob = Math.sin(t * 1.4) * 3.5 * scale;
-    ctx.translate(0, bob);
-    const s = scale;
-    ctx.beginPath();
-    ctx.moveTo(0, -68 * s);
-    ctx.bezierCurveTo(32 * s, -54 * s, 54 * s, -50 * s, 58 * s, -42 * s);
-    ctx.bezierCurveTo(58 * s, 14 * s, 38 * s, 48 * s, 0, 68 * s);
-    ctx.bezierCurveTo(-38 * s, 48 * s, -58 * s, 14 * s, -58 * s, -42 * s);
-    ctx.bezierCurveTo(-54 * s, -50 * s, -32 * s, -54 * s, 0, -68 * s);
-    ctx.closePath();
-
-    const shieldGrad = ctx.createLinearGradient(-50 * s, -65 * s, 50 * s, 65 * s);
-    shieldGrad.addColorStop(0, 'rgba(45, 212, 191, 0.28)');
-    shieldGrad.addColorStop(0.5, 'rgba(15, 118, 110, 0.38)');
-    shieldGrad.addColorStop(1, 'rgba(6, 78, 59, 0.48)');
-    ctx.fillStyle = shieldGrad;
-    ctx.shadowColor = 'rgba(52, 211, 153, 0.8)';
-    ctx.shadowBlur = 22;
-    ctx.fill();
-    ctx.lineWidth = 2.4 * s;
-    ctx.strokeStyle = 'rgba(167, 243, 208, 0.88)';
-    ctx.stroke();
-
-    // Inner shield rim
-    ctx.shadowBlur = 0;
-    ctx.beginPath();
-    ctx.moveTo(0, -56 * s);
-    ctx.bezierCurveTo(26 * s, -44 * s, 44 * s, -41 * s, 47 * s, -34 * s);
-    ctx.bezierCurveTo(47 * s, 10 * s, 30 * s, 39 * s, 0, 56 * s);
-    ctx.bezierCurveTo(-30 * s, 39 * s, -47 * s, 10 * s, -47 * s, -34 * s);
-    ctx.bezierCurveTo(-44 * s, -41 * s, -26 * s, -44 * s, 0, -56 * s);
-    ctx.closePath();
-    ctx.strokeStyle = 'rgba(110, 231, 183, 0.35)';
-    ctx.lineWidth = 1.1 * s;
-    ctx.stroke();
-
-    // Padlock Shackle
-    ctx.beginPath();
-    ctx.arc(0, -14 * s, 13 * s, Math.PI, 0, false);
-    ctx.lineTo(13 * s, -2 * s);
-    ctx.moveTo(-13 * s, -14 * s);
-    ctx.lineTo(-13 * s, -2 * s);
-    ctx.strokeStyle = '#d1fae5';
-    ctx.lineWidth = 4.2 * s;
-    ctx.lineCap = 'round';
-    ctx.shadowColor = 'rgba(110, 231, 183, 0.85)';
-    ctx.shadowBlur = 12;
-    ctx.stroke();
-
-    // Padlock Body
-    const bw = 38 * s, bh = 30 * s, bx = -bw / 2, by = -3 * s, br = 6 * s;
-    ctx.beginPath();
-    ctx.moveTo(bx + br, by);
-    ctx.lineTo(bx + bw - br, by);
-    ctx.quadraticCurveTo(bx + bw, by, bx + bw, by + br);
-    ctx.lineTo(bx + bw, by + bh - br);
-    ctx.quadraticCurveTo(bx + bw, by + bh, bx + bw - br, by + bh);
-    ctx.lineTo(bx + br, by + bh);
-    ctx.quadraticCurveTo(bx, by + bh, bx, by + bh - br);
-    ctx.lineTo(bx, by + br);
-    ctx.quadraticCurveTo(bx, by, bx + br, by);
-    ctx.closePath();
-    ctx.fillStyle = 'rgba(209, 250, 229, 0.92)';
-    ctx.fill();
-
-    // Keyhole
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = '#064e3b';
-    ctx.beginPath();
-    ctx.arc(0, 9 * s, 4 * s, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillRect(-1.8 * s, 10 * s, 3.6 * s, 9 * s);
-
-    ctx.restore();
-  }
-
-  function drawHolographicChart(ctx, x, y, w, h, t) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.transform(1, -0.055, 0, 1, 0, 0);
-
-    // Glass panel backdrop
-    const grad = ctx.createLinearGradient(0, 0, w, h);
-    grad.addColorStop(0, 'rgba(6, 78, 59, 0.24)');
-    grad.addColorStop(1, 'rgba(15, 23, 42, 0.10)');
-    ctx.fillStyle = grad;
-    ctx.strokeStyle = 'rgba(45, 212, 191, 0.24)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.roundRect ? ctx.roundRect(0, 0, w, h, 14) : ctx.rect(0, 0, w, h);
-    ctx.fill();
-    ctx.stroke();
-
-    // Grid lines
-    ctx.strokeStyle = 'rgba(45, 212, 191, 0.11)';
-    ctx.lineWidth = 1;
-    for (let i = 1; i <= 5; i++) {
-      const gy = (h / 6) * i;
-      ctx.beginPath();
-      ctx.moveTo(14, gy);
-      ctx.lineTo(w - 14, gy);
-      ctx.stroke();
-    }
-    for (let j = 1; j <= 8; j++) {
-      const gx = (w / 9) * j;
-      ctx.beginPath();
-      ctx.moveTo(gx, 16);
-      ctx.lineTo(gx, h - 14);
-      ctx.stroke();
-    }
-
-    // Subtle SafeYield AI chart header
-    ctx.fillStyle = 'rgba(167, 243, 208, 0.55)';
-    ctx.font = '600 12px system-ui, sans-serif';
-    ctx.fillText('SafeYield AI • Live Quant Feed', 18, 24);
-
-    // Rising candlesticks
-    const candles = [
-      [0.16, 0.28, 0.12, 0.34, true],
-      [0.26, 0.22, 0.18, 0.32, false],
-      [0.24, 0.36, 0.20, 0.42, true],
-      [0.34, 0.45, 0.30, 0.52, true],
-      [0.44, 0.38, 0.34, 0.49, false],
-      [0.40, 0.54, 0.36, 0.60, true],
-      [0.52, 0.62, 0.48, 0.68, true],
-      [0.60, 0.55, 0.50, 0.66, false],
-      [0.56, 0.72, 0.52, 0.78, true],
-      [0.70, 0.64, 0.60, 0.76, false],
-      [0.66, 0.80, 0.61, 0.86, true],
-      [0.78, 0.88, 0.73, 0.94, true],
-      [0.84, 0.78, 0.74, 0.90, false],
-      [0.80, 0.91, 0.76, 0.96, true]
-    ];
-    const padX = 24, padY = 34;
-    const cw = (w - padX * 2) / candles.length;
-    const ch = h - padY - 18;
-    const linePts = [];
-
-    candles.forEach((c, idx) => {
-      const wave = Math.sin(t * 1.1 + idx * 0.45) * 0.015;
-      const open = c[0] + wave;
-      const close = c[1] + wave;
-      const low = Math.min(c[2] + wave, open, close);
-      const high = Math.max(c[3] + wave, open, close);
-      const bull = c[4];
-
-      const cx = padX + idx * cw + cw * 0.5;
-      const yHigh = padY + ch * (1 - high);
-      const yLow = padY + ch * (1 - low);
-      const yTop = padY + ch * (1 - Math.max(open, close));
-      const yBot = padY + ch * (1 - Math.min(open, close));
-      linePts.push([cx, (yTop + yBot) * 0.5]);
-
-      ctx.strokeStyle = bull ? 'rgba(52, 211, 153, 0.85)' : 'rgba(45, 212, 191, 0.52)';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(cx, yHigh);
-      ctx.lineTo(cx, yLow);
-      ctx.stroke();
-
-      ctx.fillStyle = bull ? 'rgba(16, 185, 129, 0.85)' : 'rgba(13, 148, 136, 0.45)';
-      ctx.shadowColor = bull ? 'rgba(52, 211, 153, 0.65)' : 'transparent';
-      ctx.shadowBlur = bull ? 10 : 0;
-      ctx.fillRect(cx - cw * 0.28, yTop, cw * 0.56, Math.max(4, yBot - yTop));
-      ctx.shadowBlur = 0;
-    });
-
-    // Smooth glowing trendline
-    ctx.beginPath();
-    linePts.forEach((p, idx) => {
-      if (idx === 0) ctx.moveTo(p[0], p[1]);
-      else ctx.lineTo(p[0], p[1]);
-    });
-    ctx.strokeStyle = 'rgba(167, 243, 208, 0.82)';
-    ctx.lineWidth = 2;
-    ctx.shadowColor = 'rgba(52, 211, 153, 0.9)';
-    ctx.shadowBlur = 12;
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-
-    ctx.restore();
-  }
-
-  function drawLeftCandles(ctx, w, h, t) {
-    ctx.save();
-    const bars = [0.22, 0.30, 0.26, 0.38, 0.44, 0.35, 0.50, 0.58, 0.48, 0.64, 0.72, 0.60];
-    const areaW = w < 720 ? w * 0.85 : w * 0.38;
-    const step = areaW / bars.length;
-    const baseY = h + 8;
-
-    // Subtle rising trend curve behind left candlesticks
-    ctx.beginPath();
-    bars.forEach((b, i) => {
-      const wave = Math.sin(t * 0.9 + i * 0.5) * 0.018;
-      const x = 18 + i * step + step * 0.5;
-      const y = baseY - (b + wave) * h * 0.44;
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    });
-    ctx.strokeStyle = 'rgba(45, 212, 191, 0.35)';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    bars.forEach((b, i) => {
-      const wave = Math.sin(t * 0.9 + i * 0.5) * 0.018;
-      const bh = (b + wave) * h * 0.40;
-      const x = 18 + i * step + step * 0.25;
-      const bw = Math.max(6, step * 0.42);
-      const topY = baseY - bh;
-
-      // Wick
-      ctx.strokeStyle = 'rgba(110, 231, 183, 0.45)';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(x + bw / 2, topY - 26);
-      ctx.lineTo(x + bw / 2, baseY);
-      ctx.stroke();
-
-      // Glowing bar
-      const g = ctx.createLinearGradient(0, topY, 0, baseY);
-      g.addColorStop(0, 'rgba(52, 211, 153, 0.72)');
-      g.addColorStop(0.45, 'rgba(16, 185, 129, 0.28)');
-      g.addColorStop(1, 'rgba(6, 78, 59, 0.02)');
-      ctx.fillStyle = g;
-      ctx.fillRect(x, topY, bw, bh);
-    });
-    ctx.restore();
-  }
-
-  function renderAuthBgFrame(nowMs) {
-    const shell = document.getElementById('authShell');
-    const canvas = document.getElementById('authBgCanvas');
-    if (!shell || !canvas || shell.style.display === 'none') {
-      authBgRaf = null;
-      return;
-    }
-
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
-      canvas.width = Math.round(w * dpr);
-      canvas.height = Math.round(h * dpr);
-      initAuthBgScene(w, h);
-    }
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, w, h);
-
-    const t = (nowMs || 0) * 0.001;
-
-    // 1. Subtle Cyber Perspective Floor Grid
-    ctx.save();
-    ctx.strokeStyle = 'rgba(45, 212, 191, 0.06)';
-    ctx.lineWidth = 1;
-    const gridGap = 48;
-    for (let gx = 0; gx < w; gx += gridGap) {
-      ctx.beginPath();
-      ctx.moveTo(gx, 0);
-      ctx.lineTo(gx, h);
-      ctx.stroke();
-    }
-    for (let gy = 0; gy < h; gy += gridGap) {
-      ctx.beginPath();
-      ctx.moveTo(0, gy);
-      ctx.lineTo(w, gy);
-      ctx.stroke();
-    }
-    ctx.restore();
-
-    // 2. Left AI Neural Network Constellation
-    const maxDist = w < 720 ? 110 : 145;
-    const regionW = w < 720 ? w : w * 0.44;
-    const regionH = w < 720 ? h * 0.46 : h * 0.60;
-    for (let i = 0; i < authBgNodes.length; i++) {
-      const n = authBgNodes[i];
-      n.x += n.vx;
-      n.y += n.vy;
-      if (n.x < 10 || n.x > regionW) n.vx *= -1;
-      if (n.y < 14 || n.y > regionH) n.vy *= -1;
-    }
-    for (let i = 0; i < authBgNodes.length; i++) {
-      const a = authBgNodes[i];
-      for (let j = i + 1; j < authBgNodes.length; j++) {
-        const b = authBgNodes[j];
-        const dx = a.x - b.x, dy = a.y - b.y;
-        const dist = Math.hypot(dx, dy);
-        if (dist < maxDist) {
-          const alpha = (1 - dist / maxDist) * 0.42;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = 'rgba(45, 212, 191, ' + alpha.toFixed(3) + ')';
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        }
-      }
-    }
-    for (let i = 0; i < authBgNodes.length; i++) {
-      const n = authBgNodes[i];
-      const pulse = 0.65 + 0.35 * Math.sin(t * 2 + n.phase);
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r * (0.9 + 0.2 * pulse), 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(167, 243, 208, ' + (0.55 + 0.4 * pulse).toFixed(2) + ')';
-      ctx.shadowColor = 'rgba(45, 212, 191, 0.9)';
-      ctx.shadowBlur = 10;
-      ctx.fill();
-    }
-    ctx.shadowBlur = 0;
-
-    // 3. Bottom-Left Rising Glowing Candlesticks
-    drawLeftCandles(ctx, w, h, t);
-
-    // 4. Right Side Holographic Chart & Glowing Security Shield (Desktop/Tablet)
-    if (w >= 860) {
-      const chartW = Math.min(430, w * 0.31);
-      const chartH = Math.min(250, h * 0.34);
-      drawHolographicChart(ctx, w - chartW - 26, Math.max(40, h * 0.14), chartW, chartH, t);
-      const shieldScale = Math.min(1.15, Math.max(0.75, w / 1280));
-      drawGlowingShield(ctx, w * 0.81, h * 0.66, shieldScale, t);
-    } else {
-      // Subtle ambient shield on mobile bottom-right
-      drawGlowingShield(ctx, w * 0.82, h * 0.85, 0.58, t);
-    }
-
-    // 5. Floating Ambient Data Particles
-    for (let i = 0; i < authBgParticles.length; i++) {
-      const p = authBgParticles[i];
-      p.y += p.vy;
-      if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; }
-      const tw = 0.55 + 0.45 * Math.sin(t * 2.2 + p.phase);
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(110, 231, 183, ' + (p.alpha * tw).toFixed(2) + ')';
-      ctx.fill();
-    }
-
-    authBgRaf = requestAnimationFrame(renderAuthBgFrame);
-  }
-
-  function startAuthBgAnimation() {
-    if (!authBgResizeBound) {
-      authBgResizeBound = true;
-      window.addEventListener('resize', () => {
-        if (authBgRaf) initAuthBgScene(window.innerWidth, window.innerHeight);
-      });
-    }
-    if (!authBgRaf) {
-      initAuthBgScene(window.innerWidth, window.innerHeight);
-      authBgRaf = requestAnimationFrame(renderAuthBgFrame);
-    }
-  }
-
-  function stopAuthBgAnimation() {
-    if (authBgRaf) {
-      cancelAnimationFrame(authBgRaf);
-      authBgRaf = null;
-    }
-  }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    syncAssetsFromState();
-    renderChatMessages();
-    startAutoLiveTimer();
-    updateLockUI();
-    updateAuthServerStatus();
-    startAuthBgAnimation();
-    restoreSessionOnBoot();
-  });
-</script>
+<script src="./app.js?v=6.0"></script>
 </body>
 </html>
