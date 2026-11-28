@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SafeYield AI v6.0 Pro — Quant AI, ব্যাকটেস্ট, অ্যালার্ট ও পোর্টফোলিও</title>
+  <title>SafeYield AI v6.2 Pro — Quant AI, ব্যাকটেস্ট, অ্যালার্ট ও পোর্টফোলিও</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%230d9488'/%3E%3Cstop offset='55%25' stop-color='%23059669'/%3E%3Cstop offset='100%25' stop-color='%230284c7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M32 10L50 18V32C50 43.5 42.2 52.3 32 55C21.8 52.3 14 43.5 14 32V18L32 10Z' fill='rgba(255,255,255,0.14)' stroke='%23a7f3d0' stroke-width='2.4'/%3E%3Cpath d='M21 37L28 30L33 34.5L43 23' fill='none' stroke='%23ffffff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M37 23H43V29' fill='none' stroke='%236ee7b7' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="./style.css?v=6.1" />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23061320'/%3E%3Cstop offset='55%25' stop-color='%230b2938'/%3E%3Cstop offset='100%25' stop-color='%23064e3b'/%3E%3C/linearGradient%3E%3ClinearGradient id='sh' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2334d399'/%3E%3Cstop offset='65%25' stop-color='%2314b8a6'/%3E%3Cstop offset='100%25' stop-color='%23fbbf24'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='2' y='2' width='60' height='60' rx='16' fill='url(%23bg)' stroke='%232dd4bf' stroke-width='2'/%3E%3Cpath d='M32 10L50 18V31.5C50 43.2 42.3 52 32 55C21.7 52 14 43.2 14 31.5V18L32 10Z' fill='rgba(16,185,129,0.14)' stroke='url(%23sh)' stroke-width='2.4'/%3E%3Cpath d='M21 38L28 31L33 35.5L43 24' fill='none' stroke='%23ffffff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M36.5 24H43V30.5' fill='none' stroke='%23fbbf24' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M32 14L33.2 17.3L36.5 18.5L33.2 19.7L32 23L30.8 19.7L27.5 18.5L30.8 17.3Z' fill='%23fbbf24'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="./style.css?v=6.2" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
 </head>
 <body class="auth-active">
@@ -19,25 +19,40 @@
     <div class="auth-head">
       <div class="logo"><svg class="sy-svg-logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
-            <linearGradient id="syGradAuth" x1="4" y1="4" x2="60" y2="60" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#0f766e"/>
-              <stop offset="52%" stop-color="#059669"/>
-              <stop offset="100%" stop-color="#0284c7"/>
+            <linearGradient id="syBg_auth" x1="4" y1="2" x2="60" y2="62" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#061320"/>
+              <stop offset="52%" stop-color="#0b2838"/>
+              <stop offset="100%" stop-color="#064e3b"/>
             </linearGradient>
-            <linearGradient id="syRimAuth" x1="14" y1="10" x2="50" y2="54" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#a7f3d0"/>
-              <stop offset="100%" stop-color="#38bdf8"/>
+            <linearGradient id="syRim_auth" x1="10" y1="8" x2="54" y2="56" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#34d399"/>
+              <stop offset="55%" stop-color="#2dd4bf"/>
+              <stop offset="100%" stop-color="#fbbf24"/>
             </linearGradient>
+            <linearGradient id="syLine_auth" x1="19" y1="40" x2="45" y2="22" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#6ee7b7"/>
+              <stop offset="60%" stop-color="#ffffff"/>
+              <stop offset="100%" stop-color="#fde68a"/>
+            </linearGradient>
+            <radialGradient id="syGlow_auth" cx="50%" cy="46%" r="48%">
+              <stop offset="0%" stop-color="rgba(52, 211, 153, 0.34)"/>
+              <stop offset="100%" stop-color="rgba(52, 211, 153, 0)"/>
+            </radialGradient>
           </defs>
-          <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#syGradAuth)"/>
-          <path d="M32 11L49 18.5V31.5C49 42.5 41.6 50.8 32 53.5C22.4 50.8 15 42.5 15 31.5V18.5L32 11Z" fill="rgba(255,255,255,0.12)" stroke="url(#syRimAuth)" stroke-width="2.2"/>
-          <path d="M21 37.5L28 30.5L33 35L43 23.5" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M37 23.5H43V29.5" stroke="#6ee7b7" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="21" cy="37.5" r="2.2" fill="#a7f3d0"/>
-          <circle cx="43" cy="23.5" r="2.4" fill="#6ee7b7"/>
+          <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#syBg_auth)" stroke="url(#syRim_auth)" stroke-opacity="0.55" stroke-width="1.6"/>
+          <circle cx="32" cy="31" r="24" fill="url(#syGlow_auth)"/>
+          <path d="M32 10.5L49.5 18V31.5C49.5 42.8 41.9 51.3 32 54.2C22.1 51.3 14.5 42.8 14.5 31.5V18L32 10.5Z" fill="rgba(15, 118, 110, 0.24)" stroke="url(#syRim_auth)" stroke-width="2.1"/>
+          <path d="M32 15.2L45.2 21V31.2C45.2 39.8 39.5 46.5 32 49C24.5 46.5 18.8 39.8 18.8 31.2V21L32 15.2Z" stroke="rgba(167, 243, 208, 0.25)" stroke-width="1"/>
+          <rect x="21.5" y="37" width="3.5" height="7" rx="1.2" fill="rgba(52, 211, 153, 0.45)"/>
+          <rect x="27.5" y="33.5" width="3.5" height="10.5" rx="1.2" fill="rgba(52, 211, 153, 0.62)"/>
+          <rect x="33.5" y="35.5" width="3.5" height="8.5" rx="1.2" fill="rgba(45, 212, 191, 0.55)"/>
+          <rect x="39.5" y="28.5" width="3.5" height="15.5" rx="1.2" fill="rgba(251, 191, 36, 0.72)"/>
+          <path d="M20.5 38L27.5 31L33 35L43 23.5" stroke="url(#syLine_auth)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M37 23.5H43V29.5" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M32 15.5L33.1 18.4L36 19.5L33.1 20.6L32 23.5L30.9 20.6L28 19.5L30.9 18.4Z" fill="#fde68a"/>
         </svg></div>
       <div class="title-wrap">
-        <h1 style="font-size:19px;">SafeYield AI <span class="badge-v">v6.0 Pro</span></h1>
+        <h1 style="font-size:19px;"><span class="brand-wordmark">SafeYield <span class="brand-ai">AI</span></span> <span class="badge-v">v6.2 Pro</span></h1>
         <p style="font-size:12.5px;">আপনার নিজস্ব AI পোর্টফোলিও অ্যাকাউন্ট তৈরি বা সাইন-ইন করুন</p>
       </div>
     </div>
@@ -176,25 +191,40 @@
     <div class="brand-row">
       <div class="logo"><svg class="sy-svg-logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
-            <linearGradient id="syGradApp" x1="4" y1="4" x2="60" y2="60" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#0f766e"/>
-              <stop offset="52%" stop-color="#059669"/>
-              <stop offset="100%" stop-color="#0284c7"/>
+            <linearGradient id="syBg_app" x1="4" y1="2" x2="60" y2="62" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#061320"/>
+              <stop offset="52%" stop-color="#0b2838"/>
+              <stop offset="100%" stop-color="#064e3b"/>
             </linearGradient>
-            <linearGradient id="syRimApp" x1="14" y1="10" x2="50" y2="54" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#a7f3d0"/>
-              <stop offset="100%" stop-color="#38bdf8"/>
+            <linearGradient id="syRim_app" x1="10" y1="8" x2="54" y2="56" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#34d399"/>
+              <stop offset="55%" stop-color="#2dd4bf"/>
+              <stop offset="100%" stop-color="#fbbf24"/>
             </linearGradient>
+            <linearGradient id="syLine_app" x1="19" y1="40" x2="45" y2="22" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#6ee7b7"/>
+              <stop offset="60%" stop-color="#ffffff"/>
+              <stop offset="100%" stop-color="#fde68a"/>
+            </linearGradient>
+            <radialGradient id="syGlow_app" cx="50%" cy="46%" r="48%">
+              <stop offset="0%" stop-color="rgba(52, 211, 153, 0.34)"/>
+              <stop offset="100%" stop-color="rgba(52, 211, 153, 0)"/>
+            </radialGradient>
           </defs>
-          <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#syGradApp)"/>
-          <path d="M32 11L49 18.5V31.5C49 42.5 41.6 50.8 32 53.5C22.4 50.8 15 42.5 15 31.5V18.5L32 11Z" fill="rgba(255,255,255,0.12)" stroke="url(#syRimApp)" stroke-width="2.2"/>
-          <path d="M21 37.5L28 30.5L33 35L43 23.5" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M37 23.5H43V29.5" stroke="#6ee7b7" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="21" cy="37.5" r="2.2" fill="#a7f3d0"/>
-          <circle cx="43" cy="23.5" r="2.4" fill="#6ee7b7"/>
+          <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#syBg_app)" stroke="url(#syRim_app)" stroke-opacity="0.55" stroke-width="1.6"/>
+          <circle cx="32" cy="31" r="24" fill="url(#syGlow_app)"/>
+          <path d="M32 10.5L49.5 18V31.5C49.5 42.8 41.9 51.3 32 54.2C22.1 51.3 14.5 42.8 14.5 31.5V18L32 10.5Z" fill="rgba(15, 118, 110, 0.24)" stroke="url(#syRim_app)" stroke-width="2.1"/>
+          <path d="M32 15.2L45.2 21V31.2C45.2 39.8 39.5 46.5 32 49C24.5 46.5 18.8 39.8 18.8 31.2V21L32 15.2Z" stroke="rgba(167, 243, 208, 0.25)" stroke-width="1"/>
+          <rect x="21.5" y="37" width="3.5" height="7" rx="1.2" fill="rgba(52, 211, 153, 0.45)"/>
+          <rect x="27.5" y="33.5" width="3.5" height="10.5" rx="1.2" fill="rgba(52, 211, 153, 0.62)"/>
+          <rect x="33.5" y="35.5" width="3.5" height="8.5" rx="1.2" fill="rgba(45, 212, 191, 0.55)"/>
+          <rect x="39.5" y="28.5" width="3.5" height="15.5" rx="1.2" fill="rgba(251, 191, 36, 0.72)"/>
+          <path d="M20.5 38L27.5 31L33 35L43 23.5" stroke="url(#syLine_app)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M37 23.5H43V29.5" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M32 15.5L33.1 18.4L36 19.5L33.1 20.6L32 23.5L30.9 20.6L28 19.5L30.9 18.4Z" fill="#fde68a"/>
         </svg></div>
       <div class="title-wrap">
-        <h1>SafeYield AI <span class="badge-v">v6.0 Pro • Quant AI + ব্যাকটেস্ট</span></h1>
+        <h1><span class="brand-wordmark">SafeYield <span class="brand-ai">AI</span></span> <span class="badge-v">v6.2 Pro • Quant AI</span></h1>
         <p>AI মার্কেট রিসার্চ ও চ্যাট • Groww / Binance টু-ওয়ে সিঙ্ক • ট্যাক্স রিপোর্ট</p>
       </div>
     </div>
